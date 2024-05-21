@@ -1,10 +1,6 @@
-# == Define: graphdb::plugin
+# @summary This define allows you to install GraphDB plugin from given source
 #
-#  This define allows you to install GraphDB plugin from given source
-#
-# === Parameters
-#
-# [*ensure*]
+# @param ensure
 #   String. Controls if the managed resources shall be <tt>present</tt> or
 #   <tt>absent</tt>. If set to <tt>absent</tt>:
 #   * The managed plugin is being uninstalled.
@@ -18,10 +14,10 @@
 #   * This is thus destructive and should be used with care.
 #   Defaults to <tt>present</tt>.
 #
-# [*instance*]
+# @param instance
 #   GraphDB instance to install plugin on.
 #
-# [*source*]
+# @param source
 #   The source of GraphDB plugin.
 #
 define graphdb::plugin (

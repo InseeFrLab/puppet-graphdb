@@ -1,11 +1,6 @@
-# == Class: graphdb
+# @summary # This class is able to install or remove graphdb distribution on a node. It manages the status of the related service.
 #
-# This class is able to install or remove graphdb distribution on a node.
-# It manages the status of the related service.
-#
-# === Parameters
-#
-# [*ensure*]
+# @param ensure
 #   String. Controls if the managed resources shall be <tt>present</tt> or
 #   <tt>absent</tt>. If set to <tt>absent</tt>:
 #   * The managed distribution is being uninstalled.
@@ -19,13 +14,13 @@
 #   * This is thus destructive and should be used with care.
 #   Defaults to <tt>present</tt>.
 #
-# [*version*]
+# @param version
 #   String. GraphDB version to install
 #
-# [*edition*]
+# @param edition
 #   String. GraphDB edition to install
 #
-# [*status*]
+# @param status
 #   String to define the status of the service. Possible values:
 #   * <tt>enabled</tt>: Service is running and will be started at boot time.
 #   * <tt>disabled</tt>: Service is stopped and will not be started at boot
@@ -42,37 +37,37 @@
 #   more than one is managed (see <tt>service.pp</tt> to check if this is the
 #   case).
 #
-# [*tmp_dir*]
+# @param tmp_dir
 #   String. The location of temporary files that this module will use
 #
-# [*data_dir*]
+# @param data_dir
 #   String. GraphDB data directory
 #
-# [*log_dir*]
+# @param log_dir
 #   String. GraphDB log directory
 #
-# [*pid_dir*]
+# @param pid_dir
 #   String. GraphDB pid directory
 #
-# [*install_dir*]
+# @param install_dir
 #   String. GraphDB distribution location
 #
-# [*import_dir*]
+# @param import_dir
 #   String. GraphDB import location
 #
-# [*manage_graphdb_user*]
+# @param manage_graphdb_user
 #   Boolean. Whether this module manages GraphDB user
 #
-# [*graphdb_user*]
+# @param graphdb_user
 #   String. The group GraphDB should run as. This also sets the file rights
 #
-# [*graphdb_group*]
+# @param graphdb_group
 #   String. The group GraphDB should run as. This also sets the file rights
 #
-# [*java_home*]
+# @param java_home
 #   String. The location of java installation
 #
-# [*restart_on_change*]
+# @param restart_on_change
 #   Boolean that determines if the application should be automatically restarted
 #   whenever the configuration change. Enabling this
 #   setting will cause GraphDB to restart whenever there is cause to
@@ -80,20 +75,20 @@
 #   updated/changed executable. This may be undesireable in highly available
 #   environments.
 #
-# [*purge_data_dir*]
+# @param purge_data_dir
 #   Boolean. Purge data directory on removal
 #
-# [*archive_dl_timeout*]
+# @param archive_dl_timeout
 #   For http downloads you can set how long the exec resource may take.
 #   default: 600 seconds
 #
-# [*graphdb_download_user*]
+# @param graphdb_download_user
 #   For http downloads you can set user(basic auth credentials)
 #
-# [*graphdb_download_password*]
+# @param graphdb_download_password
 #   For http downloads you can set password(basic auth credentials)
 #
-# [*graphdb_download_url*]
+# @param graphdb_download_url
 #   Url to the archive to download.
 #   This can be a http or https resource for remote packages
 #   puppet:// resource or file:/ for local packages
@@ -101,31 +96,26 @@
 class graphdb (
   String $version                             = undef,
   Optional[String] $edition                   = undef,
-  String $ensure                              = 'present',
+  Enum['present', 'absent'] $ensure           = 'present',
   String $status                              = 'enabled',
-  String $tmp_dir                             = '/var/tmp/graphdb',
-  String $data_dir                            = '/var/lib/graphdb',
-  String $log_dir                             = '/var/log/graphdb',
-  String $pid_dir                             = '/var/run/graphdb',
-  String $install_dir                         = '/opt/graphdb',
-  String $import_dir                          = "${install_dir}/import",
+  Stdlib::Absolutepath $tmp_dir               = '/var/tmp/graphdb',
+  Stdlib::Absolutepath $data_dir              = '/var/lib/graphdb',
+  Stdlib::Absolutepath $log_dir               = '/var/log/graphdb',
+  Stdlib::Absolutepath $pid_dir               = '/var/run/graphdb',
+  Stdlib::Absolutepath $install_dir           = '/opt/graphdb',
+  Stdlib::Absolutepath $import_dir            = "${install_dir}/import",
   Boolean $manage_graphdb_user                = true,
-  Optional[String] $graphdb_user, # hiera value
-  Optional[String] $graphdb_group, # hiera value
-  Optional[String] $java_home                 = undef,
+  String[1,32] $graphdb_user                  = 'graphdb',
+  String[1,32] $graphdb_group                 = 'graphdb',
   Boolean $restart_on_change                  = true,
   Boolean $purge_data_dir                     = false,
   Integer $archive_dl_timeout                 = 600,
+  String $graphdb_download_url                = 'http://maven.ontotext.com/content/groups/all-onto/com/ontotext/graphdb',
+  Optional[Stdlib::Absolutepath] $java_home   = undef,
   Optional[String] $graphdb_download_user     = undef,
   Optional[String] $graphdb_download_password = undef,
-  String $graphdb_download_url                = 'http://maven.ontotext.com/content/groups/all-onto/com/ontotext/graphdb',
 ) {
   #### Validate parameters
-
-  # ensure
-  if !($ensure in ['present', 'absent']) {
-    fail("\"${ensure}\" is not a valid ensure parameter value")
-  }
 
   if ($ensure == 'present') {
     if (!$version) {
@@ -159,20 +149,7 @@ class graphdb (
       fail('When using basic auth credentials you should provide both graphdb_download_user and graphdb_download_password')
     }
 
-    validate_absolute_path($tmp_dir)
-    validate_absolute_path($data_dir)
-    validate_absolute_path($install_dir)
-    validate_absolute_path($import_dir)
-
-    validate_bool($manage_graphdb_user)
-
-    validate_slength($graphdb_user, 32, 1)
-    validate_slength($graphdb_group, 32, 1)
-    validate_bool($purge_data_dir)
-    validate_integer($archive_dl_timeout, undef, 100)
-
     if $java_home {
-      validate_absolute_path($java_home)
       $java_location = $java_home
     }
     elsif $facts['graphdb_java_home'] {

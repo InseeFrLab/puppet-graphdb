@@ -1,20 +1,16 @@
-# == Define: graphdb::service
+# @summary Based on parameters passed defines init.d, systemd or upstart service
 #
-# Based on parameters passed defines init.d, systemd or upstart service
-#
-# === Parameters
-#
-# [*ensure*]
+# @param ensure
 #   Whether the service should exist. Possible values are present and absent.
 #
-# [*status*]
+# @param status
 #   What the state of the service must be. Possible values are enabled, disabled, running and unmanaged.
 #
-# [*java_opts*]
+# @param java_opts
 #   Array of java options to give to GraphDB java process
 #   example: ['-Xmx1g', '-Xms1g']
 #
-# [*kill_timeout*]
+# @param kill_timeout
 #   Time before force kill of GraphDB process. Instances with big repositories may
 #   time to flush on shutdown.
 #   default: 180
@@ -25,8 +21,6 @@ define graphdb::service (
   Array $java_opts      = [],
   Integer $kill_timeout = 180
 ) {
-  require graphdb::service::params
-
   #### Service management
 
   # set params: in operation
@@ -65,35 +59,11 @@ define graphdb::service (
     $service_enable = false
   }
 
-  case $graphdb::service::params::service_provider {
-    'init': {
-      graphdb::service::init { $title:
-        ensure         => $ensure,
-        service_ensure => $service_ensure,
-        service_enable => $service_enable,
-        java_opts      => $java_opts,
-      }
-    }
-    'upstart': {
-      graphdb::service::upstart { $title:
-        ensure         => $ensure,
-        service_ensure => $service_ensure,
-        service_enable => $service_enable,
-        java_opts      => $java_opts,
-        kill_timeout   => $kill_timeout,
-      }
-    }
-    'systemd': {
-      graphdb::service::systemd { $title:
-        ensure         => $ensure,
-        service_ensure => $service_ensure,
-        service_enable => $service_enable,
-        java_opts      => $java_opts,
-        kill_timeout   => $kill_timeout,
-      }
-    }
-    default: {
-      fail("Unknown service provider ${graphdb::service::params::service_provider}")
-    }
+  graphdb::service::systemd { $title:
+    ensure         => $ensure,
+    service_ensure => $service_ensure,
+    service_enable => $service_enable,
+    java_opts      => $java_opts,
+    kill_timeout   => $kill_timeout,
   }
 }

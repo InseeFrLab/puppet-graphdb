@@ -1,41 +1,37 @@
-# == Define: graphdb::ee::master::repository
+# @summary This define is able to manage GraphDB repository
 #
-# This define is able to manage GraphDB repository
-#
-# === Parameters
-#
-# [*ensure*]
+# @param ensure
 #   Whether the service should exist. Possible values are present and absent.
 #
-# [*endpoint*]
+# @param endpoint
 #   GraphDB endpoint.
 #   example: http://localhost:8080
 #
-# [*repository_context*]
+# @param repository_context
 #   The context of the repository.
 #   example: http://ontotext.com
 #
-# [*repository_template*]
+# @param repository_template
 #   The template to use for repository creation
 #   example: http://ontotext.com
 #
-# [*replication_port*]
+# @param replication_port
 #   Master replication port used for backups
 #   default: 0, random port used
 #
-# [*node_id*]
+# @param node_id
 #   Node id of master instance
 #   default: endpoint, same as the master instance endpoint
 #
-# [*timeout*]
+# @param timeout
 #   The max number of seconds that the repository create/delete/check process should wait before giving up.
 #   default: 60
 #
 # For other properties, please, check: {GraphDB documentation}[http://graphdb.ontotext.com/documentation/enterprise/configuring-a-repository.html?highlight=repository#configuration-parameters]
 #
-# [*repository_id*]
+# @param repository_id
 #   Repository ID
-# [*repository_label*]
+# @param repository_label
 #   Repository title
 #
 define graphdb::ee::master::repository (

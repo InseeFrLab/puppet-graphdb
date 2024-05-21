@@ -1,23 +1,19 @@
-# == Define: graphdb::service::systemd
+# @summary Installs systemd configuration and defines service with systemd provider
 #
-# Installs systemd configuration and defines service with systemd provider
-#
-# === Parameters
-#
-# [*ensure*]
+# @param ensure
 #   Whether the service should exist. Possible values are present and absent.
 #
-# [*service_ensure*]
+# @param service_ensure
 #   Whether a service should be running. Possible values are running, stopped, true and false.
 #
-# [*service_enable*]
+# @param service_enable
 #   Whether a service should be enabled to start at boot. Possible values are true and false.
 #
-# [*java_opts*]
+# @param java_opts
 #   Array of java options to give to GraphDB java process
 #   example: ['-Xmx1g', '-Xms1g']
 #
-# [*kill_timeout*]
+# @param kill_timeout
 #   Time before force kill of GraphDB process. Instances with big repositories may
 #   time to flush on shutdown.
 #   default: 180
@@ -29,8 +25,6 @@ define graphdb::service::systemd (
   Array $java_opts                  = [],
   Integer $kill_timeout             = 180
 ) {
-  require graphdb::service::params
-
   $final_java_opts = generate_java_opts_string($java_opts)
 
   File {
@@ -46,7 +40,7 @@ define graphdb::service::systemd (
   }
 
   if ( $ensure == 'present' ) {
-    file { "${graphdb::service::params::systemd_service_path}/graphdb-${title}.service":
+    file { "/lib/systemd/system/graphdb-${title}.service":
       ensure  => $ensure,
       content => template('graphdb/service/systemd.erb'),
       before  => Service["graphdb-${title}"],
@@ -54,7 +48,7 @@ define graphdb::service::systemd (
     }
     $service_require = Exec["systemd_reload_${title}"]
   } else {
-    file { "${graphdb::service::params::systemd_service_path}/graphdb-${title}.service":
+    file { "/lib/systemd/system/graphdb-${title}.service":
       ensure    => 'absent',
       subscribe => Service["graphdb-${title}"],
       notify    => Exec["systemd_reload_${title}"],

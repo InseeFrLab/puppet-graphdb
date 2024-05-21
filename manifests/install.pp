@@ -1,7 +1,4 @@
-# == Class: graphdb::install
-#
-# Perform the actual download of distribution archive and installations.
-# Not meant to be used directly.
+# @summary Perform the actual download of distribution archive and installations. Not meant to be used directly.
 #
 class graphdb::install {
   require graphdb
