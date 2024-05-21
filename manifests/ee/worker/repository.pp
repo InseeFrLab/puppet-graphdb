@@ -1,91 +1,87 @@
-# == Define: graphdb::ee::worker::repository
+# @summary This define is able to manage GraphDB repository
 #
-# This define is able to manage GraphDB repository
-#
-# === Parameters
-#
-# [*ensure*]
+# @param ensure
 #   Whether the service should exist. Possible values are present and absent.
 #
-# [*endpoint*]
+# @param endpoint
 #   GraphDB endpoint.
 #   example: http://localhost:8080
 #
-# [*repository_context*]
+# @param repository_context
 #   The context of the repository.
 #   example: http://ontotext.com
 #
-# [*repository_template*]
+# @param repository_template
 #   The template to use for repository creation
 #   example: http://ontotext.com
 #
-# [*timeout*]
+# @param timeout
 #   The max number of seconds that the repository create/delete/check process should wait before giving up.
 #   default: 60
 #
 # For other properties, please, check: {GraphDB documentation}[http://graphdb.ontotext.com/documentation/enterprise/configuring-a-repository.html?highlight=repository#configuration-parameters]
 #
-# [*repository_id*]
+# @param repository_id
 #   Repository ID
 #
-# [*repository_label*]
+# @param repository_label
 #   Repository title
 #
-# [*default_ns*]
+# @param default_ns
 #   Default namespaces for imports(';' delimited)
 #
-# [*entity_index_size*]
+# @param entity_index_size
 #   Entity index size
 #
-# [*entity_id_size*]
+# @param entity_id_size
 #   Entity ID bit-size
 #
-# [*imports*]
+# @param imports
 #   Imported RDF files(';' delimited)
 #
-# [*ruleset*]
+# @param ruleset
 #   Rule-set
 #
-# [*storage_folder*]
+# @param storage_folder
 #   Storage folder
 #
-# [*enable_context_index*]
+# @param enable_context_index
 #   Use context index
 #
-# [*enable_predicate_list*]
+# @param enable_predicate_list
 #   Use predicate indices
 #
-# [*in_memory_literal_properties*]
+# @param in_memory_literal_properties
 #   Cache literal language tags
 #
-# [*enable_literal_index*]
+# @param enable_literal_index
 #   Enable literal index
 #
-# [*check_for_inconsistencies*]
+# @param check_for_inconsistencies
 #   Check for inconsistencies
 #
-# [*disable_same_as*]
+# @param disable_same_as
 #   Disable OWL sameAs optimisation
 #
-# [*transaction_mode*]
+# @param transaction_mode
 #   Transaction mode
 #
-# [*transaction_isolation*]
+# @param transaction_isolation
 #   Transaction isolation
 #
-# [*query_timeout*]
+# @param query_timeout
 #   Query time-out (seconds)
 #
-# [*query_limit_results*]
+# @param query_limit_results
 #   Limit query results
 #
-# [*throw_query_evaluation_exception_on_timeout*]
+# @param throw_query_evaluation_exception_on_timeout
 #   Throw exception on query time-out
 #
-# [*non_interpretable_predicates*]
+# @param non_interpretable_predicates
 #   Non-interpretable predicates
 #
-# [*read_only*]
+# @param read_only
 #   Read-only
 #
 define graphdb::ee::worker::repository (

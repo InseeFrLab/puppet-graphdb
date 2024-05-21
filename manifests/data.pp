@@ -1,25 +1,21 @@
-# == Define: graphdb::data
+# @summary This define allows you to import data from given source(incl. zip archive)
 #
-#  This define allows you to import data from given source(incl. zip archive)
-#
-# === Parameters
-#
-# [*endpoint*]
+# @param endpoint
 #   GraphDB endpoint.
 #   example: http://localhost:8080
 #
-# [*repository*]
+# @param repository
 #   GraphDB repository.
 #
-# [*exists_query*]
+# @param exists_query
 #   The ask query to check whether data is already loaded.
 #   You can use the following syntax: ask {?s ?p ?o}
 #
-# [*exists_expected_response*]
+# @param exists_expected_response
 #   The expected response from exists_query
 #   default: true
 #
-# [*data*]
+# @param data
 #  The data you want to load into GraphDB repository.
 #  Supported formats:
 #  String: 'data'
@@ -30,7 +26,7 @@
 #  note#1: if context for data not provided data_context is used
 #  note#2: if format for data not provided data_format is used
 #
-# [*source*]
+# @param source
 #  The source of data you want to load into GraphDB repository.
 #  Supported formats:
 #  String: 'path_to_file'
@@ -43,22 +39,22 @@
 #  note#1: if context for file not provided data_context is used
 #  note#2: if format for file not provided trying to resolve format from file if fails data_format is used
 #
-# [*archive*]
+# @param archive
 #   Local zip archive that you want to load into GraphDB repository.
 #
-# [*data_format*]
+# @param data_format
 #   The data format.
 #   example: turtle
 #
-# [*context*]
+# @param context
 #   The context you want to load your data into.
 #  default: null
 #
-# [*overwrite*]
+# @param overwrite
 #   Wheather to overwrite any existing data.
 #   default: false
 #
-# [*timeout*]
+# @param timeout
 #   The max number of seconds that the loading process should wait before giving up.
 #   default: 200
 #

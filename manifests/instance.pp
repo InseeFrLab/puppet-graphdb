@@ -1,10 +1,6 @@
-# == Define: graphdb::instance
+# @summary This define allows you to create or remove an graphdb instance
 #
-#  This define allows you to create or remove an graphdb instance
-#
-# === Parameters
-#
-# [*ensure*]
+# @param ensure
 #   String. Controls if the managed resources shall be <tt>present</tt> or
 #   <tt>absent</tt>. If set to <tt>absent</tt>:
 #   * The managed instance is being uninstalled.
@@ -18,7 +14,7 @@
 #   * This is thus destructive and should be used with care.
 #   Defaults to <tt>present</tt>.
 #
-# [*status*]
+# @param status
 #   String to define the status of the service. Possible values:
 #   * <tt>enabled</tt>: Service is running and will be started at boot time.
 #   * <tt>disabled</tt>: Service is stopped and will not be started at boot
@@ -35,48 +31,48 @@
 #   more than one is managed (see <tt>service.pp</tt> to check if this is the
 #   case).
 #
-# [*license*]
+# @param license
 #   GraphDB license file.
 #
-# [*http_port*]
+# @param http_port
 #   The http port at which GraphDB will run.
 #
-# [*kill_timeout*]
+# @param kill_timeout
 #   Time before force kill of GraphDB process. Instances with big repositories may
 #   time to flush on shutdown.
 #   default: 180
 #
-# [*validator_timeout*]
+# @param validator_timeout
 #   Time before GraphDB validator decides that the GraphDB instance is not running
 #
-# [*validator_test_enabled*]
+# @param validator_test_enabled
 #   GraphDB validator
 #
-# [*heap_size*]
+# @param heap_size
 #   GraphDB java heap size given by -Xmx parameter. Note heap_size parameter will also set xms=xmx
 #
-# [*external_url*]
+# @param external_url
 #   GraphDB external URL if GraphDB instance is accessed via proxy
 #
-# [*logback_config*]
+# @param logback_config
 #   GraphDB logback log configuration
 #
-# [*extra_properties*]
+# @param extra_properties
 #   Hash of properties to include in graphdb.properties file
 #   example: {'graphdb.some.property' => 'some.property.value'}
 #
-# [*java_opts*]
+# @param java_opts
 #   Array of java options to give to GraphDB java process
 #   example: ['-Xmx1g', '-Xms1g']
 #
-# [*protocol*]
+# @param protocol
 #   A string, either 'http' or 'https defining under what protocol to connect to GraphDB'
 #
-# [*jolokia_access_link*]
+# @param jolokia_access_link
 #   Add jolokia-access.xml link
 define graphdb::instance (
   Optional[String] $license         = undef,
-  String $ensure                    = $graphdb::ensure,
+  Enum['present', 'absent'] $ensure = $graphdb::ensure,
   String $status                    = $graphdb::status,
   Integer $http_port                = 8080,
   Optional[String] $external_url    = undef,
@@ -90,15 +86,6 @@ define graphdb::instance (
   String $protocol                  = 'http',
   Boolean $jolokia_access_link      = versioncmp($graphdb::ensure, '9.10.0') > -1,
 ) {
-  # ensure
-  if !($ensure in ['present', 'absent']) {
-    fail("\"${ensure}\" is not a valid ensure parameter value")
-  }
-
-  if $ensure == 'present' {
-    validate_string($license)
-  }
-
   if $heap_size {
     $heap_size_array = ["-Xmx${heap_size}", "-Xms${heap_size}"]
 
