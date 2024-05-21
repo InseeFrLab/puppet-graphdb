@@ -4,7 +4,7 @@ module Puppet
   module Util
     # Constant map contaning file extension with their matching format
     class DataTypeExtensions
-      @DATA_TYPE_EXT = { '.rdf' => 'rdfxml', '.rdfs' => 'rdfxml', '.owl' => 'rdfxml', '.xml' => 'rdfxml',
+      @data_type_ext = { '.rdf' => 'rdfxml', '.rdfs' => 'rdfxml', '.owl' => 'rdfxml', '.xml' => 'rdfxml',
                          '.nt' => 'ntriples',
                          '.ttl' => 'turtle',
                          '.n3' => 'n3',
@@ -19,15 +19,15 @@ module Puppet
       def self.[](extension)
         raise ArgumentError, "Unknown file extensions: #{extension}" unless key?(extension)
 
-        @DATA_TYPE_EXT[extension]
+        @data_type_ext[extension]
       end
 
       def self.key?(extension)
-        @DATA_TYPE_EXT.key?(extension)
+        @data_type_ext.key?(extension)
       end
 
       def self.values
-        @DATA_TYPE_EXT.values.uniq
+        @data_type_ext.values.uniq
       end
     end
   end

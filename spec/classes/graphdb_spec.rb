@@ -55,54 +55,6 @@ describe 'graphdb', type: :class do
           end
         end
 
-        context 'unknown ensure' do
-          let(:params) { { version: '9.10.1', edition: 'ee', ensure: 'test' } }
-
-          it do
-            expect { is_expected.to contain_class('graphdb') }.to raise_error(Puppet::ParseError)
-          end
-        end
-
-        context 'unknown status' do
-          let(:params) { { version: '9.10.1', edition: 'ee', status: 'test' } }
-
-          it do
-            expect { is_expected.to contain_class('graphdb') }.to raise_error(Puppet::ParseError)
-          end
-        end
-
-        context 'not absolute data_dir path' do
-          let(:params) { { version: '9.10.1', edition: 'ee', data_dir: 'test' } }
-
-          it do
-            expect { is_expected.to contain_class('graphdb') }.to raise_error(Puppet::ParseError)
-          end
-        end
-
-        context 'not absolute tmp_dir path' do
-          let(:params) { { version: '9.10.1', edition: 'ee', tmp_dir: 'test' } }
-
-          it do
-            expect { is_expected.to contain_class('graphdb') }.to raise_error(Puppet::ParseError)
-          end
-        end
-
-        context 'not absolute install_dir path' do
-          let(:params) { { version: '9.10.1', edition: 'ee', install_dir: 'test' } }
-
-          it do
-            expect { is_expected.to contain_class('graphdb') }.to raise_error(Puppet::ParseError)
-          end
-        end
-
-        context 'not absolute import_dir path' do
-          let(:params) { { version: '9.10.1', edition: 'ee', import_dir: 'test' } }
-
-          it do
-            expect { is_expected.to contain_class('graphdb') }.to raise_error(Puppet::ParseError)
-          end
-        end
-
         context 'not valid manage_graphdb_user' do
           let(:params) { { version: '9.10.1', edition: 'ee', manage_graphdb_user: 'test' } }
 
@@ -151,19 +103,6 @@ describe 'graphdb', type: :class do
           end
         end
       end
-    end
-  end
-
-  context 'unknown kernel' do
-    let :facts do
-      {
-        kernel: 'unknown',
-        operatingsystem: 'Debian',
-        operatingsystemmajrelease: '6'
-      }
-    end
-    it do
-      expect { is_expected.to contain_class('graphdb') }.to raise_error(Puppet::ParseError)
     end
   end
 

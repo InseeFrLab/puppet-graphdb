@@ -22,8 +22,8 @@
 #
 define graphdb::plugin (
   String $instance,
-  String $ensure            = $graphdb::ensure,
-  Optional[String] $source  = undef,
+  Graphdb::Ensure $ensure = $graphdb::ensure,
+  Optional[String]          $source = undef,
 ) {
   require graphdb
 

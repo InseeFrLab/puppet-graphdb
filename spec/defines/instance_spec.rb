@@ -6,8 +6,8 @@ describe 'graphdb::instance', type: :define do
   let :facts do
     {
       kernel: 'Linux',
-      operatingsystem: 'Ubuntu',
-      operatingsystemmajrelease: '6',
+      operatingsystem: 'Debian',
+      operatingsystemmajrelease: '11',
       graphdb_java_home: '/opt/jdk8',
       ipaddress: '129.10.1.1'
     }
@@ -124,27 +124,12 @@ graphdb.workbench.importDirectory = /opt/graphdb/import
     end
 
     let(:params) { { license: 'license', kill_timeout: 300 } }
-    context 'upstart' do
-      let :facts do
-        {
-          kernel: 'Linux',
-          operatingsystem: 'Ubuntu',
-          operatingsystemmajrelease: '12',
-          graphdb_java_home: '/opt/jdk8',
-          ipaddress: '129.10.1.1'
-        }
-      end
-      it do
-        is_expected.to contain_file('/etc/init/graphdb-test.conf').with(content: /kill timeout 300/)
-      end
-    end
-
     context 'systemd' do
       let :facts do
         {
           kernel: 'Linux',
-          operatingsystem: 'Ubuntu',
-          operatingsystemmajrelease: '20',
+          operatingsystem: 'Debian',
+          operatingsystemmajrelease: '11',
           graphdb_java_home: '/opt/jdk8',
           ipaddress: '129.10.1.1'
         }

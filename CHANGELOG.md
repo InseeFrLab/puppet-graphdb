@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v0.10.0]
+
+- Remove templates init.d and upstart
+- Add types : Graphdb::Ensure, Graphdb::Status
+- Replace all type parameters ensure by Graphdb::Ensure
+- Remove manifest systemd.pp 
+
 ## [v0.9.0]
 
 - Keep debian 11 only (metadata.json)

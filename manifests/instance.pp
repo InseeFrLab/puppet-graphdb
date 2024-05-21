@@ -72,8 +72,8 @@
 #   Add jolokia-access.xml link
 define graphdb::instance (
   Optional[String] $license         = undef,
-  Enum['present', 'absent'] $ensure = $graphdb::ensure,
-  String $status                    = $graphdb::status,
+  Graphdb::Ensure $ensure           = $graphdb::ensure,
+  Graphdb::Status $status           = $graphdb::status,
   Integer $http_port                = 8080,
   Optional[String] $external_url    = undef,
   Integer $kill_timeout             = 180,

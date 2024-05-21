@@ -90,9 +90,9 @@ Puppet::Type.newtype(:graphdb_data) do
     end
 
     munge do |value|
-      if value.is_a?(String)
-        return [{ content: value, format: resource.value(:data_format), context: resource.value(:data_context) }]
-      elsif value.is_a?(Array)
+      return [{ content: value, format: resource.value(:data_format), context: resource.value(:data_context) }] if value.is_a?(String)
+
+      if value.is_a?(Array)
         resulted_array = []
         value.each do |data|
           if data.is_a?(Hash)
@@ -158,9 +158,9 @@ Puppet::Type.newtype(:graphdb_data) do
     end
 
     munge do |data_source|
-      if data_source.is_a?(String)
-        return [{ source: data_source, format: resource.value(:data_format), context: resource.value(:data_context) }]
-      elsif data_source.is_a?(Array)
+      return [{ source: data_source, format: resource.value(:data_format), context: resource.value(:data_context) }] if data_source.is_a?(String)
+
+      if data_source.is_a?(Array)
         data_array = []
         data_source.each do |curr_source|
           data_hash = {}

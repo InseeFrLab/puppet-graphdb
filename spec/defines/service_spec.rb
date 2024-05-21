@@ -6,7 +6,10 @@ describe 'graphdb::service', type: :define do
   let :default_facts do
     {
       kernel: 'Linux',
-      graphdb_java_home: '/opt/jdk8'
+      operatingsystem: 'Debian',
+      operatingsystemmajrelease: '11',
+      graphdb_java_home: '/opt/jdk8',
+      ipaddress: '129.10.1.1'
     }
   end
 
@@ -21,17 +24,51 @@ describe 'graphdb::service', type: :define do
     'running' => ['running', false],
     'unmanaged' => [nil, false] }
     .each do |status_param, service_status|
-    context 'Ubuntu 12' do
-      let(:facts) { default_facts.merge(operatingsystem: 'Ubuntu', operatingsystemmajrelease: '12') }
+    context 'Debian 11' do
+      let(:facts) { default_facts.merge(operatingsystem: 'Debian', operatingsystemmajrelease: '11') }
 
       context "with ensure set to: [present] and status set to: [#{status_param}]" do
         let(:params) { { ensure: 'present', status: status_param } }
 
         it do
-          is_expected.to contain_graphdb__service__upstart(title).with(
-            ensure: 'present',
-            service_ensure: service_status[0],
-            service_enable: service_status[1],
+          is_expected.to contain_file('/lib/systemd/system/graphdb-test.service')
+            .with(ensure: 'present',
+                  owner: 'root',
+                  group: 'root',
+                  before: "Service[graphdb-#{title}]",
+                  notify: ['Exec[systemd_reload_test]', 'Service[graphdb-test]'])
+        end
+
+        it do
+          is_expected.to contain_file('/lib/systemd/system/graphdb-test.service')
+            .with(content: /Description="GraphDB - test"/)
+        end
+        it do
+          is_expected.to contain_file('/lib/systemd/system/graphdb-test.service')
+            .with(content: /Group=graphdb/)
+        end
+        it do
+          is_expected.to contain_file('/lib/systemd/system/graphdb-test.service')
+            .with(content: /User=graphdb/)
+        end
+        it do
+          is_expected.to contain_file('/lib/systemd/system/graphdb-test.service')
+            .with(content: /JAVA_HOME=\/opt\/jdk8/)
+        end
+        it do
+          is_expected.to contain_file('/lib/systemd/system/graphdb-test.service')
+            .with(content: /ExecStart=\/opt\/graphdb\/dist\/bin\/graphdb -Dgraphdb.home=\/opt\/graphdb\/instances\/test/)
+        end
+
+        it { is_expected.to contain_exec('systemd_reload_test').with(command: '/bin/systemctl daemon-reload', refreshonly: true) }
+
+        it do
+          is_expected.to contain_service('graphdb-test').with(
+            ensure: service_status[0],
+            enable: service_status[1],
+            name: 'graphdb-test.service',
+            provider: 'systemd',
+            hasstatus: true
           )
         end
       end
@@ -40,68 +77,19 @@ describe 'graphdb::service', type: :define do
         let(:params) { { ensure: 'absent', status: status_param } }
 
         it do
-          is_expected.to contain_graphdb__service__upstart(title).with(
-            ensure: 'absent',
-            service_ensure: 'stopped',
-            service_enable: false,
-          )
+          is_expected.to contain_file('/lib/systemd/system/graphdb-test.service').with(ensure: 'absent', subscribe: 'Service[graphdb-test]')
         end
-      end
-    end
-
-    context 'Debian 10' do
-      let(:facts) { default_facts.merge(operatingsystem: 'Debian', operatingsystemmajrelease: '10') }
-
-      context "with ensure set to: [present] and status set to: [#{status_param}]" do
-        let(:params) { { ensure: 'present', status: status_param } }
 
         it do
-          is_expected.to contain_graphdb__service__systemd(title).with(
-            ensure: 'present',
-            service_ensure: service_status[0],
-            service_enable: service_status[1],
+          is_expected.to contain_service('graphdb-test').with(
+            ensure: 'stopped',
+            enable: false,
+            name: 'graphdb-test.service',
+            provider: 'systemd',
+            hasstatus: true
           )
         end
-      end
-
-      context "with ensure set to: [absent] and status set to: [#{status_param}]" do
-        let(:params) { { ensure: 'absent', status: status_param } }
-
-        it do
-          is_expected.to contain_graphdb__service__systemd(title).with(
-            ensure: 'absent',
-            service_ensure: 'stopped',
-            service_enable: false,
-          )
-        end
-      end
-    end
-
-    context 'Debian 7' do
-      let(:facts) { default_facts.merge(operatingsystem: 'Debian', operatingsystemmajrelease: '7') }
-
-      context "with ensure set to: [present] and status set to: [#{status_param}]" do
-        let(:params) { { ensure: 'present', status:  status_param } }
-
-        it do
-          is_expected.to contain_graphdb__service__init(title).with(
-            ensure: 'present',
-            service_ensure: service_status[0],
-            service_enable: service_status[1],
-          )
-        end
-      end
-
-      context "with ensure set to: [absent] and status set to: [#{status_param}]" do
-        let(:params) { { ensure: 'absent', status:  status_param } }
-
-        it do
-          is_expected.to contain_graphdb__service__init(title).with(
-            ensure: 'absent',
-            service_ensure: 'stopped',
-            service_enable: false,
-          )
-        end
+        it { is_expected.to contain_exec('systemd_reload_test').with(command: '/bin/systemctl daemon-reload', refreshonly: true) }
       end
     end
   end

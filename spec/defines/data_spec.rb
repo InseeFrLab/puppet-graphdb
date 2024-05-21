@@ -6,8 +6,8 @@ describe 'graphdb::data', type: :define do
   let :facts do
     {
       kernel: 'Linux',
-      operatingsystem: 'Ubuntu',
-      operatingsystemmajrelease: '6',
+      operatingsystem: 'Debian',
+      operatingsystemmajrelease: '11',
       graphdb_java_home: '/opt/jdk8',
       ipaddress: '129.10.1.1'
     }
