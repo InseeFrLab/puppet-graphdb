@@ -96,8 +96,8 @@
 class graphdb (
   String $version                             = undef,
   Optional[String] $edition                   = undef,
-  Enum['present', 'absent'] $ensure           = 'present',
-  String $status                              = 'enabled',
+  Graphdb::Ensure $ensure                     = 'present',
+  Graphdb::Status $status                     = 'enabled',
   Stdlib::Absolutepath $tmp_dir               = '/var/tmp/graphdb',
   Stdlib::Absolutepath $data_dir              = '/var/lib/graphdb',
   Stdlib::Absolutepath $log_dir               = '/var/log/graphdb',
@@ -131,17 +131,6 @@ class graphdb (
       if !($edition in ['se', 'ee']) {
         fail("\"${edition}\" is not a valid edition parameter value")
       }
-    }
-
-    # kernel
-    $kernel = $facts['kernel']
-    if !($kernel in ['Linux', 'Darwin', 'OpenBSD']) {
-      fail("\"${module_name}\" provides no user/group default value for \"${kernel}\"")
-    }
-
-    # service status
-    if !($status in ['enabled', 'disabled', 'running', 'unmanaged']) {
-      fail("\"${status}\" is not a valid status parameter value")
     }
 
     #basic auth credentials validation

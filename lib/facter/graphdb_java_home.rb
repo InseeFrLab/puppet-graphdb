@@ -13,7 +13,7 @@
 # Notes:
 #   SPEC : let(:graphdb_java_home) { '/opt/jdk8' }
 Facter.add(:graphdb_java_home) do
-  confine kernel: ['Linux', 'OpenBSD']
+  confine kernel: ['Linux']
   graphdb_java_home = nil
   setcode do
     java_bin = Facter::Util::Resolution.which('java').to_s.strip

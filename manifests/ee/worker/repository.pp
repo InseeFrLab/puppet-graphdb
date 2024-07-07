@@ -87,9 +87,9 @@
 define graphdb::ee::worker::repository (
   String $endpoint,
   String $repository_context,
-  String $ensure              = $graphdb::ensure,
-  String $repository_template = "${module_name}/repository/worker.ttl.erb",
-  Integer $timeout            = 60,
+  Graphdb::Ensure $ensure              = $graphdb::ensure,
+  String          $repository_template = "${module_name}/repository/worker.ttl.erb",
+  Integer         $timeout             = 60,
 
   # Here start the repository parameters(note that those are generated from the template that graphdb provides)
   String $repository_id = $title,

@@ -214,7 +214,7 @@ Lint/UselessMethodDefinition:
 Lint/UselessTimes:
   Enabled: false
 Metrics/AbcSize:
-  Max: 25
+  Enabled: false
 Metrics/BlockLength:
   Enabled: false
 Metrics/BlockNesting:
@@ -335,6 +335,8 @@ Style/BisectedAttrAccessor:
   Enabled: false
 Style/CaseLikeIf:
   Enabled: false
+Style/ClassAndModuleChildren:
+  Enables: false
 Style/ClassEqualityComparison:
   Enabled: false
 Style/ColonMethodDefinition:

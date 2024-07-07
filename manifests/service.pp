@@ -1,4 +1,4 @@
-# @summary Based on parameters passed defines init.d, systemd or upstart service
+# @summary Based on parameters passed defines systemd service
 #
 # @param ensure
 #   Whether the service should exist. Possible values are present and absent.
@@ -16,8 +16,8 @@
 #   default: 180
 #
 define graphdb::service (
-  String $ensure,
-  String $status,
+  Graphdb::Ensure $ensure,
+  Graphdb::Status $status,
   Array $java_opts      = [],
   Integer $kill_timeout = 180
 ) {
@@ -54,16 +54,41 @@ define graphdb::service (
         fail("\"${status}\" is an unknown service status value")
       }
     }
+
+    $final_java_opts = generate_java_opts_string($java_opts)
+    $notify_service = $graphdb::restart_on_change ? {
+      true  => [Exec["systemd_reload_${title}"], Service["graphdb-${title}"]],
+      false => Exec["systemd_reload_${title}"]
+    }
+    file { "/lib/systemd/system/graphdb-${title}.service":
+      ensure  => $ensure,
+      content => template('graphdb/service/systemd.erb'),
+      owner   => 'root',
+      group   => 'root',
+      before  => Service["graphdb-${title}"],
+      notify  => $notify_service,
+    }
   } else {
     $service_ensure = 'stopped'
     $service_enable = false
+
+    file { "/lib/systemd/system/graphdb-${title}.service":
+      ensure    => 'absent',
+      subscribe => Service["graphdb-${title}"],
+      notify    => Exec["systemd_reload_${title}"],
+    }
   }
 
-  graphdb::service::systemd { $title:
-    ensure         => $ensure,
-    service_ensure => $service_ensure,
-    service_enable => $service_enable,
-    java_opts      => $java_opts,
-    kill_timeout   => $kill_timeout,
+  exec { "systemd_reload_${title}":
+    command     => '/bin/systemctl daemon-reload',
+    path        => ['/bin', '/usr/bin', '/usr/local/bin'],
+    refreshonly => true,
+  }
+  -> service { "graphdb-${title}":
+    ensure    => $service_ensure,
+    enable    => $service_enable,
+    name      => "graphdb-${title}.service",
+    hasstatus => true,
+    provider  => 'systemd',
   }
 }

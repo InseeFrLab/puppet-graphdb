@@ -53,34 +53,6 @@ describe 'graphdb::install', type: :class do
     end
   end
 
-  describe 'with minimum configuration on Darwin' do
-    let :facts do
-      default_facts.merge(kernel: 'Darwin')
-    end
-    let :pre_condition do
-      "class { 'graphdb': version => '9.10.1', edition => 'ee' }"
-    end
-
-    let(:download_url) do
-      'http://maven.ontotext.com/content/groups/all-onto/com/ontotext/graphdb/graphdb-ee/9.10.1/graphdb-ee-9.10.1-dist.zip'
-    end
-
-    let(:dest_file) do
-      '/var/tmp/graphdb/graphdb-ee-9.10.1.zip'
-    end
-
-    it do
-      is_expected.to contain_exec('download graphdb-ee-9.10.1-dist.zip').with(
-        command: "rm -f /var/tmp/graphdb/*.zip && curl --insecure  -o #{dest_file}" \
-    															  " #{download_url} 2> /dev/null",
-        creates: dest_file,
-        timeout: 600,
-        require: ['File[/var/tmp/graphdb]', 'Package[curl]'],
-        user: 'graphdb'
-      )
-    end
-  end
-
   describe 'with minimum configuration and custom tmp_dir' do
     let :facts do
       default_facts.merge(kernel: 'Linux')

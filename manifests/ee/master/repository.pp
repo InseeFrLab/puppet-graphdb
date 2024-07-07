@@ -37,13 +37,13 @@
 define graphdb::ee::master::repository (
   String $endpoint,
   String $repository_context,
-  String $ensure              = $graphdb::ensure,
-  String $repository_template = "${module_name}/repository/master.ttl.erb",
-  String $repository_id       = $title,
-  String $repository_label    = 'GraphDB EE master repository',
-  Integer $replication_port   = 0,
-  String $node_id             = "${endpoint}/repositories/${repository_id}",
-  Integer $timeout            = 60,
+  Graphdb::Ensure $ensure              = $graphdb::ensure,
+  String          $repository_template = "${module_name}/repository/master.ttl.erb",
+  String          $repository_id       = $title,
+  String          $repository_label    = 'GraphDB EE master repository',
+  Integer         $replication_port    = 0,
+  String          $node_id             = "${endpoint}/repositories/${repository_id}",
+  Integer         $timeout             = 60,
 ) {
   graphdb_repository { $title:
     ensure              => $ensure,
