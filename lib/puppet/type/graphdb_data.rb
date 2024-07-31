@@ -10,6 +10,7 @@ Puppet::Type.newtype(:graphdb_data) do
   @doc = 'Loads data into GraphDB'
 
   ensurable do
+    desc 'Ensure value.'
     defaultvalues
     defaultto :present
   end

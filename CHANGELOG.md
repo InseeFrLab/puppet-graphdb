@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## v0.10.1
+
+- Add comments
+
 ## [v0.10.0](https://github.com/phaedriel/puppet-graphdb/releases/tag/v0.10.0)
 
 

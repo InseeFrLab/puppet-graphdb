@@ -7,6 +7,7 @@ Puppet::Type.newtype(:graphdb_link) do
   @doc = 'Creates link between master and worker'
 
   ensurable do
+    desc 'Ensure value.'
     defaultvalues
     defaultto :present
   end

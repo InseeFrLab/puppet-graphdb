@@ -1,11 +1,22 @@
 # frozen_string_literal: true
 
-# This function java opts string from given array.
-#
-# @example generate_java_opts_string(['-Xmx1g','-Xms2g','-Dwell']) will return: "-Xmx1g -Xms2g -Dwell"
-
+# Top-level Puppet functions
 module Puppet::Parser::Functions
-  newfunction(:generate_java_opts_string, type: :rvalue, doc: 'This function java opts string from given array.') do |arguments|
+  newfunction(
+    :generate_java_opts_string,
+    type: :rvalue,
+    doc: <<~EOS
+      This function java opts string from given array.
+
+      *Examples:*
+
+          generate_java_opts_string(['-Xmx1g','-Xms2g','-Dwell'])
+
+      Will return: "-Xmx1g -Xms2g -Dwell"
+
+      @return String
+    EOS
+    ) do |arguments|
     raise(ArgumentError, 'generate_java_opts_string(): Wrong number of arguments ' \
       "given (#{arguments.size} for 1)") if arguments.empty?
 

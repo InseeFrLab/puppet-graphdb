@@ -4,6 +4,7 @@ Puppet::Type.newtype(:graphdb_repository) do
   @doc = 'Creates GraphDB repository'
 
   ensurable do
+    desc 'Ensure value.'
     defaultvalues
     defaultto :present
   end

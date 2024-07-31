@@ -30,7 +30,7 @@
 
 ### Functions
 
-* [`generate_java_opts_string`](#generate_java_opts_string): This function java opts string from given array.
+* [`generate_java_opts_string`](#generate_java_opts_string): This function java opts string from given array.  *Examples:*      generate_java_opts_string(['-Xmx1g','-Xms2g','-Dwell'])  Will return: "-Xm
 
 ### Data types
 
@@ -1233,7 +1233,7 @@ The following properties are available in the `graphdb_data` type.
 
 Valid values: `present`, `absent`
 
-The basic property that the resource should be in.
+Ensure value.
 
 Default value: `present`
 
@@ -1345,7 +1345,7 @@ The following properties are available in the `graphdb_link` type.
 
 Valid values: `present`, `absent`
 
-The basic property that the resource should be in.
+Ensure value.
 
 Default value: `present`
 
@@ -1421,7 +1421,7 @@ The following properties are available in the `graphdb_repository` type.
 
 Valid values: `present`, `absent`
 
-The basic property that the resource should be in.
+Ensure value.
 
 Default value: `present`
 
@@ -1493,7 +1493,7 @@ The following properties are available in the `graphdb_update` type.
 
 Valid values: `present`, `absent`
 
-The basic property that the resource should be in.
+Ensure value.
 
 Default value: `present`
 
@@ -1561,7 +1561,7 @@ The following properties are available in the `graphdb_validator` type.
 
 Valid values: `present`, `absent`
 
-The basic property that the resource should be in.
+Ensure value.
 
 Default value: `present`
 
@@ -1604,11 +1604,23 @@ Type: Ruby 3.x API
 
 This function java opts string from given array.
 
+*Examples:*
+
+    generate_java_opts_string(['-Xmx1g','-Xms2g','-Dwell'])
+
+Will return: "-Xmx1g -Xms2g -Dwell"
+
 #### `generate_java_opts_string()`
 
 This function java opts string from given array.
 
-Returns: `Any`
+*Examples:*
+
+    generate_java_opts_string(['-Xmx1g','-Xms2g','-Dwell'])
+
+Will return: "-Xmx1g -Xms2g -Dwell"
+
+Returns: `Any` String
 
 ## Data types
 

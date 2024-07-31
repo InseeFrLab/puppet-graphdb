@@ -4,6 +4,7 @@ Puppet::Type.newtype(:graphdb_validator) do
   @doc = 'Checks whether GraphDB instance is running'
 
   ensurable do
+    desc 'Ensure value.'
     defaultvalues
     defaultto :present
   end

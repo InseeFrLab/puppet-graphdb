@@ -6,6 +6,7 @@ Puppet::Type.newtype(:graphdb_update) do
   @doc = 'Executes update query GraphDB'
 
   ensurable do
+    desc 'Ensure value.'
     defaultvalues
     defaultto :present
   end
