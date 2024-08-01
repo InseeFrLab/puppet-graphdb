@@ -3,7 +3,6 @@ require:
 - rubocop-rspec
 AllCops:
   NewCops: disable
-  SuggestExtensions: false
   DisplayCopNames: true
   TargetRubyVersion: '2.5'
   Include:
@@ -336,7 +335,7 @@ Style/BisectedAttrAccessor:
 Style/CaseLikeIf:
   Enabled: false
 Style/ClassAndModuleChildren:
-  Enables: false
+  Enabled: false
 Style/ClassEqualityComparison:
   Enabled: false
 Style/ColonMethodDefinition:
