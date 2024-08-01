@@ -16,7 +16,7 @@ module Puppet::Parser::Functions
 
       @return String
     EOS
-    ) do |arguments|
+  ) do |arguments|
     raise(ArgumentError, 'generate_java_opts_string(): Wrong number of arguments ' \
       "given (#{arguments.size} for 1)") if arguments.empty?
 
