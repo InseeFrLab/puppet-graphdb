@@ -6,7 +6,7 @@ require 'puppet/util/file_utils'
 # FileUtils tests
 describe '#file_utils' do
   describe 'valid paths' do
-    %w(
+    %w[
       C:/
       C:\\
       C:\\WINDOWS\\System32
@@ -17,7 +17,7 @@ describe '#file_utils' do
       /
       /var/tmp
       /var/opt/../lib/puppet
-    ).each do |path|
+    ].each do |path|
       it "should return true on absolute path: #{path}" do
         expect(Puppet::Util::FileUtils.absolute_path?(path)).to be true
       end
@@ -40,7 +40,7 @@ describe '#file_utils' do
   end
 
   describe 'relative paths' do
-    %w(
+    %w[
       relative1
       .
       ..
@@ -49,7 +49,7 @@ describe '#file_utils' do
       etc/puppetlabs/puppet
       opt/puppet/bin
       relative\\windows
-    ).each do |path|
+    ].each do |path|
       it "should return false on relative path: #{path}" do
         expect(Puppet::Util::FileUtils.absolute_path?(path)).to be false
       end

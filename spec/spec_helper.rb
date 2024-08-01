@@ -14,8 +14,9 @@ include RspecPuppetFacts
 default_facts = {
   puppetversion: Puppet.version,
   facterversion: Facter.version,
-  ipaddress: "172.16.254.254",
-  ipaddress6: "FE80:0000:0000:0000:AAAA:AAAA:AAAA",
+  ipaddress: '172.16.254.254',
+  ipaddress6: 'FE80:0000:0000:0000:AAAA:AAAA:AAAA',
+  networking: { 'ip' => '172.16.254.254', 'ip6' => 'FE80:0000:0000:0000:AAAA:AAAA:AAAA' },
   is_pe: false,
   macaddress: "AA:AA:AA:AA:AA:AA",
 }

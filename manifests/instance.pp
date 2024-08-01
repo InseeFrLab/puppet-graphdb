@@ -171,6 +171,7 @@ define graphdb::instance (
     }
 
     if $validator_test_enabled {
+      #$ipaddress = $facts['ipaddress'] # lint:ignore:legacy_facts
       $ipaddress = $facts['networking']['ip']
       graphdb_validator { $service_name:
         endpoint  => "${protocol}://${ipaddress}:${http_port}",

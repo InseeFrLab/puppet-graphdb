@@ -158,8 +158,7 @@ describe 'graphdb', type: :class do
     let :facts do
       {
         kernel: 'unknown',
-        operatingsystem: 'Debian',
-        operatingsystemmajrelease: '6'
+        os:  { 'name' => 'Debian', 'release' => { 'major' => '6' } },
       }
     end
     it do

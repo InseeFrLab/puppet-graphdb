@@ -6,10 +6,10 @@ describe 'graphdb::ee::worker::repository', type: :define do
   let :facts do
     {
       kernel: 'Linux',
-      operatingsystem: 'Debian',
-      operatingsystemmajrelease: '11',
+      os:  { 'name' => 'Debian', 'release' => { 'major' => '11' } },
       graphdb_java_home: '/opt/jdk8',
-      ipaddress: '129.10.1.1'
+      ipaddress: '129.10.1.1',
+      networking: { 'ip' => '129.10.1.1' }
     }
   end
 

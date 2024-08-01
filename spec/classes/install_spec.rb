@@ -5,8 +5,7 @@ require 'spec_helper'
 describe 'graphdb::install', type: :class do
   let :default_facts do
     {
-      operatingsystem: 'Debian',
-      operatingsystemmajrelease: '10',
+      os:  { 'name' => 'Debian', 'release' => { 'major' => '11' } },
       graphdb_java_home: '/opt/jdk8'
     }
   end

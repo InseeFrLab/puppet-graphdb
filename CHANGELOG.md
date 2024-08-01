@@ -6,10 +6,11 @@ These should not affect the functionality of the module.
 
 ## v1.0.0
 
-- Add comments
-- Add RedHat, CentOS, Ubunutu in metadata.json
-- Replace legacy_facts
+- Add comments (lib)
+- Add RedHat 9, CentOS 9, Ubuntu 22.04, Debian 12 Support
+- Replace legacy_facts (+ modify fact in spec)
 - Add tests kernel and os (init.pp)
+- Replace notation %w(...) by %w[...]
 
 ## [v0.10.0](https://github.com/phaedriel/puppet-graphdb/releases/tag/v0.10.0)
 
@@ -19,7 +20,6 @@ These should not affect the functionality of the module.
 - Remove manifest systemd.pp 
 
 ## [v0.9.0](https://github.com/phaedriel/puppet-graphdb/releases/tag/v0.9.0)
-
 
 - Keep debian 11 only (metadata.json)
 - Replace validate_xxx

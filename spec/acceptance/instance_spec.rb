@@ -11,18 +11,18 @@ describe 'graphdb::instance', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfam
       let(:manifest) do
         <<-EOS
 			 class{ 'graphdb':
-			 version              => '#{graphdb_version}',
-			 edition              => '#{graphdb_edition}',
-			 graphdb_download_url => 'file:///tmp',
+			   version              => '#{graphdb_version}',
+			   edition              => '#{graphdb_edition}',
+			   graphdb_download_url => 'file:///tmp',
 			 }
 
 			 graphdb::instance { 'test':
-  		 		license           => '/tmp/#{graphdb_edition}.license',
-  				http_port         => 8080,
-				validator_timeout => #{graphdb_timeout},
-				heap_size         => '256m',
-        external_url      => 'http://test.com/graphdb',
-				java_opts         => ['-DcustomOpt'],
+  		   license           => '/tmp/#{graphdb_edition}.license',
+  			 http_port         => 8080,
+				 validator_timeout => #{graphdb_timeout},
+				 heap_size         => '256m',
+         external_url      => 'http://test.com/graphdb',
+				 java_opts         => ['-DcustomOpt'],
 			 }
 		  EOS
       end
@@ -87,7 +87,7 @@ describe 'graphdb::instance', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfam
       end
 
       describe service('graphdb-test') do
-        it { should be_enabled } unless %w[Debian CentOS].include? fact('operatingsystem')
+        it { should be_enabled } unless %w[Debian CentOS].include? fact('os.name')
         it { should be_running }
       end
 

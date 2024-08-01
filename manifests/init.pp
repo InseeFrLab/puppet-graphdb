@@ -141,7 +141,9 @@ class graphdb (
 
     # os
     $operatingsystem = $facts['os']['name']
-    $operatingsystemmajrelease = $facts['os']['name']['release']['major']
+    $operatingsystemmajrelease = $facts['os']['release']['major']
+    #$operatingsystem = $facts['operatingsystem'] # lint:ignore:legacy_facts
+    #$operatingsystemmajrelease = $facts['operatingsystemmajrelease'] # lint:ignore:legacy_facts
 
     if !($operatingsystem in ['RedHat', 'CentOS', 'Debian', 'Ubuntu'])
     or  ($operatingsystem in ['RedHat', 'CentOS'] and versioncmp($operatingsystemmajrelease, '7') < 0)
