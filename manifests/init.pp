@@ -133,6 +133,23 @@ class graphdb (
       }
     }
 
+    # kernel
+    $kernel = $facts['kernel']
+    if !($kernel in ['Linux']) {
+      fail("\"${module_name}\" provides no support for kernel \"${kernel}\"")
+    }
+
+    # os
+    $operatingsystem = $facts['os']['name']
+    $operatingsystemmajrelease = $facts['os']['name']['release']['major']
+
+    if !($operatingsystem in ['RedHat', 'CentOS', 'Debian', 'Ubuntu'])
+    or  ($operatingsystem in ['RedHat', 'CentOS'] and versioncmp($operatingsystemmajrelease, '7') < 0)
+    or ($operatingsystem in ['Debian'] and versioncmp($operatingsystemmajrelease, '8') < 0)
+    or ($operatingsystem in ['Ubuntu'] and versioncmp($operatingsystemmajrelease, '15') < 0) {
+      fail("\"${module_name}\" provides no support for \"${operatingsystem}\" \"${operatingsystemmajrelease}\"")
+    }
+
     #basic auth credentials validation
     if ($graphdb_download_user and !$graphdb_download_password) or (!$graphdb_download_user and $graphdb_download_password) {
       fail('When using basic auth credentials you should provide both graphdb_download_user and graphdb_download_password')

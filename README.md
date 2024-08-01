@@ -135,18 +135,15 @@ graphdb::instance { 'graphdb-instance':
 }
 ```
 
-##### GraphDB Worker repository options can be given
-
-* For `EE`, please, check [here](manifests/ee/worker/repository.pp). Also, please, check [GraphDB EE documentation](http://graphdb.ontotext.com/documentation/enterprise/configuring-a-repository.html).
-* For `SE`, please, check [here](manifests/se/worker/repository.pp). Also, please, check [GraphDB SE documentation](http://graphdb.ontotext.com/documentation/standard/configuring-a-repository.html).
-
 ## Limitations
 
-This module has been built on and tested against Puppet 6 and higher.
+This module has been built on and tested against Puppet 7 and higher.
 
 The module has been tested on:
 
-* Debian 11 only
+* Debian 11
+
+Because of init.d/systemd/upstart support the module may run on other platforms, but it's not guaranteed.
 
 ## Development
 
