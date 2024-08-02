@@ -26,11 +26,9 @@ Puppet::Type.newtype(:graphdb_link) do
   newparam(:master_endpoint) do
     desc 'Sesame endpoint of GraphDB master instance'
     validate do |value|
-      begin
-        URI(value)
-      rescue StandardError
-        raise(ArgumentError, "master_endpoint should be valid url: #{value}")
-      end
+      URI(value)
+    rescue StandardError
+      raise(ArgumentError, "master_endpoint should be valid url: #{value}")
     end
     munge do |value|
       URI(value)
@@ -47,11 +45,9 @@ Puppet::Type.newtype(:graphdb_link) do
   newparam(:worker_endpoint) do
     desc 'Sesame endpoint of GraphDB worker instance'
     validate do |value|
-      begin
-        URI(value)
-      rescue StandardError
-        raise(ArgumentError, "worker_endpoint should be valid url: #{value}")
-      end
+      URI(value)
+    rescue StandardError
+      raise(ArgumentError, "worker_endpoint should be valid url: #{value}")
     end
     munge do |value|
       URI(value) unless value.nil?
@@ -62,11 +58,9 @@ Puppet::Type.newtype(:graphdb_link) do
     desc 'The port for replications that master and worker will use; default: 0'
     defaultto 0
     validate do |value|
-      begin
-        Integer(value)
-      rescue StandardError
-        raise(ArgumentError, "replication_port should be valid integer: #{value}")
-      end
+      Integer(value)
+    rescue StandardError
+      raise(ArgumentError, "replication_port should be valid integer: #{value}")
     end
     munge do |value|
       Integer(value)
@@ -83,11 +77,9 @@ Puppet::Type.newtype(:graphdb_link) do
   newparam(:peer_master_endpoint) do
     desc 'Sesame endpoint of GraphDB peer master instance'
     validate do |value|
-      begin
-        URI(value)
-      rescue StandardError
-        raise(ArgumentError, "peer_worker_endpoint should be valid url: #{value}")
-      end
+      URI(value)
+    rescue StandardError
+      raise(ArgumentError, "peer_worker_endpoint should be valid url: #{value}")
     end
     munge do |value|
       URI(value) unless value.nil?

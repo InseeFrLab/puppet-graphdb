@@ -14,7 +14,6 @@
 #   SPEC : let(:graphdb_java_home) { '/opt/jdk8' }
 Facter.add(:graphdb_java_home) do
   confine kernel: ['Linux']
-  graphdb_java_home = nil
   setcode do
     java_bin = Facter::Util::Resolution.which('java').to_s.strip
     if java_bin.empty?
@@ -26,7 +25,8 @@ Facter.add(:graphdb_java_home) do
                           else
                             File.dirname(File.dirname(java_path))
                           end
+      graphdb_java_home unless graphdb_java_home.nil? || graphdb_java_home.empty?
     end
   end
-  graphdb_java_home
+  nil
 end

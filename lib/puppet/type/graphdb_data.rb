@@ -29,11 +29,9 @@ Puppet::Type.newtype(:graphdb_data) do
   newparam(:endpoint) do
     desc 'Sesame endpoint of GraphDB instance'
     validate do |value|
-      begin
-        URI(value)
-      rescue StandardError
-        raise(ArgumentError, "endpoint should be valid url: #{value}")
-      end
+      URI(value)
+    rescue StandardError
+      raise(ArgumentError, "endpoint should be valid url: #{value}")
     end
     munge do |value|
       URI(value)
@@ -50,11 +48,9 @@ Puppet::Type.newtype(:graphdb_data) do
     desc 'The context you want to load your data into; default: null'
     defaultto('null')
     validate do |value|
-      begin
-        URI(value)
-      rescue StandardError
-        raise(ArgumentError, "data_context should be valid uri: #{value}")
-      end
+      URI(value)
+    rescue StandardError
+      raise(ArgumentError, "data_context should be valid uri: #{value}")
     end
     munge(&:strip)
   end
@@ -70,9 +66,10 @@ Puppet::Type.newtype(:graphdb_data) do
     note#1: if context for data not provided data_context is used
     note#2: if format for data not provided data_format is used"
     validate do |value|
-      if value.is_a?(String)
+      case value
+      when String
         raise(ArgumentError, 'you should pass data_format') if resource.value(:data_format).nil?
-      elsif value.is_a?(Array)
+      when Array
         value.each do |data|
           if data.is_a?(Hash)
             raise(ArgumentError, 'you should provide data content through content') unless data.key?('content')
@@ -91,7 +88,9 @@ Puppet::Type.newtype(:graphdb_data) do
     end
 
     munge do |value|
-      return [{ content: value, format: resource.value(:data_format), context: resource.value(:data_context) }] if value.is_a?(String)
+      if value.is_a?(String)
+        return [{ content: value, format: resource.value(:data_format), context: resource.value(:data_context) }]
+      end
 
       if value.is_a?(Array)
         resulted_array = []
@@ -135,9 +134,10 @@ Puppet::Type.newtype(:graphdb_data) do
         raise(ArgumentError, "you shoud pass data or data_source, not both: #{data_sources}
         and #{resource.value(:data)}")
       end
-      if data_sources.is_a?(String)
+      case data_sources
+      when String
         check_absolute_source_path(data_sources)
-      elsif data_sources.is_a?(Array)
+      when Array
         data_sources.each do |data_source|
           if data_source.is_a?(Hash)
             unless data_source.key?('source')
@@ -159,7 +159,9 @@ Puppet::Type.newtype(:graphdb_data) do
     end
 
     munge do |data_source|
-      return [{ source: data_source, format: resource.value(:data_format), context: resource.value(:data_context) }] if data_source.is_a?(String)
+      if data_source.is_a?(String)
+        return [{ source: data_source, format: resource.value(:data_format), context: resource.value(:data_context) }]
+      end
 
       if data_source.is_a?(Array)
         data_array = []
@@ -199,11 +201,9 @@ Puppet::Type.newtype(:graphdb_data) do
     desc 'The max number of seconds that the loading process should wait before giving up; default: 60 seconds'
     defaultto 60
     validate do |value|
-      begin
-        Integer(value)
-      rescue StandardError
-        raise(ArgumentError, "timeout should be valid integer: #{value}")
-      end
+      Integer(value)
+    rescue StandardError
+      raise(ArgumentError, "timeout should be valid integer: #{value}")
     end
     munge do |value|
       Integer(value)
