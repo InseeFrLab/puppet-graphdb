@@ -1,5 +1,5 @@
-*.rb eol=crlf
-*.erb eol=crlf
-*.pp eol=crlf
-*.sh eol=crlf
-*.epp eol=crlf
+*.rb eol=lf
+*.erb eol=lf
+*.pp eol=lf
+*.sh eol=lf
+*.epp eol=lf
