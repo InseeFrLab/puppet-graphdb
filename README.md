@@ -1,19 +1,27 @@
-GraphDB Puppet module (fork)
+GraphDB Puppet module
 ---------------------
 
 [![Puppet Forge Version](https://img.shields.io/puppetforge/v/phaedriel/graphdb.svg)](https://forge.puppetlabs.com/phaedriel/graphdb)
 [![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/phaedriel/graphdb.svg)](https://forge.puppetlabs.com/phaedriel/graphdb)
 
+## Initial project
+
+- The initiale project is here : [Ontotext-AD/puppet-graphdb](https://github.com/Ontotext-AD/puppet-graphdb)
+- The fork link was suppressed besause :
+   - Lot of divergences with initial project
+   - Initial project is "frozen" (at 02/08/2024 the last commit was "Nov 26, 2020") 
+
 #### Table of Contents
 
 1. [Module description - What the module does and why it is useful](#module-description)
-2. [Setup - The basics of getting started with GraphDB](#setup)
+2. [Module documentation - generated documenation](#module-reference)
+3. [Setup - The basics of getting started with GraphDB](#setup)
   * [The module manages the following](#the-module-manages-the-following)
   * [Requirements](#requirements)
-3. [Usage - Configuration options and additional functionality](#usage)
-4. [Limitations - OS compatibility, etc.](#limitations)
-5. [Development - Guide for contributing to the module](#development)
-6. [License](#license)
+4. [Usage - Configuration options and additional functionality](#usage)
+5. [Limitations - OS compatibility, etc.](#limitations)
+6. [Development - Guide for contributing to the module](#development)
+7. [License](#license)
 
 ## Module description
 
@@ -21,6 +29,10 @@ This module sets up [GraphDB](http://graphdb.ontotext.com/) instances with addit
 repository creation, data loading, updates, backups, and more.
 
 This module has been tested on GraphDB 10.0.3, 10.5.x
+
+## Module reference
+
+Please see the [REFERENCE.md](REFERENCE.md) file ("puppet strings" generated documentation).
 
 ## Setup
 
@@ -143,12 +155,10 @@ The module has been tested on:
 
 * Debian 11
 
-Because of init.d/systemd/upstart support the module may run on other platforms, but it's not guaranteed.
-
 ## Development
 
-Please see the [CONTRIBUTING.md](https://github.com/Ontotext-AD/puppet-graphdb/blob/master/CONTRIBUTING.md) file for instructions regarding development environments and testing.
+Please see the [CONTRIBUTING.md](https://github.com/phaedriel/puppet-graphdb/.github/CONTRIBUTING.md) file for instructions regarding development environments and testing.
 
 ## License
 
-Please see the [LICENSE](https://github.com/Ontotext-AD/puppet-graphdb/blob/master/LICENSE)
+Please see the [LICENSE](LICENSE)
