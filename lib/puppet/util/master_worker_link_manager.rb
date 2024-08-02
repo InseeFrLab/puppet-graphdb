@@ -8,11 +8,7 @@ module Puppet
   module Util
     # GraphDB master worker link manager
     class MasterWorkerLinkManager
-      attr_reader :master_endpoint
-      attr_reader :master_repository_id
-      attr_reader :worker_endpoint
-      attr_reader :worker_repository_id
-      attr_reader :replication_port
+      attr_reader :master_endpoint, :master_repository_id, :worker_endpoint, :worker_repository_id, :replication_port
 
       def initialize(master_endpoint, master_repository_id, worker_endpoint, worker_repository_id,
                      replication_port)

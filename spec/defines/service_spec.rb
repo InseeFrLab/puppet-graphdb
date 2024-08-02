@@ -6,10 +6,7 @@ describe 'graphdb::service', type: :define do
   let :default_facts do
     {
       kernel: 'Linux',
-      operatingsystem: 'Debian',
-      operatingsystemmajrelease: '11',
-      graphdb_java_home: '/opt/jdk8',
-      ipaddress: '129.10.1.1'
+      graphdb_java_home: '/opt/jdk8'
     }
   end
 
@@ -25,7 +22,7 @@ describe 'graphdb::service', type: :define do
     'unmanaged' => [nil, false] }
     .each do |status_param, service_status|
     context 'Debian 11' do
-      let(:facts) { default_facts.merge(operatingsystem: 'Debian', operatingsystemmajrelease: '11') }
+      let(:facts) { default_facts.merge({ 'os' => { 'name' => 'Debian', 'release' => { 'major' => '11' } } }) }
 
       context "with ensure set to: [present] and status set to: [#{status_param}]" do
         let(:params) { { ensure: 'present', status: status_param } }
@@ -35,7 +32,7 @@ describe 'graphdb::service', type: :define do
             .with(ensure: 'present',
                   owner: 'root',
                   group: 'root',
-                  before: "Service[graphdb-#{title}]",
+                  before: "Service[graphdb-test]",
                   notify: ['Exec[systemd_reload_test]', 'Service[graphdb-test]'])
         end
 

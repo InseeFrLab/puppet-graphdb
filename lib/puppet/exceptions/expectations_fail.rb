@@ -7,6 +7,7 @@ module Puppet
       attr_reader :message
 
       def initialize(message = '')
+        super(message)
         @message = message
       end
     end

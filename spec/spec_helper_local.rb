@@ -38,11 +38,11 @@ shared_examples 'a mod class, without including apache' do
   let :facts do
     {
       id: 'root',
-      lsbdistcodename: 'squeeze',
+      lsbdistcodename: 'bullseye',
       kernel: 'Linux',
       osfamily: 'Debian',
       operatingsystem: 'Debian',
-      operatingsystemrelease: '8',
+      operatingsystemrelease: '11',
       operatingsystemmajrelease: nil,
       path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
       concat_basedir: '/dne',

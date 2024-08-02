@@ -5,8 +5,7 @@ require 'spec_helper'
 describe 'graphdb::install', type: :class do
   let :default_facts do
     {
-      operatingsystem: 'Debian',
-      operatingsystemmajrelease: '10',
+      os:  { 'name' => 'Debian', 'release' => { 'major' => '11' } },
       graphdb_java_home: '/opt/jdk8'
     }
   end
@@ -169,19 +168,19 @@ describe 'graphdb::install', type: :class do
       default_facts.merge(kernel: 'Linux')
     end
     let :pre_condition do
-      "class { 'graphdb': version => '10.0.0', import_dir => '/var/lib/import' }"
+      "class { 'graphdb': version => '10.7.0', import_dir => '/var/lib/import' }"
     end
 
     let(:download_url) do
-      'http://maven.ontotext.com/content/groups/all-onto/com/ontotext/graphdb/graphdb/10.0.0/graphdb-10.0.0-dist.zip'
+      'http://maven.ontotext.com/content/groups/all-onto/com/ontotext/graphdb/graphdb/10.7.0/graphdb-10.7.0-dist.zip'
     end
 
     let(:dest_file) do
-      '/var/tmp/graphdb/graphdb-10.0.0.zip'
+      '/var/tmp/graphdb/graphdb-10.7.0.zip'
     end
 
     it do
-      is_expected.to contain_exec('download graphdb-10.0.0-dist.zip').with(
+      is_expected.to contain_exec('download graphdb-10.7.0-dist.zip').with(
         command: "rm -f /var/tmp/graphdb/*.zip && curl --insecure  -o #{dest_file}" \
     													" #{download_url} 2> /dev/null",
         creates: dest_file,
@@ -193,7 +192,7 @@ describe 'graphdb::install', type: :class do
     it do
       is_expected.to contain_exec('unpack-graphdb-archive').with(
         command: "rm -rf /opt/graphdb/dist && unzip #{dest_file} -d /opt/graphdb/dist" \
-       		' && mv /opt/graphdb/dist/graphdb-10.0.0/* /opt/graphdb/dist && rm -r /opt/graphdb/dist/graphdb-10.0.0',
+       		' && mv /opt/graphdb/dist/graphdb-10.7.0/* /opt/graphdb/dist && rm -r /opt/graphdb/dist/graphdb-10.7.0',
         refreshonly: true,
         require: ['File[/opt/graphdb]','Package[unzip]'],
         user: 'graphdb'

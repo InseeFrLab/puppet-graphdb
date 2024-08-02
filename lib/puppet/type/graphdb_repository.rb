@@ -23,11 +23,9 @@ Puppet::Type.newtype(:graphdb_repository) do
   newparam(:endpoint) do
     desc 'Sesame endpoint of GraphDB instance'
     validate do |value|
-      begin
-        URI(value)
-      rescue StandardError
-        raise(ArgumentError, "endpoint should be valid url: #{value}")
-      end
+      URI(value)
+    rescue StandardError
+      raise(ArgumentError, "endpoint should be valid url: #{value}")
     end
     munge do |value|
       URI(value)
@@ -49,11 +47,9 @@ Puppet::Type.newtype(:graphdb_repository) do
   newparam(:replication_port) do
     desc 'The replication port used for backups'
     validate do |value|
-      begin
-        Integer(value)
-      rescue StandardError
-        raise(ArgumentError, "replication_port should be valid integer: #{value}")
-      end
+      Integer(value)
+    rescue StandardError
+      raise(ArgumentError, "replication_port should be valid integer: #{value}")
     end
     munge do |value|
       Integer(value) unless value.nil?
@@ -65,11 +61,9 @@ Puppet::Type.newtype(:graphdb_repository) do
     and deciding that the GraphDB is not running; default: 60 seconds.'
     defaultto 60
     validate do |value|
-      begin
-        Integer(value)
-      rescue StandardError
-        raise(ArgumentError, "timeout should be valid integer: #{value}")
-      end
+      Integer(value)
+    rescue StandardError
+      raise(ArgumentError, "timeout should be valid integer: #{value}")
     end
     munge do |value|
       Integer(value)

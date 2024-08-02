@@ -20,8 +20,7 @@ module Puppet
                                  'rdfjson' => 'application/rdf+json; charset=utf-8',
                                  'rdfa' => 'application/html; charset=utf-8' }.freeze
 
-      attr_reader :endpoint
-      attr_reader :repository_id
+      attr_reader :endpoint, :repository_id
 
       def initialize(endpoint, repository_id)
         @endpoint = endpoint
@@ -45,7 +44,7 @@ module Puppet
                                                           { codes: [404] },
                                                           0)
         false
-      rescue
+      rescue StandardError
         true
       end
 
@@ -94,7 +93,8 @@ module Puppet
       end
 
       def define_repository_replication_port(replication_port)
-        Puppet.debug "Trying to set repository replication port [#{endpoint}/repositories/#{repository_id}] to [#{replication_port}]"
+        tmp_expr = "#{endpoint}/repositories/#{repository_id}"
+        Puppet.debug "Trying to set repository replication port [#{tmp_expr}] to [#{replication_port}]"
         uri = endpoint.dup
         uri.path = '/jolokia'
         body = {
@@ -110,7 +110,7 @@ module Puppet
                                                             body_data: body.to_json },
                                                           { codes: [200] }, 0)
 
-        Puppet.notice("Repository [#{endpoint}/repositories/#{repository_id}] replication port set to [#{replication_port}].")
+        Puppet.notice("Repository [#{tmp_expr}] replication port set to [#{replication_port}].")
       end
 
       def delete_repository(timeout)

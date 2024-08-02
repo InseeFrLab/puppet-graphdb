@@ -21,9 +21,9 @@
 #   The source of GraphDB plugin.
 #
 define graphdb::plugin (
-  String $instance,
-  Graphdb::Ensure $ensure = $graphdb::ensure,
-  Optional[String]          $source = undef,
+  String            $instance,
+  Graphdb::Ensure   $ensure = $graphdb::ensure,
+  Optional[String]  $source = undef,
 ) {
   require graphdb
 

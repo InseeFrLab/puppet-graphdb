@@ -1,19 +1,11 @@
 # @summary This define allows you to import data from given source(incl. zip archive)
 #
-# @param endpoint
-#   GraphDB endpoint.
-#   example: http://localhost:8080
+# @param archive
+#   Local zip archive that you want to load into GraphDB repository.
 #
-# @param repository
-#   GraphDB repository.
-#
-# @param exists_query
-#   The ask query to check whether data is already loaded.
-#   You can use the following syntax: ask {?s ?p ?o}
-#
-# @param exists_expected_response
-#   The expected response from exists_query
-#   default: true
+# @param context
+#   The context you want to load your data into.
+#  default: null
 #
 # @param data
 #  The data you want to load into GraphDB repository.
@@ -25,6 +17,29 @@
 #  Mixed Array: [{'content' => 'data#1', 'context' => 'context_of_data#1', 'format' => 'format_of_data1'}, 'data#2']
 #  note#1: if context for data not provided data_context is used
 #  note#2: if format for data not provided data_format is used
+#
+# @param data_format
+#   The data format.
+#   example: turtle
+#
+# @param endpoint
+#   GraphDB endpoint.
+#   example: http://localhost:8080
+#
+# @param exists_expected_response
+#   The expected response from exists_query
+#   default: true
+#
+# @param exists_query
+#   The ask query to check whether data is already loaded.
+#   You can use the following syntax: ask {?s ?p ?o}
+#
+# @param overwrite
+#   Wheather to overwrite any existing data.
+#   default: false
+#
+# @param repository
+#   GraphDB repository.
 #
 # @param source
 #  The source of data you want to load into GraphDB repository.
@@ -39,37 +54,22 @@
 #  note#1: if context for file not provided data_context is used
 #  note#2: if format for file not provided trying to resolve format from file if fails data_format is used
 #
-# @param archive
-#   Local zip archive that you want to load into GraphDB repository.
-#
-# @param data_format
-#   The data format.
-#   example: turtle
-#
-# @param context
-#   The context you want to load your data into.
-#  default: null
-#
-# @param overwrite
-#   Wheather to overwrite any existing data.
-#   default: false
-#
 # @param timeout
 #   The max number of seconds that the loading process should wait before giving up.
 #   default: 200
 #
 define graphdb::data (
-  String $endpoint,
-  String $repository,
-  String $exists_query,
-  Optional[String] $data            = undef,
-  Optional[String] $source          = undef,
-  Optional[String] $archive         = undef,
-  Optional[String] $data_format     = undef,
-  String $context                   = 'null',
-  Boolean $overwrite                = false,
-  Boolean $exists_expected_response = true,
-  Integer $timeout                  = 200,
+  Stdlib::HTTPUrl   $endpoint,
+  String            $exists_query,
+  String            $repository,
+  Optional[String]  $archive                  = undef,
+  String            $context                  = 'null',
+  Optional[String]  $data                     = undef,
+  Optional[String]  $data_format              = undef,
+  Boolean           $exists_expected_response = true,
+  Boolean           $overwrite                = false,
+  Optional[String]  $source                   = undef,
+  Integer           $timeout                  = 200,
 ) {
   require graphdb
 

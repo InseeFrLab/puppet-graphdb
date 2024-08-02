@@ -49,7 +49,7 @@ Puppet::Type.type(:graphdb_data).provide(:graphdb_data) do
   end
 
   def handle_data_directory(directory)
-    Dir.glob(directory[:source] + '/**/*').each do |file|
+    Dir.glob("#{directory[:source]}/**/*").each do |file|
       format = if directory.key?(:format) && !directory[:format].nil?
                  directory[:format]
                else
