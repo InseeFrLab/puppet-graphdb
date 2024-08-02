@@ -1,5 +1,16 @@
 # @summary # This class is able to install or remove graphdb distribution on a node. It manages the status of the related service.
 #
+#
+# @param archive_dl_timeout
+#   For http downloads you can set how long the exec resource may take.
+#   default: 600 seconds
+#
+# @param data_dir
+#   String. GraphDB data directory
+#
+# @param edition
+#   String. GraphDB edition to install
+#
 # @param ensure
 #   String. Controls if the managed resources shall be <tt>present</tt> or
 #   <tt>absent</tt>. If set to <tt>absent</tt>:
@@ -14,11 +25,51 @@
 #   * This is thus destructive and should be used with care.
 #   Defaults to <tt>present</tt>.
 #
-# @param version
-#   String. GraphDB version to install
+# @param graphdb_download_password
+#   For http downloads you can set password(basic auth credentials)
 #
-# @param edition
-#   String. GraphDB edition to install
+# @param graphdb_download_user
+#   For http downloads you can set user(basic auth credentials)
+#
+# @param graphdb_download_url
+#   Url to the archive to download.
+#   This can be a http or https resource for remote packages
+#   puppet:// resource or file:/ for local packages
+#
+# @param graphdb_group
+#   String. The group GraphDB should run as. This also sets the file rights
+#
+# @param graphdb_user
+#   String. The group GraphDB should run as. This also sets the file rights
+#
+# @param import_dir
+#   String. GraphDB import location
+#
+# @param install_dir
+#   String. GraphDB distribution location
+#
+# @param java_home
+#   String. The location of java installation
+#
+# @param log_dir
+#   String. GraphDB log directory
+#
+# @param manage_graphdb_user
+#   Boolean. Whether this module manages GraphDB user
+#
+# @param pid_dir
+#   String. GraphDB pid directory
+#
+# @param purge_data_dir
+#   Boolean. Purge data directory on removal
+#
+# @param restart_on_change
+#   Boolean that determines if the application should be automatically restarted
+#   whenever the configuration change. Enabling this
+#   setting will cause GraphDB to restart whenever there is cause to
+#   re-read configuration files, load new plugins, or start the service using an
+#   updated/changed executable. This may be undesireable in highly available
+#   environments.
 #
 # @param status
 #   String to define the status of the service. Possible values:
@@ -40,80 +91,30 @@
 # @param tmp_dir
 #   String. The location of temporary files that this module will use
 #
-# @param data_dir
-#   String. GraphDB data directory
-#
-# @param log_dir
-#   String. GraphDB log directory
-#
-# @param pid_dir
-#   String. GraphDB pid directory
-#
-# @param install_dir
-#   String. GraphDB distribution location
-#
-# @param import_dir
-#   String. GraphDB import location
-#
-# @param manage_graphdb_user
-#   Boolean. Whether this module manages GraphDB user
-#
-# @param graphdb_user
-#   String. The group GraphDB should run as. This also sets the file rights
-#
-# @param graphdb_group
-#   String. The group GraphDB should run as. This also sets the file rights
-#
-# @param java_home
-#   String. The location of java installation
-#
-# @param restart_on_change
-#   Boolean that determines if the application should be automatically restarted
-#   whenever the configuration change. Enabling this
-#   setting will cause GraphDB to restart whenever there is cause to
-#   re-read configuration files, load new plugins, or start the service using an
-#   updated/changed executable. This may be undesireable in highly available
-#   environments.
-#
-# @param purge_data_dir
-#   Boolean. Purge data directory on removal
-#
-# @param archive_dl_timeout
-#   For http downloads you can set how long the exec resource may take.
-#   default: 600 seconds
-#
-# @param graphdb_download_user
-#   For http downloads you can set user(basic auth credentials)
-#
-# @param graphdb_download_password
-#   For http downloads you can set password(basic auth credentials)
-#
-# @param graphdb_download_url
-#   Url to the archive to download.
-#   This can be a http or https resource for remote packages
-#   puppet:// resource or file:/ for local packages
+# @param version
+#   String. GraphDB version to install
 #
 class graphdb (
-  String $version                             = undef,
+  Integer $archive_dl_timeout                 = 600,
+  Stdlib::Absolutepath $data_dir              = '/var/lib/graphdb',
   Optional[String] $edition                   = undef,
   Graphdb::Ensure $ensure                     = 'present',
-  Graphdb::Status $status                     = 'enabled',
-  Stdlib::Absolutepath $tmp_dir               = '/var/tmp/graphdb',
-  Stdlib::Absolutepath $data_dir              = '/var/lib/graphdb',
-  Stdlib::Absolutepath $log_dir               = '/var/log/graphdb',
-  Stdlib::Absolutepath $pid_dir               = '/var/run/graphdb',
+  Optional[String] $graphdb_download_password = undef,
+  Optional[String] $graphdb_download_user     = undef,
+  String $graphdb_download_url                = 'http://maven.ontotext.com/content/groups/all-onto/com/ontotext/graphdb',
+  String[1,32] $graphdb_group                 = 'graphdb',
+  String[1,32] $graphdb_user                  = 'graphdb',
   Stdlib::Absolutepath $install_dir           = '/opt/graphdb',
   Stdlib::Absolutepath $import_dir            = "${install_dir}/import",
-  Boolean $manage_graphdb_user                = true,
-  String[1,32] $graphdb_user                  = 'graphdb',
-  String[1,32] $graphdb_group                 = 'graphdb',
-  Boolean $restart_on_change                  = true,
-  Boolean $purge_data_dir                     = false,
-  Integer $archive_dl_timeout                 = 600,
-  String $graphdb_download_url                = 'http://maven.ontotext.com/content/groups/all-onto/com/ontotext/graphdb',
   Optional[Stdlib::Absolutepath] $java_home   = undef,
-  Optional[String] $graphdb_download_user     = undef,
-  Optional[String] $graphdb_download_password = undef,
+  Stdlib::Absolutepath $log_dir               = '/var/log/graphdb',
+  Boolean $manage_graphdb_user                = true,
+  Stdlib::Absolutepath $pid_dir               = '/var/run/graphdb',
+  Boolean $purge_data_dir                     = false,
+  Boolean $restart_on_change                  = true,
+  Graphdb::Status $status                     = 'enabled',
+  Stdlib::Absolutepath $tmp_dir               = '/var/tmp/graphdb',
+  String $version                             = undef,
 ) {
   #### Validate parameters
 

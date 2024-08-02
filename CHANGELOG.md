@@ -11,6 +11,10 @@ These should not affect the functionality of the module.
 - Replace legacy_facts (+ modify fact in spec)
 - Add tests kernel and os (init.pp)
 - Replace notation %w(...) by %w[...]
+- Use https://github.com/voxpupuli/gha-puppet/blob/v3/.github/workflows/basic.yml (workflows)
+- Add fact graphdb_version
+- Change templates ERB in EPP
+- Change type params endpoint String to Stdlib::HTTPUrl
 
 ## [v0.10.0](https://github.com/phaedriel/puppet-graphdb/releases/tag/v0.10.0)
 

@@ -9,25 +9,25 @@ describe 'graphdb::ee::worker::repository', unless: UNSUPPORTED_PLATFORMS.includ
   context 'ee installation with worker repository' do
     let(:manifest) do
       <<-EOS
-			 class{ 'graphdb':
-			   version              => '#{graphdb_version}',
-			   edition              => 'ee',
-			   graphdb_download_url => 'file:///tmp',
-			 }
+       class{ 'graphdb':
+         version              => '#{graphdb_version}',
+         edition              => 'ee',
+         graphdb_download_url => 'file:///tmp',
+       }
 
-			 graphdb::instance { 'test':
-  		 		license           => '/tmp/ee.license',
-  				http_port         => 8080,
-				validator_timeout => #{graphdb_timeout},
-			 }
+       graphdb::instance { 'test':
+         license           => '/tmp/ee.license',
+         http_port         => 8080,
+         validator_timeout => #{graphdb_timeout},
+       }
 
-		     graphdb::ee::worker::repository { 'test-repo':
-		        repository_id       => 'test-repo',
-		    	endpoint            => "http://${::ipaddress}:8080",
-		    	repository_context  => 'http://ontotext.com/pub/',
-				timeout             => #{graphdb_timeout},
-		  	 }
-		  EOS
+       graphdb::ee::worker::repository { 'test-repo':
+         repository_id       => 'test-repo',
+         endpoint            => "http://${::ipaddress}:8080",
+         repository_context  => 'http://ontotext.com/pub/',
+         timeout             => #{graphdb_timeout},
+       }
+      EOS
     end
     it do
       apply_manifest(manifest, catch_failures: true, debug: ENV['DEBUG'] == 'true')
@@ -42,26 +42,26 @@ describe 'graphdb::ee::worker::repository', unless: UNSUPPORTED_PLATFORMS.includ
   context 'ee installation with worker repository removal' do
     let(:manifest) do
       <<-EOS
-		  class{ 'graphdb':
-			version              => '#{graphdb_version}',
-			edition              => 'ee',
-			graphdb_download_url => 'file:///tmp',
-		  }
+       class{ 'graphdb':
+         version              => '#{graphdb_version}',
+         edition              => 'ee',
+         graphdb_download_url => 'file:///tmp',
+       }
 
-		  graphdb::instance { 'test':
-			 license           => '/tmp/ee.license',
-			 http_port         => 8080,
-			 validator_timeout => #{graphdb_timeout},
-		  }
+       graphdb::instance { 'test':
+         license           => '/tmp/ee.license',
+         http_port         => 8080,
+         validator_timeout => #{graphdb_timeout},
+       }
 
-		  graphdb::ee::worker::repository { 'test-repo':
-		  	 ensure              => 'absent',
-			 repository_id       => 'test-repo',
-			 endpoint            => "http://${::ipaddress}:8080",
-			 repository_context  => 'http://ontotext.com/pub/',
-			 timeout             => #{graphdb_timeout},
-		  }
-		 EOS
+       graphdb::ee::worker::repository { 'test-repo':
+         ensure              => 'absent',
+         repository_id       => 'test-repo',
+         endpoint            => "http://${::ipaddress}:8080",
+         repository_context  => 'http://ontotext.com/pub/',
+         timeout             => #{graphdb_timeout},
+       }
+      EOS
     end
 
     it do

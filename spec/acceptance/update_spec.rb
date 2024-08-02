@@ -9,33 +9,33 @@ describe 'graphdb_update', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily
   context 'se installation with se repository and one update' do
     let(:manifest) do
       <<-EOS
-			 class{ 'graphdb':
-			    version              => '#{graphdb_version}',
-			    edition              => 'se',
-				graphdb_download_url => 'file:///tmp',
-			 }
+       class{ 'graphdb':
+         version              => '#{graphdb_version}',
+         edition              => 'se',
+         graphdb_download_url => 'file:///tmp',
+       }
 
-			 graphdb::instance { 'test':
-  		 		license           => '/tmp/se.license',
-  				http_port         => 8080,
-				validator_timeout => #{graphdb_timeout},
-			 }
+       graphdb::instance { 'test':
+         license           => '/tmp/se.license',
+         http_port         => 8080,
+         validator_timeout => #{graphdb_timeout},
+       }
 
-		     graphdb::se::repository { 'test-repo':
-		        repository_id       => 'test-repo',
-		    	endpoint            => "http://${::ipaddress}:8080",
-		    	repository_context  => 'http://ontotext.com/pub/',
-				timeout             => #{graphdb_timeout},
-		  	 }
+       graphdb::se::repository { 'test-repo':
+         repository_id       => 'test-repo',
+         endpoint            => "http://${::ipaddress}:8080",
+         repository_context  => 'http://ontotext.com/pub/',
+         timeout             => #{graphdb_timeout},
+       }
 
-			 graphdb_update { 'test-update':
-			    repository_id       => 'test-repo',
-			    endpoint            => "http://${::ipaddress}:8080",
-			    update_query        => 'PREFIX geo-ont: <http://www.test.org/ontology#>
-			  						    INSERT DATA { <http://test> geo-ont:test "This is a test title" }',
-			    exists_query        =>  'ask { <http://test> ?p ?o . }',
-			}
-		  EOS
+       graphdb_update { 'test-update':
+         repository_id       => 'test-repo',
+         endpoint            => "http://${::ipaddress}:8080",
+         update_query        => 'PREFIX geo-ont: <http://www.test.org/ontology#>
+           INSERT DATA { <http://test> geo-ont:test "This is a test title" }',
+         exists_query        =>  'ask { <http://test> ?p ?o . }',
+       }
+      EOS
     end
 
     it do

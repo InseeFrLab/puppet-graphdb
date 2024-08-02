@@ -18,8 +18,8 @@
 define graphdb::service (
   Graphdb::Ensure $ensure,
   Graphdb::Status $status,
-  Array $java_opts      = [],
-  Integer $kill_timeout = 180
+  Array           $java_opts    = [],
+  Integer         $kill_timeout = 180
 ) {
   #### Service management
 
@@ -55,14 +55,19 @@ define graphdb::service (
       }
     }
 
-    $final_java_opts = generate_java_opts_string($java_opts)
     $notify_service = $graphdb::restart_on_change ? {
       true  => [Exec["systemd_reload_${title}"], Service["graphdb-${title}"]],
       false => Exec["systemd_reload_${title}"]
     }
     file { "/lib/systemd/system/graphdb-${title}.service":
       ensure  => $ensure,
-      content => template('graphdb/service/systemd.erb'),
+      content => epp('graphdb/service/systemd.epp',
+        {
+          java_opts    => generate_java_opts_string($java_opts),
+          kill_timeout => $kill_timeout,
+          title        => $title,
+        }
+      ),
       owner   => 'root',
       group   => 'root',
       before  => Service["graphdb-${title}"],

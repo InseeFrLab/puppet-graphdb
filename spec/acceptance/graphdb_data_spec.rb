@@ -9,38 +9,38 @@ describe 'graphdb_data', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily')
   context 'se installation with se repository and one data load' do
     let(:manifest) do
       <<-EOS
-      class{ 'graphdb':
-        version              => '#{graphdb_version}',
-        edition              => 'se',
-        graphdb_download_url => 'file:///tmp',
-      }
+       class{ 'graphdb':
+         version              => '#{graphdb_version}',
+         edition              => 'se',
+         graphdb_download_url => 'file:///tmp',
+       }
 
-      graphdb::instance { 'test':
-        license           => '/tmp/se.license',
-        http_port         => 8080,
-        validator_timeout => #{graphdb_timeout},
-      }
+       graphdb::instance { 'test':
+         license           => '/tmp/se.license',
+         http_port         => 8080,
+         validator_timeout => #{graphdb_timeout},
+       }
 
-      graphdb::se::repository { 'test-repo':
-        repository_id       => 'test-repo',
-        endpoint            => "http://${::ipaddress}:8080",
-        repository_context  => 'http://ontotext.com/pub/',
-        timeout             => #{graphdb_timeout},
-      }
+       graphdb::se::repository { 'test-repo':
+         repository_id       => 'test-repo',
+         endpoint            => "http://${::ipaddress}:8080",
+         repository_context  => 'http://ontotext.com/pub/',
+         timeout             => #{graphdb_timeout},
+       }
 
-      graphdb_data { 'test-data':
-        repository_id       => 'test-repo',
-        endpoint            => "http://${::ipaddress}:8080",
-        data                => '
-        @base <http://test.com#>.
-        @prefix test:   <http://test.com/ontologies/test#> .
-        <http://test>
-            a                test:good ;
-            test:price       "5" .
-        ',
-        exists_query        =>  'ask { <http://test> ?p ?o . } ',
-        data_format         => 'turtle',
-      }
+       graphdb_data { 'test-data':
+         repository_id       => 'test-repo',
+         endpoint            => "http://${::ipaddress}:8080",
+         data                => '
+         @base <http://test.com#>.
+         @prefix test:   <http://test.com/ontologies/test#> .
+         <http://test>
+             a                test:good ;
+             test:price       "5" .
+         ',
+         exists_query        =>  'ask { <http://test> ?p ?o . } ',
+         data_format         => 'turtle',
+       }
       EOS
     end
 
@@ -58,26 +58,26 @@ describe 'graphdb_data', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily')
   context 'se installation with repository removal' do
     let(:manifest) do
       <<-EOS
-         class{ 'graphdb':
-          version              => '#{graphdb_version}',
-          edition              => 'se',
-          graphdb_download_url => 'file:///tmp',
-         }
+       class{ 'graphdb':
+         version              => '#{graphdb_version}',
+         edition              => 'se',
+         graphdb_download_url => 'file:///tmp',
+       }
 
-         graphdb::instance { 'test':
-          license           => '/tmp/se.license',
-          http_port         => 8080,
-          validator_timeout => #{graphdb_timeout},
-         }
+       graphdb::instance { 'test':
+         license           => '/tmp/se.license',
+         http_port         => 8080,
+         validator_timeout => #{graphdb_timeout},
+       }
 
-         graphdb::se::repository { 'test-repo':
-          ensure => 'absent',
-          repository_id       => 'test-repo',
-          endpoint            => "http://${::ipaddress}:8080",
-          repository_context  => 'http://ontotext.com/pub/',
-          timeout             => #{graphdb_timeout},
-         }
-        EOS
+       graphdb::se::repository { 'test-repo':
+         ensure => 'absent',
+         repository_id       => 'test-repo',
+         endpoint            => "http://${::ipaddress}:8080",
+         repository_context  => 'http://ontotext.com/pub/',
+         timeout             => #{graphdb_timeout},
+       }
+      EOS
     end
     it do
       apply_manifest(manifest, catch_failures: true, debug: ENV['DEBUG'] == 'true')
@@ -89,30 +89,30 @@ describe 'graphdb_data', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily')
     let(:manifest) do
       <<-EOS
        class{ 'graphdb':
-          version              => '#{graphdb_version}',
-          edition              => 'se',
-        graphdb_download_url => 'file:///tmp',
+         version              => '#{graphdb_version}',
+         edition              => 'se',
+         graphdb_download_url => 'file:///tmp',
        }
 
        graphdb::instance { 'test':
-           license           => '/tmp/se.license',
-          http_port         => 8080,
-        validator_timeout => #{graphdb_timeout},
+         license           => '/tmp/se.license',
+         http_port         => 8080,
+         validator_timeout => #{graphdb_timeout},
        }
 
-         graphdb::se::repository { 'test-repo':
-            repository_id       => 'test-repo',
-          endpoint            => "http://${::ipaddress}:8080",
-          repository_context  => 'http://ontotext.com/pub/',
-        timeout             => #{graphdb_timeout},
-         }
+       graphdb::se::repository { 'test-repo':
+         repository_id       => 'test-repo',
+         endpoint            => "http://${::ipaddress}:8080",
+         repository_context  => 'http://ontotext.com/pub/',
+         timeout             => #{graphdb_timeout},
+       }
 
        graphdb_data { 'test-data':
-            repository_id       => 'test-repo',
-            endpoint            => "http://${::ipaddress}:8080",
-            data_source         => '/tmp/test.ttl',
-            exists_query        =>  'ask { <http://test> ?p ?o . } ',
-         }
+         repository_id       => 'test-repo',
+         endpoint            => "http://${::ipaddress}:8080",
+         data_source         => '/tmp/test.ttl',
+         exists_query        =>  'ask { <http://test> ?p ?o . } ',
+       }
       EOS
     end
 

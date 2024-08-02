@@ -9,31 +9,31 @@ describe 'graphdb::data', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily'
   context 'se installation with se repository and one data from archive' do
     let(:manifest) do
       <<-EOS
-      class{ 'graphdb':
-        version              => '#{graphdb_version}',
-        edition              => 'se',
-        graphdb_download_url => 'file:///tmp',
-      }
+       class{ 'graphdb':
+         version              => '#{graphdb_version}',
+         edition              => 'se',
+         graphdb_download_url => 'file:///tmp',
+       }
 
-			graphdb::instance { 'test':
-        license           => '/tmp/se.license',
-        http_port         => 8080,
-        validator_timeout => #{graphdb_timeout},
-      }
+       graphdb::instance { 'test':
+         license           => '/tmp/se.license',
+         http_port         => 8080,
+         validator_timeout => #{graphdb_timeout},
+       }
 
-      graphdb::se::repository { 'test-repo':
-        repository_id       => 'test-repo',
-        endpoint            => "http://${::ipaddress}:8080",
-        repository_context  => 'http://ontotext.com/pub/',
-        timeout             => #{graphdb_timeout},
-      }
+       graphdb::se::repository { 'test-repo':
+         repository_id       => 'test-repo',
+         endpoint            => "http://${::ipaddress}:8080",
+         repository_context  => 'http://ontotext.com/pub/',
+         timeout             => #{graphdb_timeout},
+       }
 
-      graphdb::data{ 'data-zip':
-        repository          => 'test-repo',
-        endpoint            => "http://${::ipaddress}:8080",
-        archive             => 'puppet:///modules/test/test.ttl.zip',
-        exists_query        =>  'ask { <http://test> ?p ?o . } ',
-      }
+       graphdb::data{ 'data-zip':
+         repository          => 'test-repo',
+         endpoint            => "http://${::ipaddress}:8080",
+         archive             => 'puppet:///modules/test/test.ttl.zip',
+         exists_query        =>  'ask { <http://test> ?p ?o . } ',
+       }
       EOS
     end
 

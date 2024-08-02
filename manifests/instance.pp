@@ -14,6 +14,40 @@
 #   * This is thus destructive and should be used with care.
 #   Defaults to <tt>present</tt>.
 #
+# @param external_url
+#   GraphDB external URL if GraphDB instance is accessed via proxy
+#
+# @param extra_properties
+#   Hash of properties to include in graphdb.properties file
+#   example: {'graphdb.some.property' => 'some.property.value'}
+#
+# @param heap_size
+#   GraphDB java heap size given by -Xmx parameter. Note heap_size parameter will also set xms=xmx
+#
+# @param http_port
+#   The http port at which GraphDB will run.
+#
+# @param java_opts
+#   Array of java options to give to GraphDB java process
+#   example: ['-Xmx1g', '-Xms1g']
+#
+# @param jolokia_access_link
+#   Add jolokia-access.xml link
+#
+# @param kill_timeout
+#   Time before force kill of GraphDB process. Instances with big repositories may
+#   time to flush on shutdown.
+#   default: 180
+#
+# @param license
+#   GraphDB license file.
+#
+# @param logback_config
+#   GraphDB logback log configuration
+#
+# @param protocol
+#   A string, either 'http' or 'https defining under what protocol to connect to GraphDB'
+#
 # @param status
 #   String to define the status of the service. Possible values:
 #   * <tt>enabled</tt>: Service is running and will be started at boot time.
@@ -31,60 +65,27 @@
 #   more than one is managed (see <tt>service.pp</tt> to check if this is the
 #   case).
 #
-# @param license
-#   GraphDB license file.
-#
-# @param http_port
-#   The http port at which GraphDB will run.
-#
-# @param kill_timeout
-#   Time before force kill of GraphDB process. Instances with big repositories may
-#   time to flush on shutdown.
-#   default: 180
+# @param validator_test_enabled
+#   GraphDB validator
 #
 # @param validator_timeout
 #   Time before GraphDB validator decides that the GraphDB instance is not running
 #
-# @param validator_test_enabled
-#   GraphDB validator
-#
-# @param heap_size
-#   GraphDB java heap size given by -Xmx parameter. Note heap_size parameter will also set xms=xmx
-#
-# @param external_url
-#   GraphDB external URL if GraphDB instance is accessed via proxy
-#
-# @param logback_config
-#   GraphDB logback log configuration
-#
-# @param extra_properties
-#   Hash of properties to include in graphdb.properties file
-#   example: {'graphdb.some.property' => 'some.property.value'}
-#
-# @param java_opts
-#   Array of java options to give to GraphDB java process
-#   example: ['-Xmx1g', '-Xms1g']
-#
-# @param protocol
-#   A string, either 'http' or 'https defining under what protocol to connect to GraphDB'
-#
-# @param jolokia_access_link
-#   Add jolokia-access.xml link
 define graphdb::instance (
-  Optional[String] $license         = undef,
-  Graphdb::Ensure $ensure           = $graphdb::ensure,
-  Graphdb::Status $status           = $graphdb::status,
-  Integer $http_port                = 8080,
-  Optional[String] $external_url    = undef,
-  Integer $kill_timeout             = 180,
-  Integer $validator_timeout        = 60,
-  Boolean $validator_test_enabled   = true,
-  Optional[String] $heap_size       = undef,
-  Optional[String] $logback_config  = undef,
-  Hash $extra_properties            = {},
-  Array $java_opts                  = [],
-  String $protocol                  = 'http',
-  Boolean $jolokia_access_link      = versioncmp($graphdb::ensure, '9.10.0') > -1,
+  Graphdb::Ensure   $ensure                 = $graphdb::ensure,
+  Optional[String]  $external_url           = undef,
+  Hash              $extra_properties       = {},
+  Optional[String]  $heap_size              = undef,
+  Integer           $http_port              = 8080,
+  Array             $java_opts              = [],
+  Boolean           $jolokia_access_link    = versioncmp($graphdb::ensure, '9.10.0') > -1,
+  Integer           $kill_timeout           = 180,
+  Optional[String]  $license                = undef,
+  Optional[String]  $logback_config         = undef,
+  String            $protocol               = 'http',
+  Graphdb::Status   $status                 = $graphdb::status,
+  Boolean           $validator_test_enabled = true,
+  Integer           $validator_timeout      = 60,
 ) {
   if $heap_size {
     $heap_size_array = ["-Xmx${heap_size}", "-Xms${heap_size}"]
@@ -162,11 +163,10 @@ define graphdb::instance (
       'graphdb.workbench.importDirectory' => $graphdb::import_dir,
     }
 
-    $final_graphdb_properties = merge($default_properties, $extra_properties)
-
     file { "${instance_home_dir}/conf/graphdb.properties":
       ensure  => $ensure,
-      content => Sensitive(template('graphdb/config/graphdb.properties.erb')),
+      content => Sensitive(epp("${module_name}/config/graphdb.properties.epp",
+      { properties => merge($default_properties, $extra_properties) })),
       notify  => Service[$service_name],
     }
 

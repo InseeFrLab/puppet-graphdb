@@ -10,21 +10,21 @@ describe 'graphdb::instance', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfam
     context "#{graphdb_edition} installation" do
       let(:manifest) do
         <<-EOS
-			 class{ 'graphdb':
-			   version              => '#{graphdb_version}',
-			   edition              => '#{graphdb_edition}',
-			   graphdb_download_url => 'file:///tmp',
-			 }
+         class{ 'graphdb':
+           version              => '#{graphdb_version}',
+           edition              => '#{graphdb_edition}',
+           graphdb_download_url => 'file:///tmp',
+         }
 
-			 graphdb::instance { 'test':
-  		   license           => '/tmp/#{graphdb_edition}.license',
-  			 http_port         => 8080,
-				 validator_timeout => #{graphdb_timeout},
-				 heap_size         => '256m',
-         external_url      => 'http://test.com/graphdb',
-				 java_opts         => ['-DcustomOpt'],
-			 }
-		  EOS
+         graphdb::instance { 'test':
+           license           => '/tmp/#{graphdb_edition}.license',
+           http_port         => 8080,
+           validator_timeout => #{graphdb_timeout},
+           heap_size         => '256m',
+           external_url      => 'http://test.com/graphdb',
+           java_opts         => ['-DcustomOpt'],
+         }
+        EOS
       end
 
       it "installs #{graphdb_edition} and one instance with defaults" do
@@ -118,20 +118,20 @@ describe 'graphdb::instance', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfam
     context "#{graphdb_edition} installation" do
       let(:manifest) do
         <<-EOS
-			 class{ 'graphdb':
-			 version              => '#{graphdb_version}',
-			 edition              => '#{graphdb_edition}',
-			 graphdb_download_url => 'file:///tmp',
-			 }
+         class{ 'graphdb':
+           version              => '#{graphdb_version}',
+           edition              => '#{graphdb_edition}',
+           graphdb_download_url => 'file:///tmp',
+         }
 
-			 graphdb::instance { 'test':
-  		 		license           => '/tmp/#{graphdb_edition}.license',
-  				http_port         => 8080,
-				validator_timeout => #{graphdb_timeout},
-				heap_size         => '257m',
-				java_opts         => ['-DcustomOpt'],
-			 }
-		  EOS
+         graphdb::instance { 'test':
+           license           => '/tmp/#{graphdb_edition}.license',
+           http_port         => 8080,
+           validator_timeout => #{graphdb_timeout},
+           heap_size         => '257m',
+           java_opts         => ['-DcustomOpt'],
+         }
+        EOS
       end
 
       it "installs #{graphdb_edition} and one instance with defaults" do
@@ -153,16 +153,16 @@ describe 'graphdb::instance', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfam
     context "#{graphdb_edition} uninstall" do
       let(:manifest) do
         <<-EOS
-			   class{ 'graphdb':
-			     version              => '#{graphdb_version}',
-			     edition              => '#{graphdb_edition}',
-			     graphdb_download_url => 'file:///tmp',
-			   }
+         class{ 'graphdb':
+           version              => '#{graphdb_version}',
+           edition              => '#{graphdb_edition}',
+           graphdb_download_url => 'file:///tmp',
+         }
 
-			   graphdb::instance { 'test':
-			      ensure => 'absent',
-			   }
-			EOS
+         graphdb::instance { 'test':
+            ensure => 'absent',
+         }
+        EOS
       end
 
       it "keeps #{graphdb_edition} and uninstall the instance" do
@@ -190,7 +190,7 @@ describe 'graphdb::instance', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfam
       end
 
       describe service('graphdb-test') do
-        it { should_not be_enabled } unless %w[Debian CentOS].include? fact('operatingsystem')
+        it { should_not be_enabled } # unless %w[Debian CentOS].include? fact('operatingsystem')
         it { should_not be_running }
       end
 

@@ -11,12 +11,12 @@ describe 'graphdb::instance', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfam
     context "#{graphdb_edition} installation" do
       let(:manifest) do
         <<-EOS
-			 class{ 'graphdb':
-			 version              => '#{graphdb_version}',
-			 edition              => '#{graphdb_edition}',
-			 graphdb_download_url => 'file:///tmp',
-			 }
-		  EOS
+         class{ 'graphdb':
+           version              => '#{graphdb_version}',
+           edition              => '#{graphdb_edition}',
+           graphdb_download_url => 'file:///tmp',
+         }
+        EOS
       end
 
       it "installs #{graphdb_edition} with defaults" do
@@ -116,12 +116,12 @@ describe 'graphdb::instance', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfam
     context "#{graphdb_edition} uninstallation" do
       let(:manifest) do
         <<-EOS
-			   class { 'graphdb':
-			     ensure  => 'absent',
-			     version => '#{graphdb_version}',
-			     edition => '#{graphdb_edition}',
-			   }
-			EOS
+         class { 'graphdb':
+           ensure  => 'absent',
+           version => '#{graphdb_version}',
+           edition => '#{graphdb_edition}',
+         }
+        EOS
       end
 
       it "uninstalls #{graphdb_edition}" do
@@ -179,11 +179,10 @@ describe 'graphdb::instance', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfam
     let(:manifest) do
       <<-EOS
        class{ 'graphdb':
-       version                   => '8.3.0-TR9',
-       edition                   => 'ee',
-       graphdb_download_user     => '#{graphdb_download_user}',
-       graphdb_download_password => '#{graphdb_download_password}',
-       graphdb_download_url      => 'http://maven.ontotext.com/content/repositories/owlim-releases/com/ontotext/graphdb',
+         version                   => '10.7.0',
+         graphdb_download_user     => '#{graphdb_download_user}',
+         graphdb_download_password => '#{graphdb_download_password}',
+         graphdb_download_url      => 'http://maven.ontotext.com/content/repositories/owlim-releases/com/ontotext/graphdb',
        }
       EOS
     end
@@ -194,7 +193,7 @@ describe 'graphdb::instance', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfam
     end
 
     describe command('/opt/graphdb/dist/bin/graphdb -v') do
-      its(:stdout) { should contain('8.3.0-TR9') }
+      its(:stdout) { should contain('10.7.0') }
     end
   end
 end

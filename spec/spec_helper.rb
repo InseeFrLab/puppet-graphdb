@@ -21,21 +21,6 @@ default_facts = {
   macaddress: "AA:AA:AA:AA:AA:AA",
 }
 
-# default_fact_files = [
-#   File.expand_path(File.join(File.dirname(__FILE__), 'default_facts.yml')),
-#   File.expand_path(File.join(File.dirname(__FILE__), 'default_module_facts.yml')),
-# ]
-
-# default_fact_files.each do |f|
-#   next unless File.exist?(f) && File.readable?(f) && File.size?(f)
-
-#   begin
-#     default_facts.merge!(YAML.safe_load(File.read(f), [], [], true))
-#   rescue => e
-#     RSpec.configuration.reporter.message "WARNING: Unable to load #{f}: #{e}"
-#   end
-# end
-
 # read default_facts and merge them over what is provided by facterdb
 default_facts.each do |fact, value|
   add_custom_fact fact, value
