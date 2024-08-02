@@ -47,26 +47,51 @@
 
 The following parameters are available in the `graphdb` class:
 
-* [`ensure`](#-graphdb--ensure)
-* [`version`](#-graphdb--version)
+* [`archive_dl_timeout`](#-graphdb--archive_dl_timeout)
+* [`data_dir`](#-graphdb--data_dir)
 * [`edition`](#-graphdb--edition)
+* [`ensure`](#-graphdb--ensure)
+* [`graphdb_download_password`](#-graphdb--graphdb_download_password)
+* [`graphdb_download_user`](#-graphdb--graphdb_download_user)
+* [`graphdb_download_url`](#-graphdb--graphdb_download_url)
+* [`graphdb_group`](#-graphdb--graphdb_group)
+* [`graphdb_user`](#-graphdb--graphdb_user)
+* [`import_dir`](#-graphdb--import_dir)
+* [`install_dir`](#-graphdb--install_dir)
+* [`java_home`](#-graphdb--java_home)
+* [`log_dir`](#-graphdb--log_dir)
+* [`manage_graphdb_user`](#-graphdb--manage_graphdb_user)
+* [`pid_dir`](#-graphdb--pid_dir)
+* [`purge_data_dir`](#-graphdb--purge_data_dir)
+* [`restart_on_change`](#-graphdb--restart_on_change)
 * [`status`](#-graphdb--status)
 * [`tmp_dir`](#-graphdb--tmp_dir)
-* [`data_dir`](#-graphdb--data_dir)
-* [`log_dir`](#-graphdb--log_dir)
-* [`pid_dir`](#-graphdb--pid_dir)
-* [`install_dir`](#-graphdb--install_dir)
-* [`import_dir`](#-graphdb--import_dir)
-* [`manage_graphdb_user`](#-graphdb--manage_graphdb_user)
-* [`graphdb_user`](#-graphdb--graphdb_user)
-* [`graphdb_group`](#-graphdb--graphdb_group)
-* [`java_home`](#-graphdb--java_home)
-* [`restart_on_change`](#-graphdb--restart_on_change)
-* [`purge_data_dir`](#-graphdb--purge_data_dir)
-* [`archive_dl_timeout`](#-graphdb--archive_dl_timeout)
-* [`graphdb_download_user`](#-graphdb--graphdb_download_user)
-* [`graphdb_download_password`](#-graphdb--graphdb_download_password)
-* [`graphdb_download_url`](#-graphdb--graphdb_download_url)
+* [`version`](#-graphdb--version)
+
+##### <a name="-graphdb--archive_dl_timeout"></a>`archive_dl_timeout`
+
+Data type: `Integer`
+
+For http downloads you can set how long the exec resource may take.
+default: 600 seconds
+
+Default value: `600`
+
+##### <a name="-graphdb--data_dir"></a>`data_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+String. GraphDB data directory
+
+Default value: `'/var/lib/graphdb'`
+
+##### <a name="-graphdb--edition"></a>`edition`
+
+Data type: `Optional[String]`
+
+String. GraphDB edition to install
+
+Default value: `undef`
 
 ##### <a name="-graphdb--ensure"></a>`ensure`
 
@@ -87,21 +112,116 @@ Defaults to <tt>present</tt>.
 
 Default value: `'present'`
 
-##### <a name="-graphdb--version"></a>`version`
-
-Data type: `String`
-
-String. GraphDB version to install
-
-Default value: `undef`
-
-##### <a name="-graphdb--edition"></a>`edition`
+##### <a name="-graphdb--graphdb_download_password"></a>`graphdb_download_password`
 
 Data type: `Optional[String]`
 
-String. GraphDB edition to install
+For http downloads you can set password(basic auth credentials)
 
 Default value: `undef`
+
+##### <a name="-graphdb--graphdb_download_user"></a>`graphdb_download_user`
+
+Data type: `Optional[String]`
+
+For http downloads you can set user(basic auth credentials)
+
+Default value: `undef`
+
+##### <a name="-graphdb--graphdb_download_url"></a>`graphdb_download_url`
+
+Data type: `String`
+
+Url to the archive to download.
+This can be a http or https resource for remote packages
+puppet:// resource or file:/ for local packages
+
+Default value: `'http://maven.ontotext.com/content/groups/all-onto/com/ontotext/graphdb'`
+
+##### <a name="-graphdb--graphdb_group"></a>`graphdb_group`
+
+Data type: `String[1,32]`
+
+String. The group GraphDB should run as. This also sets the file rights
+
+Default value: `'graphdb'`
+
+##### <a name="-graphdb--graphdb_user"></a>`graphdb_user`
+
+Data type: `String[1,32]`
+
+String. The group GraphDB should run as. This also sets the file rights
+
+Default value: `'graphdb'`
+
+##### <a name="-graphdb--import_dir"></a>`import_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+String. GraphDB import location
+
+Default value: `"${install_dir}/import"`
+
+##### <a name="-graphdb--install_dir"></a>`install_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+String. GraphDB distribution location
+
+Default value: `'/opt/graphdb'`
+
+##### <a name="-graphdb--java_home"></a>`java_home`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+String. The location of java installation
+
+Default value: `undef`
+
+##### <a name="-graphdb--log_dir"></a>`log_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+String. GraphDB log directory
+
+Default value: `'/var/log/graphdb'`
+
+##### <a name="-graphdb--manage_graphdb_user"></a>`manage_graphdb_user`
+
+Data type: `Boolean`
+
+Boolean. Whether this module manages GraphDB user
+
+Default value: `true`
+
+##### <a name="-graphdb--pid_dir"></a>`pid_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+String. GraphDB pid directory
+
+Default value: `'/var/run/graphdb'`
+
+##### <a name="-graphdb--purge_data_dir"></a>`purge_data_dir`
+
+Data type: `Boolean`
+
+Boolean. Purge data directory on removal
+
+Default value: `false`
+
+##### <a name="-graphdb--restart_on_change"></a>`restart_on_change`
+
+Data type: `Boolean`
+
+Boolean that determines if the application should be automatically restarted
+whenever the configuration change. Enabling this
+setting will cause GraphDB to restart whenever there is cause to
+re-read configuration files, load new plugins, or start the service using an
+updated/changed executable. This may be undesireable in highly available
+environments.
+
+Default value: `true`
 
 ##### <a name="-graphdb--status"></a>`status`
 
@@ -133,133 +253,13 @@ String. The location of temporary files that this module will use
 
 Default value: `'/var/tmp/graphdb'`
 
-##### <a name="-graphdb--data_dir"></a>`data_dir`
-
-Data type: `Stdlib::Absolutepath`
-
-String. GraphDB data directory
-
-Default value: `'/var/lib/graphdb'`
-
-##### <a name="-graphdb--log_dir"></a>`log_dir`
-
-Data type: `Stdlib::Absolutepath`
-
-String. GraphDB log directory
-
-Default value: `'/var/log/graphdb'`
-
-##### <a name="-graphdb--pid_dir"></a>`pid_dir`
-
-Data type: `Stdlib::Absolutepath`
-
-String. GraphDB pid directory
-
-Default value: `'/var/run/graphdb'`
-
-##### <a name="-graphdb--install_dir"></a>`install_dir`
-
-Data type: `Stdlib::Absolutepath`
-
-String. GraphDB distribution location
-
-Default value: `'/opt/graphdb'`
-
-##### <a name="-graphdb--import_dir"></a>`import_dir`
-
-Data type: `Stdlib::Absolutepath`
-
-String. GraphDB import location
-
-Default value: `"${install_dir}/import"`
-
-##### <a name="-graphdb--manage_graphdb_user"></a>`manage_graphdb_user`
-
-Data type: `Boolean`
-
-Boolean. Whether this module manages GraphDB user
-
-Default value: `true`
-
-##### <a name="-graphdb--graphdb_user"></a>`graphdb_user`
-
-Data type: `String[1,32]`
-
-String. The group GraphDB should run as. This also sets the file rights
-
-Default value: `'graphdb'`
-
-##### <a name="-graphdb--graphdb_group"></a>`graphdb_group`
-
-Data type: `String[1,32]`
-
-String. The group GraphDB should run as. This also sets the file rights
-
-Default value: `'graphdb'`
-
-##### <a name="-graphdb--java_home"></a>`java_home`
-
-Data type: `Optional[Stdlib::Absolutepath]`
-
-String. The location of java installation
-
-Default value: `undef`
-
-##### <a name="-graphdb--restart_on_change"></a>`restart_on_change`
-
-Data type: `Boolean`
-
-Boolean that determines if the application should be automatically restarted
-whenever the configuration change. Enabling this
-setting will cause GraphDB to restart whenever there is cause to
-re-read configuration files, load new plugins, or start the service using an
-updated/changed executable. This may be undesireable in highly available
-environments.
-
-Default value: `true`
-
-##### <a name="-graphdb--purge_data_dir"></a>`purge_data_dir`
-
-Data type: `Boolean`
-
-Boolean. Purge data directory on removal
-
-Default value: `false`
-
-##### <a name="-graphdb--archive_dl_timeout"></a>`archive_dl_timeout`
-
-Data type: `Integer`
-
-For http downloads you can set how long the exec resource may take.
-default: 600 seconds
-
-Default value: `600`
-
-##### <a name="-graphdb--graphdb_download_user"></a>`graphdb_download_user`
-
-Data type: `Optional[String]`
-
-For http downloads you can set user(basic auth credentials)
-
-Default value: `undef`
-
-##### <a name="-graphdb--graphdb_download_password"></a>`graphdb_download_password`
-
-Data type: `Optional[String]`
-
-For http downloads you can set password(basic auth credentials)
-
-Default value: `undef`
-
-##### <a name="-graphdb--graphdb_download_url"></a>`graphdb_download_url`
+##### <a name="-graphdb--version"></a>`version`
 
 Data type: `String`
 
-Url to the archive to download.
-This can be a http or https resource for remote packages
-puppet:// resource or file:/ for local packages
+String. GraphDB version to install
 
-Default value: `'http://maven.ontotext.com/content/groups/all-onto/com/ontotext/graphdb'`
+Default value: `undef`
 
 ### <a name="graphdb--install"></a>`graphdb::install`
 
@@ -279,46 +279,33 @@ default: null
 
 The following parameters are available in the `graphdb::data` defined type:
 
-* [`endpoint`](#-graphdb--data--endpoint)
-* [`repository`](#-graphdb--data--repository)
-* [`exists_query`](#-graphdb--data--exists_query)
-* [`exists_expected_response`](#-graphdb--data--exists_expected_response)
-* [`data`](#-graphdb--data--data)
-* [`source`](#-graphdb--data--source)
 * [`archive`](#-graphdb--data--archive)
-* [`data_format`](#-graphdb--data--data_format)
 * [`context`](#-graphdb--data--context)
+* [`data`](#-graphdb--data--data)
+* [`data_format`](#-graphdb--data--data_format)
+* [`endpoint`](#-graphdb--data--endpoint)
+* [`exists_expected_response`](#-graphdb--data--exists_expected_response)
+* [`exists_query`](#-graphdb--data--exists_query)
 * [`overwrite`](#-graphdb--data--overwrite)
+* [`repository`](#-graphdb--data--repository)
+* [`source`](#-graphdb--data--source)
 * [`timeout`](#-graphdb--data--timeout)
 
-##### <a name="-graphdb--data--endpoint"></a>`endpoint`
+##### <a name="-graphdb--data--archive"></a>`archive`
+
+Data type: `Optional[String]`
+
+Local zip archive that you want to load into GraphDB repository.
+
+Default value: `undef`
+
+##### <a name="-graphdb--data--context"></a>`context`
 
 Data type: `String`
 
-GraphDB endpoint.
-example: http://localhost:8080
+The context you want to load your data into.
 
-##### <a name="-graphdb--data--repository"></a>`repository`
-
-Data type: `String`
-
-GraphDB repository.
-
-##### <a name="-graphdb--data--exists_query"></a>`exists_query`
-
-Data type: `String`
-
-The ask query to check whether data is already loaded.
-You can use the following syntax: ask {?s ?p ?o}
-
-##### <a name="-graphdb--data--exists_expected_response"></a>`exists_expected_response`
-
-Data type: `Boolean`
-
-The expected response from exists_query
-default: true
-
-Default value: `true`
+Default value: `'null'`
 
 ##### <a name="-graphdb--data--data"></a>`data`
 
@@ -335,6 +322,53 @@ note#1: if context for data not provided data_context is used
 note#2: if format for data not provided data_format is used
 
 Default value: `undef`
+
+##### <a name="-graphdb--data--data_format"></a>`data_format`
+
+Data type: `Optional[String]`
+
+The data format.
+example: turtle
+
+Default value: `undef`
+
+##### <a name="-graphdb--data--endpoint"></a>`endpoint`
+
+Data type: `Stdlib::HTTPUrl`
+
+GraphDB endpoint.
+example: http://localhost:8080
+
+##### <a name="-graphdb--data--exists_expected_response"></a>`exists_expected_response`
+
+Data type: `Boolean`
+
+The expected response from exists_query
+default: true
+
+Default value: `true`
+
+##### <a name="-graphdb--data--exists_query"></a>`exists_query`
+
+Data type: `String`
+
+The ask query to check whether data is already loaded.
+You can use the following syntax: ask {?s ?p ?o}
+
+##### <a name="-graphdb--data--overwrite"></a>`overwrite`
+
+Data type: `Boolean`
+
+Wheather to overwrite any existing data.
+default: false
+
+Default value: `false`
+
+##### <a name="-graphdb--data--repository"></a>`repository`
+
+Data type: `String`
+
+GraphDB repository.
 
 ##### <a name="-graphdb--data--source"></a>`source`
 
@@ -354,40 +388,6 @@ note#2: if format for file not provided trying to resolve format from file if fa
 
 Default value: `undef`
 
-##### <a name="-graphdb--data--archive"></a>`archive`
-
-Data type: `Optional[String]`
-
-Local zip archive that you want to load into GraphDB repository.
-
-Default value: `undef`
-
-##### <a name="-graphdb--data--data_format"></a>`data_format`
-
-Data type: `Optional[String]`
-
-The data format.
-example: turtle
-
-Default value: `undef`
-
-##### <a name="-graphdb--data--context"></a>`context`
-
-Data type: `String`
-
-The context you want to load your data into.
-
-Default value: `'null'`
-
-##### <a name="-graphdb--data--overwrite"></a>`overwrite`
-
-Data type: `Boolean`
-
-Wheather to overwrite any existing data.
-default: false
-
-Default value: `false`
-
 ##### <a name="-graphdb--data--timeout"></a>`timeout`
 
 Data type: `Integer`
@@ -405,15 +405,22 @@ For other properties, please, check: {GraphDB documentation}[http://graphdb.onto
 
 The following parameters are available in the `graphdb::ee::master::repository` defined type:
 
-* [`ensure`](#-graphdb--ee--master--repository--ensure)
 * [`endpoint`](#-graphdb--ee--master--repository--endpoint)
-* [`repository_context`](#-graphdb--ee--master--repository--repository_context)
-* [`repository_template`](#-graphdb--ee--master--repository--repository_template)
-* [`replication_port`](#-graphdb--ee--master--repository--replication_port)
+* [`ensure`](#-graphdb--ee--master--repository--ensure)
 * [`node_id`](#-graphdb--ee--master--repository--node_id)
-* [`timeout`](#-graphdb--ee--master--repository--timeout)
+* [`replication_port`](#-graphdb--ee--master--repository--replication_port)
+* [`repository_context`](#-graphdb--ee--master--repository--repository_context)
 * [`repository_id`](#-graphdb--ee--master--repository--repository_id)
 * [`repository_label`](#-graphdb--ee--master--repository--repository_label)
+* [`repository_template`](#-graphdb--ee--master--repository--repository_template)
+* [`timeout`](#-graphdb--ee--master--repository--timeout)
+
+##### <a name="-graphdb--ee--master--repository--endpoint"></a>`endpoint`
+
+Data type: `Stdlib::HTTPUrl`
+
+GraphDB endpoint.
+example: http://localhost:8080
 
 ##### <a name="-graphdb--ee--master--repository--ensure"></a>`ensure`
 
@@ -422,38 +429,6 @@ Data type: `Graphdb::Ensure`
 Whether the service should exist. Possible values are present and absent.
 
 Default value: `$graphdb::ensure`
-
-##### <a name="-graphdb--ee--master--repository--endpoint"></a>`endpoint`
-
-Data type: `String`
-
-GraphDB endpoint.
-example: http://localhost:8080
-
-##### <a name="-graphdb--ee--master--repository--repository_context"></a>`repository_context`
-
-Data type: `String`
-
-The context of the repository.
-example: http://ontotext.com
-
-##### <a name="-graphdb--ee--master--repository--repository_template"></a>`repository_template`
-
-Data type: `String`
-
-The template to use for repository creation
-example: http://ontotext.com
-
-Default value: `"${module_name}/repository/master.ttl.erb"`
-
-##### <a name="-graphdb--ee--master--repository--replication_port"></a>`replication_port`
-
-Data type: `Integer`
-
-Master replication port used for backups
-default: 0, random port used
-
-Default value: `0`
 
 ##### <a name="-graphdb--ee--master--repository--node_id"></a>`node_id`
 
@@ -464,14 +439,21 @@ default: endpoint, same as the master instance endpoint
 
 Default value: `"${endpoint}/repositories/${repository_id}"`
 
-##### <a name="-graphdb--ee--master--repository--timeout"></a>`timeout`
+##### <a name="-graphdb--ee--master--repository--replication_port"></a>`replication_port`
 
 Data type: `Integer`
 
-The max number of seconds that the repository create/delete/check process should wait before giving up.
-default: 60
+Master replication port used for backups
+default: 0, random port used
 
-Default value: `60`
+Default value: `0`
+
+##### <a name="-graphdb--ee--master--repository--repository_context"></a>`repository_context`
+
+Data type: `String`
+
+The context of the repository.
+example: http://ontotext.com
 
 ##### <a name="-graphdb--ee--master--repository--repository_id"></a>`repository_id`
 
@@ -489,73 +471,16 @@ Repository title
 
 Default value: `'GraphDB EE master repository'`
 
-### <a name="graphdb--ee--worker--repository"></a>`graphdb::ee::worker::repository`
-
-For other properties, please, check: {GraphDB documentation}[http://graphdb.ontotext.com/documentation/enterprise/configuring-a-repository.html?highlight=repository#configuration-parameters]
-
-#### Parameters
-
-The following parameters are available in the `graphdb::ee::worker::repository` defined type:
-
-* [`ensure`](#-graphdb--ee--worker--repository--ensure)
-* [`endpoint`](#-graphdb--ee--worker--repository--endpoint)
-* [`repository_context`](#-graphdb--ee--worker--repository--repository_context)
-* [`repository_template`](#-graphdb--ee--worker--repository--repository_template)
-* [`timeout`](#-graphdb--ee--worker--repository--timeout)
-* [`repository_id`](#-graphdb--ee--worker--repository--repository_id)
-* [`repository_label`](#-graphdb--ee--worker--repository--repository_label)
-* [`default_ns`](#-graphdb--ee--worker--repository--default_ns)
-* [`entity_index_size`](#-graphdb--ee--worker--repository--entity_index_size)
-* [`entity_id_size`](#-graphdb--ee--worker--repository--entity_id_size)
-* [`imports`](#-graphdb--ee--worker--repository--imports)
-* [`ruleset`](#-graphdb--ee--worker--repository--ruleset)
-* [`storage_folder`](#-graphdb--ee--worker--repository--storage_folder)
-* [`enable_context_index`](#-graphdb--ee--worker--repository--enable_context_index)
-* [`enable_predicate_list`](#-graphdb--ee--worker--repository--enable_predicate_list)
-* [`in_memory_literal_properties`](#-graphdb--ee--worker--repository--in_memory_literal_properties)
-* [`enable_literal_index`](#-graphdb--ee--worker--repository--enable_literal_index)
-* [`check_for_inconsistencies`](#-graphdb--ee--worker--repository--check_for_inconsistencies)
-* [`disable_same_as`](#-graphdb--ee--worker--repository--disable_same_as)
-* [`transaction_mode`](#-graphdb--ee--worker--repository--transaction_mode)
-* [`transaction_isolation`](#-graphdb--ee--worker--repository--transaction_isolation)
-* [`query_timeout`](#-graphdb--ee--worker--repository--query_timeout)
-* [`query_limit_results`](#-graphdb--ee--worker--repository--query_limit_results)
-* [`throw_query_evaluation_exception_on_timeout`](#-graphdb--ee--worker--repository--throw_query_evaluation_exception_on_timeout)
-* [`non_interpretable_predicates`](#-graphdb--ee--worker--repository--non_interpretable_predicates)
-* [`read_only`](#-graphdb--ee--worker--repository--read_only)
-
-##### <a name="-graphdb--ee--worker--repository--ensure"></a>`ensure`
-
-Data type: `Graphdb::Ensure`
-
-Whether the service should exist. Possible values are present and absent.
-
-Default value: `$graphdb::ensure`
-
-##### <a name="-graphdb--ee--worker--repository--endpoint"></a>`endpoint`
-
-Data type: `String`
-
-GraphDB endpoint.
-example: http://localhost:8080
-
-##### <a name="-graphdb--ee--worker--repository--repository_context"></a>`repository_context`
-
-Data type: `String`
-
-The context of the repository.
-example: http://ontotext.com
-
-##### <a name="-graphdb--ee--worker--repository--repository_template"></a>`repository_template`
+##### <a name="-graphdb--ee--master--repository--repository_template"></a>`repository_template`
 
 Data type: `String`
 
 The template to use for repository creation
 example: http://ontotext.com
 
-Default value: `"${module_name}/repository/worker.ttl.erb"`
+Default value: `"${module_name}/repository/master.ttl.epp"`
 
-##### <a name="-graphdb--ee--worker--repository--timeout"></a>`timeout`
+##### <a name="-graphdb--ee--master--repository--timeout"></a>`timeout`
 
 Data type: `Integer`
 
@@ -564,21 +489,48 @@ default: 60
 
 Default value: `60`
 
-##### <a name="-graphdb--ee--worker--repository--repository_id"></a>`repository_id`
+### <a name="graphdb--ee--worker--repository"></a>`graphdb::ee::worker::repository`
 
-Data type: `String`
+For other properties, please, check: {GraphDB documentation}[http://graphdb.ontotext.com/documentation/enterprise/configuring-a-repository.html?highlight=repository#configuration-parameters]
 
-Repository ID
+#### Parameters
 
-Default value: `$title`
+The following parameters are available in the `graphdb::ee::worker::repository` defined type:
 
-##### <a name="-graphdb--ee--worker--repository--repository_label"></a>`repository_label`
+* [`check_for_inconsistencies`](#-graphdb--ee--worker--repository--check_for_inconsistencies)
+* [`default_ns`](#-graphdb--ee--worker--repository--default_ns)
+* [`disable_same_as`](#-graphdb--ee--worker--repository--disable_same_as)
+* [`endpoint`](#-graphdb--ee--worker--repository--endpoint)
+* [`enable_context_index`](#-graphdb--ee--worker--repository--enable_context_index)
+* [`enable_literal_index`](#-graphdb--ee--worker--repository--enable_literal_index)
+* [`enable_predicate_list`](#-graphdb--ee--worker--repository--enable_predicate_list)
+* [`ensure`](#-graphdb--ee--worker--repository--ensure)
+* [`entity_id_size`](#-graphdb--ee--worker--repository--entity_id_size)
+* [`entity_index_size`](#-graphdb--ee--worker--repository--entity_index_size)
+* [`in_memory_literal_properties`](#-graphdb--ee--worker--repository--in_memory_literal_properties)
+* [`imports`](#-graphdb--ee--worker--repository--imports)
+* [`query_limit_results`](#-graphdb--ee--worker--repository--query_limit_results)
+* [`query_timeout`](#-graphdb--ee--worker--repository--query_timeout)
+* [`non_interpretable_predicates`](#-graphdb--ee--worker--repository--non_interpretable_predicates)
+* [`read_only`](#-graphdb--ee--worker--repository--read_only)
+* [`repository_context`](#-graphdb--ee--worker--repository--repository_context)
+* [`repository_id`](#-graphdb--ee--worker--repository--repository_id)
+* [`repository_label`](#-graphdb--ee--worker--repository--repository_label)
+* [`repository_template`](#-graphdb--ee--worker--repository--repository_template)
+* [`ruleset`](#-graphdb--ee--worker--repository--ruleset)
+* [`storage_folder`](#-graphdb--ee--worker--repository--storage_folder)
+* [`timeout`](#-graphdb--ee--worker--repository--timeout)
+* [`throw_query_evaluation_exception_on_timeout`](#-graphdb--ee--worker--repository--throw_query_evaluation_exception_on_timeout)
+* [`transaction_isolation`](#-graphdb--ee--worker--repository--transaction_isolation)
+* [`transaction_mode`](#-graphdb--ee--worker--repository--transaction_mode)
 
-Data type: `String`
+##### <a name="-graphdb--ee--worker--repository--check_for_inconsistencies"></a>`check_for_inconsistencies`
 
-Repository title
+Data type: `Boolean`
 
-Default value: `'GraphDB EE worker repository'`
+Check for inconsistencies
+
+Default value: `false`
 
 ##### <a name="-graphdb--ee--worker--repository--default_ns"></a>`default_ns`
 
@@ -588,67 +540,26 @@ Default namespaces for imports(';' delimited)
 
 Default value: `''`
 
-##### <a name="-graphdb--ee--worker--repository--entity_index_size"></a>`entity_index_size`
+##### <a name="-graphdb--ee--worker--repository--disable_same_as"></a>`disable_same_as`
 
-Data type: `String`
+Data type: `Boolean`
 
-Entity index size
+Disable OWL sameAs optimisation
 
-Default value: `'200000'`
+Default value: `false`
 
-##### <a name="-graphdb--ee--worker--repository--entity_id_size"></a>`entity_id_size`
+##### <a name="-graphdb--ee--worker--repository--endpoint"></a>`endpoint`
 
-Data type: `String`
+Data type: `Stdlib::HTTPUrl`
 
-Entity ID bit-size
-
-Default value: `'32'`
-
-##### <a name="-graphdb--ee--worker--repository--imports"></a>`imports`
-
-Data type: `String`
-
-Imported RDF files(';' delimited)
-
-Default value: `''`
-
-##### <a name="-graphdb--ee--worker--repository--ruleset"></a>`ruleset`
-
-Data type: `String`
-
-Rule-set
-
-Default value: `'owl-horst-optimized'`
-
-##### <a name="-graphdb--ee--worker--repository--storage_folder"></a>`storage_folder`
-
-Data type: `String`
-
-Storage folder
-
-Default value: `'storage'`
+GraphDB endpoint.
+example: http://localhost:8080
 
 ##### <a name="-graphdb--ee--worker--repository--enable_context_index"></a>`enable_context_index`
 
 Data type: `Boolean`
 
 Use context index
-
-Default value: `false`
-
-##### <a name="-graphdb--ee--worker--repository--enable_predicate_list"></a>`enable_predicate_list`
-
-Data type: `Boolean`
-
-Use predicate indices
-
-Default value: `false`
-
-##### <a name="-graphdb--ee--worker--repository--in_memory_literal_properties"></a>`in_memory_literal_properties`
-
-Data type: `Boolean`
-
-Cache literal language tags
 
 Default value: `false`
 
@@ -660,45 +571,53 @@ Enable literal index
 
 Default value: `true`
 
-##### <a name="-graphdb--ee--worker--repository--check_for_inconsistencies"></a>`check_for_inconsistencies`
+##### <a name="-graphdb--ee--worker--repository--enable_predicate_list"></a>`enable_predicate_list`
 
 Data type: `Boolean`
 
-Check for inconsistencies
+Use predicate indices
 
 Default value: `false`
 
-##### <a name="-graphdb--ee--worker--repository--disable_same_as"></a>`disable_same_as`
+##### <a name="-graphdb--ee--worker--repository--ensure"></a>`ensure`
+
+Data type: `Graphdb::Ensure`
+
+Whether the service should exist. Possible values are present and absent.
+
+Default value: `$graphdb::ensure`
+
+##### <a name="-graphdb--ee--worker--repository--entity_id_size"></a>`entity_id_size`
+
+Data type: `String`
+
+Entity ID bit-size
+
+Default value: `'32'`
+
+##### <a name="-graphdb--ee--worker--repository--entity_index_size"></a>`entity_index_size`
+
+Data type: `String`
+
+Entity index size
+
+Default value: `'200000'`
+
+##### <a name="-graphdb--ee--worker--repository--in_memory_literal_properties"></a>`in_memory_literal_properties`
 
 Data type: `Boolean`
 
-Disable OWL sameAs optimisation
+Cache literal language tags
 
 Default value: `false`
 
-##### <a name="-graphdb--ee--worker--repository--transaction_mode"></a>`transaction_mode`
+##### <a name="-graphdb--ee--worker--repository--imports"></a>`imports`
 
 Data type: `String`
 
-Transaction mode
+Imported RDF files(';' delimited)
 
-Default value: `'safe'`
-
-##### <a name="-graphdb--ee--worker--repository--transaction_isolation"></a>`transaction_isolation`
-
-Data type: `Boolean`
-
-Transaction isolation
-
-Default value: `true`
-
-##### <a name="-graphdb--ee--worker--repository--query_timeout"></a>`query_timeout`
-
-Data type: `String`
-
-Query time-out (seconds)
-
-Default value: `'0'`
+Default value: `''`
 
 ##### <a name="-graphdb--ee--worker--repository--query_limit_results"></a>`query_limit_results`
 
@@ -708,13 +627,13 @@ Limit query results
 
 Default value: `'0'`
 
-##### <a name="-graphdb--ee--worker--repository--throw_query_evaluation_exception_on_timeout"></a>`throw_query_evaluation_exception_on_timeout`
+##### <a name="-graphdb--ee--worker--repository--query_timeout"></a>`query_timeout`
 
-Data type: `Boolean`
+Data type: `String`
 
-Throw exception on query time-out
+Query time-out (seconds)
 
-Default value: `false`
+Default value: `'0'`
 
 ##### <a name="-graphdb--ee--worker--repository--non_interpretable_predicates"></a>`non_interpretable_predicates`
 
@@ -732,6 +651,87 @@ Read-only
 
 Default value: `false`
 
+##### <a name="-graphdb--ee--worker--repository--repository_context"></a>`repository_context`
+
+Data type: `String`
+
+The context of the repository.
+example: http://ontotext.com
+
+##### <a name="-graphdb--ee--worker--repository--repository_id"></a>`repository_id`
+
+Data type: `String`
+
+Repository ID
+
+Default value: `$title`
+
+##### <a name="-graphdb--ee--worker--repository--repository_label"></a>`repository_label`
+
+Data type: `String`
+
+Repository title
+
+Default value: `'GraphDB EE worker repository'`
+
+##### <a name="-graphdb--ee--worker--repository--repository_template"></a>`repository_template`
+
+Data type: `String`
+
+The template to use for repository creation
+example: http://ontotext.com
+
+Default value: `"${module_name}/repository/worker.ttl.epp"`
+
+##### <a name="-graphdb--ee--worker--repository--ruleset"></a>`ruleset`
+
+Data type: `String`
+
+Rule-set
+
+Default value: `'owl-horst-optimized'`
+
+##### <a name="-graphdb--ee--worker--repository--storage_folder"></a>`storage_folder`
+
+Data type: `String`
+
+Storage folder
+
+Default value: `'storage'`
+
+##### <a name="-graphdb--ee--worker--repository--timeout"></a>`timeout`
+
+Data type: `Integer`
+
+The max number of seconds that the repository create/delete/check process should wait before giving up.
+default: 60
+
+Default value: `60`
+
+##### <a name="-graphdb--ee--worker--repository--throw_query_evaluation_exception_on_timeout"></a>`throw_query_evaluation_exception_on_timeout`
+
+Data type: `Boolean`
+
+Throw exception on query time-out
+
+Default value: `false`
+
+##### <a name="-graphdb--ee--worker--repository--transaction_isolation"></a>`transaction_isolation`
+
+Data type: `Boolean`
+
+Transaction isolation
+
+Default value: `true`
+
+##### <a name="-graphdb--ee--worker--repository--transaction_mode"></a>`transaction_mode`
+
+Data type: `String`
+
+Transaction mode
+
+Default value: `'safe'`
+
 ### <a name="graphdb--instance"></a>`graphdb::instance`
 
 This define allows you to create or remove an graphdb instance
@@ -741,19 +741,19 @@ This define allows you to create or remove an graphdb instance
 The following parameters are available in the `graphdb::instance` defined type:
 
 * [`ensure`](#-graphdb--instance--ensure)
-* [`status`](#-graphdb--instance--status)
-* [`license`](#-graphdb--instance--license)
-* [`http_port`](#-graphdb--instance--http_port)
-* [`kill_timeout`](#-graphdb--instance--kill_timeout)
-* [`validator_timeout`](#-graphdb--instance--validator_timeout)
-* [`validator_test_enabled`](#-graphdb--instance--validator_test_enabled)
-* [`heap_size`](#-graphdb--instance--heap_size)
 * [`external_url`](#-graphdb--instance--external_url)
-* [`logback_config`](#-graphdb--instance--logback_config)
 * [`extra_properties`](#-graphdb--instance--extra_properties)
+* [`heap_size`](#-graphdb--instance--heap_size)
+* [`http_port`](#-graphdb--instance--http_port)
 * [`java_opts`](#-graphdb--instance--java_opts)
-* [`protocol`](#-graphdb--instance--protocol)
 * [`jolokia_access_link`](#-graphdb--instance--jolokia_access_link)
+* [`kill_timeout`](#-graphdb--instance--kill_timeout)
+* [`license`](#-graphdb--instance--license)
+* [`logback_config`](#-graphdb--instance--logback_config)
+* [`protocol`](#-graphdb--instance--protocol)
+* [`status`](#-graphdb--instance--status)
+* [`validator_test_enabled`](#-graphdb--instance--validator_test_enabled)
+* [`validator_timeout`](#-graphdb--instance--validator_timeout)
 
 ##### <a name="-graphdb--instance--ensure"></a>`ensure`
 
@@ -773,6 +773,90 @@ String. Controls if the managed resources shall be <tt>present</tt> or
 Defaults to <tt>present</tt>.
 
 Default value: `$graphdb::ensure`
+
+##### <a name="-graphdb--instance--external_url"></a>`external_url`
+
+Data type: `Optional[String]`
+
+GraphDB external URL if GraphDB instance is accessed via proxy
+
+Default value: `undef`
+
+##### <a name="-graphdb--instance--extra_properties"></a>`extra_properties`
+
+Data type: `Hash`
+
+Hash of properties to include in graphdb.properties file
+example: {'graphdb.some.property' => 'some.property.value'}
+
+Default value: `{}`
+
+##### <a name="-graphdb--instance--heap_size"></a>`heap_size`
+
+Data type: `Optional[String]`
+
+GraphDB java heap size given by -Xmx parameter. Note heap_size parameter will also set xms=xmx
+
+Default value: `undef`
+
+##### <a name="-graphdb--instance--http_port"></a>`http_port`
+
+Data type: `Integer`
+
+The http port at which GraphDB will run.
+
+Default value: `8080`
+
+##### <a name="-graphdb--instance--java_opts"></a>`java_opts`
+
+Data type: `Array`
+
+Array of java options to give to GraphDB java process
+example: ['-Xmx1g', '-Xms1g']
+
+Default value: `[]`
+
+##### <a name="-graphdb--instance--jolokia_access_link"></a>`jolokia_access_link`
+
+Data type: `Boolean`
+
+Add jolokia-access.xml link
+
+Default value: `versioncmp($graphdb::ensure, '9.10.0') > -1`
+
+##### <a name="-graphdb--instance--kill_timeout"></a>`kill_timeout`
+
+Data type: `Integer`
+
+Time before force kill of GraphDB process. Instances with big repositories may
+time to flush on shutdown.
+default: 180
+
+Default value: `180`
+
+##### <a name="-graphdb--instance--license"></a>`license`
+
+Data type: `Optional[String]`
+
+GraphDB license file.
+
+Default value: `undef`
+
+##### <a name="-graphdb--instance--logback_config"></a>`logback_config`
+
+Data type: `Optional[String]`
+
+GraphDB logback log configuration
+
+Default value: `undef`
+
+##### <a name="-graphdb--instance--protocol"></a>`protocol`
+
+Data type: `String`
+
+A string, either 'http' or 'https defining under what protocol to connect to GraphDB'
+
+Default value: `'http'`
 
 ##### <a name="-graphdb--instance--status"></a>`status`
 
@@ -796,40 +880,6 @@ case).
 
 Default value: `$graphdb::status`
 
-##### <a name="-graphdb--instance--license"></a>`license`
-
-Data type: `Optional[String]`
-
-GraphDB license file.
-
-Default value: `undef`
-
-##### <a name="-graphdb--instance--http_port"></a>`http_port`
-
-Data type: `Integer`
-
-The http port at which GraphDB will run.
-
-Default value: `8080`
-
-##### <a name="-graphdb--instance--kill_timeout"></a>`kill_timeout`
-
-Data type: `Integer`
-
-Time before force kill of GraphDB process. Instances with big repositories may
-time to flush on shutdown.
-default: 180
-
-Default value: `180`
-
-##### <a name="-graphdb--instance--validator_timeout"></a>`validator_timeout`
-
-Data type: `Integer`
-
-Time before GraphDB validator decides that the GraphDB instance is not running
-
-Default value: `60`
-
 ##### <a name="-graphdb--instance--validator_test_enabled"></a>`validator_test_enabled`
 
 Data type: `Boolean`
@@ -838,63 +888,13 @@ GraphDB validator
 
 Default value: `true`
 
-##### <a name="-graphdb--instance--heap_size"></a>`heap_size`
+##### <a name="-graphdb--instance--validator_timeout"></a>`validator_timeout`
 
-Data type: `Optional[String]`
+Data type: `Integer`
 
-GraphDB java heap size given by -Xmx parameter. Note heap_size parameter will also set xms=xmx
+Time before GraphDB validator decides that the GraphDB instance is not running
 
-Default value: `undef`
-
-##### <a name="-graphdb--instance--external_url"></a>`external_url`
-
-Data type: `Optional[String]`
-
-GraphDB external URL if GraphDB instance is accessed via proxy
-
-Default value: `undef`
-
-##### <a name="-graphdb--instance--logback_config"></a>`logback_config`
-
-Data type: `Optional[String]`
-
-GraphDB logback log configuration
-
-Default value: `undef`
-
-##### <a name="-graphdb--instance--extra_properties"></a>`extra_properties`
-
-Data type: `Hash`
-
-Hash of properties to include in graphdb.properties file
-example: {'graphdb.some.property' => 'some.property.value'}
-
-Default value: `{}`
-
-##### <a name="-graphdb--instance--java_opts"></a>`java_opts`
-
-Data type: `Array`
-
-Array of java options to give to GraphDB java process
-example: ['-Xmx1g', '-Xms1g']
-
-Default value: `[]`
-
-##### <a name="-graphdb--instance--protocol"></a>`protocol`
-
-Data type: `String`
-
-A string, either 'http' or 'https defining under what protocol to connect to GraphDB'
-
-Default value: `'http'`
-
-##### <a name="-graphdb--instance--jolokia_access_link"></a>`jolokia_access_link`
-
-Data type: `Boolean`
-
-Add jolokia-access.xml link
-
-Default value: `versioncmp($graphdb::ensure, '9.10.0') > -1`
+Default value: `60`
 
 ### <a name="graphdb--plugin"></a>`graphdb::plugin`
 
@@ -949,31 +949,86 @@ For other properties, please, check: {GraphDB documentation}[http://graphdb.onto
 
 The following parameters are available in the `graphdb::se::repository` defined type:
 
-* [`ensure`](#-graphdb--se--repository--ensure)
+* [`check_for_inconsistencies`](#-graphdb--se--repository--check_for_inconsistencies)
+* [`default_ns`](#-graphdb--se--repository--default_ns)
+* [`disable_same_as`](#-graphdb--se--repository--disable_same_as)
 * [`endpoint`](#-graphdb--se--repository--endpoint)
+* [`enable_context_index`](#-graphdb--se--repository--enable_context_index)
+* [`enable_literal_index`](#-graphdb--se--repository--enable_literal_index)
+* [`enable_predicate_list`](#-graphdb--se--repository--enable_predicate_list)
+* [`ensure`](#-graphdb--se--repository--ensure)
+* [`entity_id_size`](#-graphdb--se--repository--entity_id_size)
+* [`entity_index_size`](#-graphdb--se--repository--entity_index_size)
+* [`in_memory_literal_properties`](#-graphdb--se--repository--in_memory_literal_properties)
+* [`imports`](#-graphdb--se--repository--imports)
+* [`query_limit_results`](#-graphdb--se--repository--query_limit_results)
+* [`query_timeout`](#-graphdb--se--repository--query_timeout)
+* [`read_only`](#-graphdb--se--repository--read_only)
 * [`repository_context`](#-graphdb--se--repository--repository_context)
-* [`repository_template`](#-graphdb--se--repository--repository_template)
-* [`timeout`](#-graphdb--se--repository--timeout)
 * [`repository_id`](#-graphdb--se--repository--repository_id)
 * [`repository_label`](#-graphdb--se--repository--repository_label)
-* [`default_ns`](#-graphdb--se--repository--default_ns)
-* [`entity_index_size`](#-graphdb--se--repository--entity_index_size)
-* [`entity_id_size`](#-graphdb--se--repository--entity_id_size)
-* [`imports`](#-graphdb--se--repository--imports)
+* [`repository_template`](#-graphdb--se--repository--repository_template)
 * [`ruleset`](#-graphdb--se--repository--ruleset)
 * [`storage_folder`](#-graphdb--se--repository--storage_folder)
-* [`enable_context_index`](#-graphdb--se--repository--enable_context_index)
-* [`enable_predicate_list`](#-graphdb--se--repository--enable_predicate_list)
-* [`in_memory_literal_properties`](#-graphdb--se--repository--in_memory_literal_properties)
-* [`enable_literal_index`](#-graphdb--se--repository--enable_literal_index)
-* [`check_for_inconsistencies`](#-graphdb--se--repository--check_for_inconsistencies)
-* [`disable_same_as`](#-graphdb--se--repository--disable_same_as)
-* [`transaction_mode`](#-graphdb--se--repository--transaction_mode)
-* [`transaction_isolation`](#-graphdb--se--repository--transaction_isolation)
-* [`query_timeout`](#-graphdb--se--repository--query_timeout)
-* [`query_limit_results`](#-graphdb--se--repository--query_limit_results)
+* [`timeout`](#-graphdb--se--repository--timeout)
 * [`throw_query_evaluation_exception_on_timeout`](#-graphdb--se--repository--throw_query_evaluation_exception_on_timeout)
-* [`read_only`](#-graphdb--se--repository--read_only)
+* [`transaction_isolation`](#-graphdb--se--repository--transaction_isolation)
+* [`transaction_mode`](#-graphdb--se--repository--transaction_mode)
+
+##### <a name="-graphdb--se--repository--check_for_inconsistencies"></a>`check_for_inconsistencies`
+
+Data type: `Boolean`
+
+Check for inconsistencies
+
+Default value: `false`
+
+##### <a name="-graphdb--se--repository--default_ns"></a>`default_ns`
+
+Data type: `String`
+
+Default namespaces for imports(';' delimited)
+
+Default value: `''`
+
+##### <a name="-graphdb--se--repository--disable_same_as"></a>`disable_same_as`
+
+Data type: `Boolean`
+
+Disable OWL sameAs optimisation
+
+Default value: `false`
+
+##### <a name="-graphdb--se--repository--endpoint"></a>`endpoint`
+
+Data type: `Stdlib::HTTPUrl`
+
+GraphDB endpoint.
+example: http://localhost:8080
+
+##### <a name="-graphdb--se--repository--enable_context_index"></a>`enable_context_index`
+
+Data type: `Boolean`
+
+Use context index
+
+Default value: `false`
+
+##### <a name="-graphdb--se--repository--enable_literal_index"></a>`enable_literal_index`
+
+Data type: `Boolean`
+
+Enable literal index
+
+Default value: `true`
+
+##### <a name="-graphdb--se--repository--enable_predicate_list"></a>`enable_predicate_list`
+
+Data type: `Boolean`
+
+Use predicate indices
+
+Default value: `false`
 
 ##### <a name="-graphdb--se--repository--ensure"></a>`ensure`
 
@@ -983,12 +1038,61 @@ Whether the service should exist. Possible values are present and absent.
 
 Default value: `$graphdb::ensure`
 
-##### <a name="-graphdb--se--repository--endpoint"></a>`endpoint`
+##### <a name="-graphdb--se--repository--entity_id_size"></a>`entity_id_size`
 
 Data type: `String`
 
-GraphDB endpoint.
-example: http://localhost:8080
+Entity ID bit-size
+
+Default value: `'32'`
+
+##### <a name="-graphdb--se--repository--entity_index_size"></a>`entity_index_size`
+
+Data type: `String`
+
+Entity index size
+
+Default value: `'200000'`
+
+##### <a name="-graphdb--se--repository--in_memory_literal_properties"></a>`in_memory_literal_properties`
+
+Data type: `Boolean`
+
+Cache literal language tags
+
+Default value: `false`
+
+##### <a name="-graphdb--se--repository--imports"></a>`imports`
+
+Data type: `String`
+
+Imported RDF files(';' delimited)
+
+Default value: `''`
+
+##### <a name="-graphdb--se--repository--query_limit_results"></a>`query_limit_results`
+
+Data type: `String`
+
+Limit query results
+
+Default value: `'0'`
+
+##### <a name="-graphdb--se--repository--query_timeout"></a>`query_timeout`
+
+Data type: `String`
+
+Query time-out (seconds)
+
+Default value: `'0'`
+
+##### <a name="-graphdb--se--repository--read_only"></a>`read_only`
+
+Data type: `Boolean`
+
+Read-only
+
+Default value: `false`
 
 ##### <a name="-graphdb--se--repository--repository_context"></a>`repository_context`
 
@@ -996,24 +1100,6 @@ Data type: `String`
 
 The context of the repository.
 example: http://ontotext.com
-
-##### <a name="-graphdb--se--repository--repository_template"></a>`repository_template`
-
-Data type: `String`
-
-The template to use for repository creation
-example: http://ontotext.com
-
-Default value: `"${module_name}/repository/se.ttl.erb"`
-
-##### <a name="-graphdb--se--repository--timeout"></a>`timeout`
-
-Data type: `Integer`
-
-The max number of seconds that the repository create/delete/check process should wait before giving up.
-default: 60
-
-Default value: `60`
 
 ##### <a name="-graphdb--se--repository--repository_id"></a>`repository_id`
 
@@ -1031,37 +1117,14 @@ Repository title
 
 Default value: `'GraphdDB SE repository'`
 
-##### <a name="-graphdb--se--repository--default_ns"></a>`default_ns`
+##### <a name="-graphdb--se--repository--repository_template"></a>`repository_template`
 
 Data type: `String`
 
-Default namespaces for imports(';' delimited)
+The template to use for repository creation
+example: http://ontotext.com
 
-Default value: `''`
-
-##### <a name="-graphdb--se--repository--entity_index_size"></a>`entity_index_size`
-
-Data type: `String`
-
-Entity index size
-
-Default value: `'200000'`
-
-##### <a name="-graphdb--se--repository--entity_id_size"></a>`entity_id_size`
-
-Data type: `String`
-
-Entity ID bit-size
-
-Default value: `'32'`
-
-##### <a name="-graphdb--se--repository--imports"></a>`imports`
-
-Data type: `String`
-
-Imported RDF files(';' delimited)
-
-Default value: `''`
+Default value: `"${module_name}/repository/se.ttl.epp"`
 
 ##### <a name="-graphdb--se--repository--ruleset"></a>`ruleset`
 
@@ -1079,85 +1142,14 @@ Storage folder
 
 Default value: `'storage'`
 
-##### <a name="-graphdb--se--repository--enable_context_index"></a>`enable_context_index`
+##### <a name="-graphdb--se--repository--timeout"></a>`timeout`
 
-Data type: `Boolean`
+Data type: `Integer`
 
-Use context index
+The max number of seconds that the repository create/delete/check process should wait before giving up.
+default: 60
 
-Default value: `false`
-
-##### <a name="-graphdb--se--repository--enable_predicate_list"></a>`enable_predicate_list`
-
-Data type: `Boolean`
-
-Use predicate indices
-
-Default value: `false`
-
-##### <a name="-graphdb--se--repository--in_memory_literal_properties"></a>`in_memory_literal_properties`
-
-Data type: `Boolean`
-
-Cache literal language tags
-
-Default value: `false`
-
-##### <a name="-graphdb--se--repository--enable_literal_index"></a>`enable_literal_index`
-
-Data type: `Boolean`
-
-Enable literal index
-
-Default value: `true`
-
-##### <a name="-graphdb--se--repository--check_for_inconsistencies"></a>`check_for_inconsistencies`
-
-Data type: `Boolean`
-
-Check for inconsistencies
-
-Default value: `false`
-
-##### <a name="-graphdb--se--repository--disable_same_as"></a>`disable_same_as`
-
-Data type: `Boolean`
-
-Disable OWL sameAs optimisation
-
-Default value: `false`
-
-##### <a name="-graphdb--se--repository--transaction_mode"></a>`transaction_mode`
-
-Data type: `String`
-
-Transaction mode
-
-Default value: `'safe'`
-
-##### <a name="-graphdb--se--repository--transaction_isolation"></a>`transaction_isolation`
-
-Data type: `Boolean`
-
-Transaction isolation
-
-Default value: `true`
-
-##### <a name="-graphdb--se--repository--query_timeout"></a>`query_timeout`
-
-Data type: `String`
-
-Query time-out (seconds)
-
-Default value: `'0'`
-
-##### <a name="-graphdb--se--repository--query_limit_results"></a>`query_limit_results`
-
-Data type: `String`
-
-Limit query results
-
-Default value: `'0'`
+Default value: `60`
 
 ##### <a name="-graphdb--se--repository--throw_query_evaluation_exception_on_timeout"></a>`throw_query_evaluation_exception_on_timeout`
 
@@ -1167,13 +1159,21 @@ Throw exception on query time-out
 
 Default value: `false`
 
-##### <a name="-graphdb--se--repository--read_only"></a>`read_only`
+##### <a name="-graphdb--se--repository--transaction_isolation"></a>`transaction_isolation`
 
 Data type: `Boolean`
 
-Read-only
+Transaction isolation
 
-Default value: `false`
+Default value: `true`
+
+##### <a name="-graphdb--se--repository--transaction_mode"></a>`transaction_mode`
+
+Data type: `String`
+
+Transaction mode
+
+Default value: `'safe'`
 
 ### <a name="graphdb--service"></a>`graphdb::service`
 

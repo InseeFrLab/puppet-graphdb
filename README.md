@@ -42,6 +42,7 @@ This module has been tested on GraphDB 10.0.3, 10.5.x
 ### Beginning with GraphDB
 
 #### Version 10.0.0
+
 Declare the top-level `graphdb` class and set up an instance:
 
 ```puppet
@@ -56,6 +57,7 @@ graphdb::instance { 'graphdb-instance':
 ```
 
 #### Version 9 and before
+
 Declare the top-level `graphdb` class and set up an instance:
 
 ```puppet
