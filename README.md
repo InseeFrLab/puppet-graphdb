@@ -7,7 +7,7 @@ GraphDB Puppet module
 ## Initial project
 
 - The initiale project is here : [Ontotext-AD/puppet-graphdb](https://github.com/Ontotext-AD/puppet-graphdb)
-- The fork link was suppressed besause :
+- The fork link was suppressed because :
    - Lot of divergences with initial project
    - Initial project is "frozen" (at 02/08/2024 the last commit was "Nov 26, 2020") 
 
