@@ -20,8 +20,7 @@ module Puppet
                                  'rdfjson' => 'application/rdf+json; charset=utf-8',
                                  'rdfa' => 'application/html; charset=utf-8' }.freeze
 
-      attr_reader :endpoint
-      attr_reader :repository_id
+      attr_reader :endpoint, :repository_id
 
       def initialize(endpoint, repository_id)
         @endpoint = endpoint
@@ -45,7 +44,7 @@ module Puppet
                                                           { codes: [404] },
                                                           0)
         false
-      rescue
+      rescue StandardError
         true
       end
 

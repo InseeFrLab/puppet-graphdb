@@ -28,10 +28,6 @@
 * [`graphdb_update`](#graphdb_update): Executes update query GraphDB
 * [`graphdb_validator`](#graphdb_validator): Checks whether GraphDB instance is running
 
-### Functions
-
-* [`generate_java_opts_string`](#generate_java_opts_string): This function java opts string from given array.  *Examples:*      generate_java_opts_string(['-Xmx1g','-Xms2g','-Dwell'])  Will return: "-Xm
-
 ### Data types
 
 * [`Graphdb::Ensure`](#Graphdb--Ensure): Validate the value of the ensure parameter for a install
@@ -432,7 +428,7 @@ Default value: `$graphdb::ensure`
 
 ##### <a name="-graphdb--ee--master--repository--node_id"></a>`node_id`
 
-Data type: `String`
+Data type: `Stdlib::HTTPUrl`
 
 Node id of master instance
 default: endpoint, same as the master instance endpoint
@@ -1595,32 +1591,6 @@ The max number of seconds that the validator should wait before giving up
 and deciding that the GraphDB is not running; default: 60 seconds.
 
 Default value: `60`
-
-## Functions
-
-### <a name="generate_java_opts_string"></a>`generate_java_opts_string`
-
-Type: Ruby 3.x API
-
-This function java opts string from given array.
-
-*Examples:*
-
-    generate_java_opts_string(['-Xmx1g','-Xms2g','-Dwell'])
-
-Will return: "-Xmx1g -Xms2g -Dwell"
-
-#### `generate_java_opts_string()`
-
-This function java opts string from given array.
-
-*Examples:*
-
-    generate_java_opts_string(['-Xmx1g','-Xms2g','-Dwell'])
-
-Will return: "-Xmx1g -Xms2g -Dwell"
-
-Returns: `Any` String
 
 ## Data types
 

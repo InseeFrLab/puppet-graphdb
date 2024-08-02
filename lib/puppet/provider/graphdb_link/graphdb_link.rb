@@ -56,6 +56,7 @@ Puppet::Type.type(:graphdb_link).provide(:graphdb_link) do
 
   def check_resource_is_matching_master_instance?(resource, port)
     return true if resource.type == :component && !resource[:http_port].nil? && resource[:http_port].to_s == port
+
     false
   end
 
@@ -64,7 +65,9 @@ Puppet::Type.type(:graphdb_link).provide(:graphdb_link) do
     master_endpoint = resource[:peer_master_endpoint]
     master_repository_id = resource[:peer_master_repository_id]
     resource.catalog.resources.each do |resource|
-      node_id = resource[:node_id] if check_resource_is_matching_master_repository?(resource, master_endpoint, master_repository_id)
+      if check_resource_is_matching_master_repository?(resource, master_endpoint, master_repository_id)
+        node_id = resource[:node_id]
+      end
     end
     if node_id.nil?
       raise Puppet::Error, 'fail to resolve node id, please ensure that graphdb_link

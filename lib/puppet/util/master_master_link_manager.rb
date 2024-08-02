@@ -8,11 +8,7 @@ module Puppet
   module Util
     # GraphDB master master link manager
     class MasterMasterLinkManager
-      attr_reader :master_endpoint
-      attr_reader :master_repository_id
-      attr_reader :peer_master_endpoint
-      attr_reader :peer_master_repository_id
-      attr_reader :peer_master_node_id
+      attr_reader :master_endpoint, :master_repository_id, :peer_master_endpoint, :peer_master_repository_id, :peer_master_node_id
 
       def initialize(master_endpoint, master_repository_id, peer_master_endpoint, peer_master_repository_id,
                      peer_master_node_id)

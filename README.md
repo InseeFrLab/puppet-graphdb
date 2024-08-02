@@ -11,11 +11,9 @@ GraphDB Puppet module (fork)
   * [The module manages the following](#the-module-manages-the-following)
   * [Requirements](#requirements)
 3. [Usage - Configuration options and additional functionality](#usage)
-4. [Advanced features - Extra information on advanced usage](#advanced-features)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
-7. [Support - When you need help with this module](#support)
-8. [License](#license)
+4. [Limitations - OS compatibility, etc.](#limitations)
+5. [Development - Guide for contributing to the module](#development)
+6. [License](#license)
 
 ## Module description
 
@@ -48,7 +46,7 @@ Declare the top-level `graphdb` class and set up an instance:
 ```puppet
 # Since 10.0.0, "edition" paramater is useless.
 class{ 'graphdb':
-  version              => '10.0.0',
+  version => '10.0.0',
 }
 
 graphdb::instance { 'graphdb-instance':
@@ -62,12 +60,12 @@ Declare the top-level `graphdb` class and set up an instance:
 
 ```puppet
 class{ 'graphdb':
-  version              => '9.10.2',
-  edition              => 'se',
+  version => '9.10.2',
+  edition => 'se',
 }
 
 graphdb::instance { 'graphdb-instance':
-   license           => '/home/graphdb/graphdb.license',
+   license => '/home/graphdb/graphdb.license',
 }
 ```
 
@@ -88,9 +86,9 @@ class { 'graphdb':
 
 ```puppet
 class { 'graphdb':
-  version              => '9.10.2',
-  edition              => 'se',
-  status               => 'disabled'
+  version => '9.10.2',
+  edition => 'se',
+  status  => 'disabled'
 }
 ```
 
@@ -101,9 +99,9 @@ This can be overridden globally with the following option:
 
 ```puppet
 class { 'graphdb':
-  version              => '9.10.2',
-  edition              => 'se',
-  restart_on_change    => false,
+  version           => '9.10.2',
+  edition           => 'se',
+  restart_on_change => false,
 }
 ```
 
@@ -125,15 +123,15 @@ Instance specific options can be given:
 
 ```puppet
 graphdb::instance { 'graphdb-instance':
-  http_port          => 8080, # http port that GraphDB will use
-  kill_timeout       => 180, # time before force kill of GraphDB process
-  validator_timeout  => 60, # GraphDB repository validator timeout
-  logback_config     => undef, # custom GraphDB logback log configuration
-  extra_properties   => { }, # extra properties for graphdb.properties file
-  external_url       => undef, # graphDB external URL if GraphDB instance is accessed via proxy, e.g. https://ontotext.com/graphdb
-  heap_size          => '2g', # GraphDB  java heap size given by -Xmx parameter. Note heap_size parameter will also set xms=xmx
-  java_opts          => [], # extra java opts for java process
-  protocol           => 'http', # https or http protocol, defaults to http
+  http_port         => 8080, # http port that GraphDB will use
+  kill_timeout      => 180, # time before force kill of GraphDB process
+  validator_timeout => 60, # GraphDB repository validator timeout
+  logback_config    => undef, # custom GraphDB logback log configuration
+  extra_properties  => { }, # extra properties for graphdb.properties file
+  external_url      => undef, # graphDB external URL if GraphDB instance is accessed via proxy, e.g. https://ontotext.com/graphdb
+  heap_size         => '2g', # GraphDB  java heap size given by -Xmx parameter. Note heap_size parameter will also set xms=xmx
+  java_opts         => [], # extra java opts for java process
+  protocol          => 'http', # https or http protocol, defaults to http
 }
 ```
 

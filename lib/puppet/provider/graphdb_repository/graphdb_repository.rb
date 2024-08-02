@@ -26,9 +26,7 @@ Puppet::Type.type(:graphdb_repository).provide(:graphdb_repository) do
     unless resource[:replication_port].nil?
       result = repository_manager.define_repository_replication_port(resource[:replication_port])
     end
-    unless resource[:node_id].nil?
-      result = repository_manager.define_node_id(resource[:node_id])
-    end
+    result = repository_manager.define_node_id(resource[:node_id]) unless resource[:node_id].nil?
 
     result
   end

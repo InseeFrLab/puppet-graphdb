@@ -41,8 +41,10 @@ module Puppet
               err_message += "Recieved message: #{response.body}\n"
             end
           end
-          raise Puppet::Exceptions::ExpectationsFailError,
-                err_message unless matches_expectations?(response, expectations)
+          unless matches_expectations?(response, expectations)
+            raise Puppet::Exceptions::ExpectationsFailError,
+                  err_message
+          end
         end
       end
 
