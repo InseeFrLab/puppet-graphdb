@@ -157,7 +157,7 @@ The module has been tested on:
 
 ## Development
 
-Please see the [CONTRIBUTING.md](https://github.com/phaedriel/puppet-graphdb/.github/CONTRIBUTING.md) file for instructions regarding development environments and testing.
+Please see the [CONTRIBUTING.md](https://github.com/phaedriel/puppet-graphdb/blob/master/.github/CONTRIBUTING.md) file for instructions regarding development environments and testing.
 
 ## License
 
