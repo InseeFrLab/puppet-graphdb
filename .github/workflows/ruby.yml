@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['2.7', '3.0']
+        ruby-version: ['2.6', '2.7', '3.0']
 
     steps:
     - uses: actions/checkout@v4
@@ -35,48 +35,8 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Run static validations
-        run: bundle exec rake validate lint check
-      - name: Run rake rubocop
-        run: bundle exec rake rubocop
-        if: ${{ inputs.rubocop }}
-      - name: Setup Test Matrix
-        id: get-outputs
-        run: bundle exec metadata2gha
-
-  unit:
-    defaults:
-      run:
-        working-directory: ${{ inputs.working-directory }}
-    needs: setup_matrix
-    runs-on: ${{ inputs.unit_runs_on }}
-    timeout-minutes: ${{ inputs.timeout_minutes }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include: ${{fromJson(needs.setup_matrix.outputs.puppet_unit_test_matrix)}}
-    env:
-      BUNDLE_WITHOUT: development:system_tests:release
-      PUPPET_GEM_VERSION: "~> ${{ matrix.puppet }}.0"
-    name: ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
-    steps:
-      - uses: actions/checkout@v4
-      - name: install additional packages
-        if: ${{ inputs.additional_packages != '' }}
-        run: sudo apt-get install -y ${{ inputs.additional_packages }}
-      - name: Setup ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
-          cache-version: ${{ inputs.cache-version }}
-          working-directory: ${{ inputs.working-directory }}
-      - name: Run tests
-        run: bundle exec rake parallel_spec
-
-  tests:
-    needs: unit
-    runs-on: ubuntu-latest
-    name: Test suite
-    steps:
-      - run: echo Test suite completed
-        working-directory: '.'
+      run: bundle exec rake validate lint check
+    - name: Run rake rubocop
+      run: bundle exec rake rubocop
+    - name: Run rake spec
+      run: bundle exec rake spec
