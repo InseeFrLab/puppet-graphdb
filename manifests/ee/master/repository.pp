@@ -39,12 +39,13 @@ define graphdb::ee::master::repository (
   Stdlib::HTTPUrl $endpoint,
   String          $repository_context,
   Graphdb::Ensure $ensure              = $graphdb::ensure,
-  String          $node_id             = "${endpoint}/repositories/${repository_id}",
   Integer         $replication_port    = 0,
   String          $repository_template = "${module_name}/repository/master.ttl.epp",
   String          $repository_id       = $title,
   String          $repository_label    = 'GraphDB EE master repository',
   Integer         $timeout             = 60,
+  # params used : endpoint & repository_id
+  Stdlib::HTTPUrl $node_id             = "${endpoint}/repositories/${repository_id}",
 ) {
   graphdb_repository { $title:
     ensure              => $ensure,

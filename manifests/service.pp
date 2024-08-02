@@ -63,9 +63,13 @@ define graphdb::service (
       ensure  => $ensure,
       content => epp('graphdb/service/systemd.epp',
         {
-          java_opts    => generate_java_opts_string($java_opts),
-          kill_timeout => $kill_timeout,
-          title        => $title,
+          group         => $graphdb::graphdb_group,
+          install_dir   => $graphdb::install_dir,
+          java_location => $graphdb::java_location,
+          java_opts     => generate_java_opts_string($java_opts),
+          kill_timeout  => $kill_timeout,
+          title         => $title,
+          user          => $graphdb::graphdb_user,
         }
       ),
       owner   => 'root',

@@ -1,3 +1,3 @@
 <%- $properties.keys.sort.each |$key| {-%>
-<%= $key %> = <%= $properties[key] %>
+<%= $key %> = <%= $properties[$key] %>
 <%- } -%>

@@ -3,15 +3,15 @@ Description="GraphDB - <%= $title %>"
 After=network.target
 
 [Service]
-Group=<%= $graphdb::group %>
-User=<%= $graphdb::user %>
+Group=<%= $group %>
+User=<%= $user %>
 
 Restart=on-failure
 RestartSec=5s
 
 TimeoutStopSec=<%= $kill_timeout %>
 
-Environment=JAVA_HOME=<%= $graphdb::java_location %>
+Environment=JAVA_HOME=<%= $java_location %>
 
 <% unless empty($java_opts) { -%>
 Environment="GDB_JAVA_OPTS=<%= $java_opts %>"
@@ -20,7 +20,7 @@ Environment="GDB_JAVA_OPTS=<%= $java_opts %>"
 # Tomcat process exits with status 143 when kill is successful
 SuccessExitStatus=143
 
-ExecStart=<%= $graphdb::install_dir %>/dist/bin/graphdb -Dgraphdb.home=<%= $graphdb::install_dir %>/instances/<%= $title %>
+ExecStart=<%= $install_dir %>/dist/bin/graphdb -Dgraphdb.home=<%= $install_dir %>/instances/<%= $title %>
 
 [Install]
 WantedBy=multi-user.target
