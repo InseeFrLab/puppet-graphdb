@@ -11,11 +11,12 @@ These should not affect the functionality of the module.
 - Replace legacy_facts (+ modify fact in spec)
 - Add tests kernel and os (init.pp)
 - Replace notation %w(...) by %w[...]
-- Use https://github.com/voxpupuli/gha-puppet/blob/v3/.github/workflows/basic.yml (workflows)
+- Add workflow file
 - Add fact graphdb_version
-- Change templates ERB in EPP
+- Change templates ERB in EPP format
 - Change type params endpoint String to Stdlib::HTTPUrl
 - Remove function generate_java_opts_string (use join)
+- Add some rubocop rules and corrections in lib files
 
 ## [v0.10.0](https://github.com/phaedriel/puppet-graphdb/releases/tag/v0.10.0)
 
