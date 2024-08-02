@@ -15,6 +15,7 @@ These should not affect the functionality of the module.
 - Add fact graphdb_version
 - Change templates ERB in EPP
 - Change type params endpoint String to Stdlib::HTTPUrl
+- Remove function generate_java_opts_string (use join)
 
 ## [v0.10.0](https://github.com/phaedriel/puppet-graphdb/releases/tag/v0.10.0)
 

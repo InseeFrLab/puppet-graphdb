@@ -66,7 +66,7 @@ define graphdb::service (
           group         => $graphdb::graphdb_group,
           install_dir   => $graphdb::install_dir,
           java_location => $graphdb::java_location,
-          java_opts     => generate_java_opts_string($java_opts),
+          java_opts     => join(delete_undef_values($java_opts),' '),
           kill_timeout  => $kill_timeout,
           title         => $title,
           user          => $graphdb::graphdb_user,
