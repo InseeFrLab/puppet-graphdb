@@ -49,8 +49,9 @@ Puppet::Type.type(:graphdb_link).provide(:graphdb_link) do
                                                                   resource[:peer_master_repository_id],
                                                                   node_id)
     else
-      raise Puppet::Error, 'please ensure that you provide required worker link details(worker_endpoint and worker_repository_id)
-      or required master link details(peer_master_endpoint, peer_master_repository_id and peer_master_node_id)'
+      raise Puppet::Error, 'please ensure that you provide required worker link
+      details(worker_endpoint and worker_repository_id) or required master link
+      details(peer_master_endpoint, peer_master_repository_id and peer_master_node_id)'
     end
   end
 

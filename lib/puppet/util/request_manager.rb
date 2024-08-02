@@ -72,13 +72,14 @@ module Puppet
 
       def self.matches_expected_messages?(response, messages)
         Puppet.debug 'Expected response messages:'
+
+        ret_true = false
         messages.each do |expected_message|
           Puppet.debug expected_message
+          ret_true = true unless response.body.match(expected_message).nil?
         end
 
-        messages.each do |expected_message|
-          return true unless response.body.match(expected_message).nil?
-        end
+        return true if ret_true
 
         Puppet.debug "The returned message doesn't match any of the expected messages"
         false

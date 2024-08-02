@@ -8,7 +8,11 @@ module Puppet
   module Util
     # GraphDB master master link manager
     class MasterMasterLinkManager
-      attr_reader :master_endpoint, :master_repository_id, :peer_master_endpoint, :peer_master_repository_id, :peer_master_node_id
+      attr_reader :master_endpoint,
+                  :master_repository_id,
+                  :peer_master_endpoint,
+                  :peer_master_repository_id,
+                  :peer_master_node_id
 
       def initialize(master_endpoint, master_repository_id, peer_master_endpoint, peer_master_repository_id,
                      peer_master_node_id)
@@ -25,7 +29,8 @@ module Puppet
 
         uri = master_endpoint.dup
         uri.path = "/jolokia/read/ReplicationCluster:name=ClusterInfo!/#{master_repository_id}/SyncPeers"
-        expected_massage = Regexp.escape("#{peer_master_endpoint}/repositories/#{peer_master_repository_id}".gsub('/', '\/'))
+        tmp_expr = "#{peer_master_endpoint}/repositories/#{peer_master_repository_id}".gsub('/', '\/')
+        expected_massage = Regexp.escape(tmp_expr)
 
         Puppet::Util::RequestManager.perform_http_request(uri,
                                                           { method: :get },
@@ -44,7 +49,8 @@ module Puppet
           'operation' => 'addSyncPeer',
           'arguments' => [peer_master_node_id, "#{peer_master_endpoint}/repositories/#{peer_master_repository_id}"]
         }
-        expected_massage = Regexp.escape("#{peer_master_endpoint}/repositories/#{peer_master_repository_id}".gsub('/', '\/'))
+        tmp_expr = "#{peer_master_endpoint}/repositories/#{peer_master_repository_id}".gsub('/', '\/')
+        expected_massage = Regexp.escape(tmp_expr)
 
         Puppet::Util::RequestManager.perform_http_request(uri,
                                                           { method: :post,

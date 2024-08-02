@@ -20,12 +20,12 @@ Facter.add(:graphdb_java_home) do
       nil
     else
       java_path = File.realpath(java_bin)
-      graphdb_java_home = if %r{/jre/}.match?(java_path)
-                            File.dirname(File.dirname(File.dirname(java_path)))
-                          else
-                            File.dirname(File.dirname(java_path))
-                          end
-      graphdb_java_home unless graphdb_java_home.nil? || graphdb_java_home.empty?
+      java_home = if %r{/jre/}.match?(java_path)
+                    File.dirname(File.dirname(File.dirname(java_path)))
+                  else
+                    File.dirname(File.dirname(java_path))
+                  end
+      java_home unless java_home.nil? || java_home.empty?
     end
   end
   nil
