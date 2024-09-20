@@ -1,5 +1,5 @@
 {
-  "name": "phaedriel-graphdb",
+  "name": "inseefrlab-graphdb",
   "version": "1.0.0",
   "author": "ontotext",
   "summary": "Module for managing and configuring GraphDB instances",
