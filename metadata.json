@@ -4,9 +4,9 @@
   "author": "ontotext",
   "summary": "Module for managing and configuring GraphDB instances",
   "license": "Apache-2.0",
-  "source": "https://github.com/phaedriel/puppet-graphdb",
-  "project_page": "https://github.com/phaedriel/puppet-graphdb",
-  "issues_url": "https://github.com/Ontotext-AD/puppet-graphdb/issues",
+  "source": "https://github.com/InseeFrLab/puppet-graphdb",
+  "project_page": "https://github.com/InseeFrLab/puppet-graphdb",
+  "issues_url": "https://github.com/InseeFrLab/puppet-graphdb/issues",
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
