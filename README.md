@@ -1,8 +1,8 @@
 GraphDB Puppet module
 ---------------------
 
-[![Puppet Forge Version](https://img.shields.io/puppetforge/v/InseeFrLab/graphdb.svg)](https://forge.puppetlabs.com/InseeFrLab/graphdb)
-[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/InseeFrLab/graphdb.svg)](https://forge.puppetlabs.com/InseeFrLab/graphdb)
+[![Puppet Forge Version](https://img.shields.io/puppetforge/v/phaedriel/graphdb.svg)](https://forge.puppetlabs.com/phaedriel/graphdb)
+[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/phaedriel/graphdb.svg)](https://forge.puppetlabs.com/phaedriel/graphdb)
 
 ## Initial project
 
