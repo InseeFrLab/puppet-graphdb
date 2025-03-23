@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', '..'))
-require 'puppet/util/repository_manager'
-require 'puppet/exceptions/request_fail'
+require 'puppet/util/graphdb_repository_manager'
+require 'puppet/exceptions/graphdb_request_fail'
 
 Puppet::Type.type(:graphdb_update).provide(:graphdb_update) do
   desc "A provider for the resource type `graphdb_update`,
@@ -12,7 +12,7 @@ Puppet::Type.type(:graphdb_update).provide(:graphdb_update) do
     Puppet.debug 'Check whether update has been applied'
     repository_manager.ask(resource[:exists_query], resource[:exists_expected_response], 0)
     true
-  rescue Puppet::Exceptions::RequestFailError
+  rescue Puppet::Exceptions::GraphDBRequestFailError
     false
   end
 
@@ -23,6 +23,6 @@ Puppet::Type.type(:graphdb_update).provide(:graphdb_update) do
   private
 
   def repository_manager
-    @repository_manager ||= Puppet::Util::RepositoryManager.new(resource[:endpoint], resource[:repository_id])
+    @repository_manager ||= Puppet::Util::GraphDBRepositoryManager.new(resource[:endpoint], resource[:repository_id])
   end
 end

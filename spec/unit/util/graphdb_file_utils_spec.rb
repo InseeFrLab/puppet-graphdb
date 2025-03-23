@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'puppet/util/file_utils'
+require 'puppet/util/graphdb_file_utils'
 
 # FileUtils tests
 describe '#file_utils' do
@@ -19,7 +19,7 @@ describe '#file_utils' do
       /var/opt/../lib/puppet
     ].each do |path|
       it "should return true on absolute path: #{path}" do
-        expect(Puppet::Util::FileUtils.absolute_path?(path)).to be true
+        expect(Puppet::Util::GraphDBFileUtils.absolute_path?(path)).to be true
       end
     end
   end
@@ -34,7 +34,7 @@ describe '#file_utils' do
       ''
     ].each do |path|
       it "should return false on invalid path: #{path}" do
-        expect(Puppet::Util::FileUtils.absolute_path?(path)).to be false
+        expect(Puppet::Util::GraphDBFileUtils.absolute_path?(path)).to be false
       end
     end
   end
@@ -51,7 +51,7 @@ describe '#file_utils' do
       relative\\windows
     ].each do |path|
       it "should return false on relative path: #{path}" do
-        expect(Puppet::Util::FileUtils.absolute_path?(path)).to be false
+        expect(Puppet::Util::GraphDBFileUtils.absolute_path?(path)).to be false
       end
     end
   end

@@ -1,28 +1,28 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'puppet/util/request_manager'
+require 'puppet/util/graphdb_request_manager'
 require 'rspec/mocks'
 
 describe 'RepositoryManager' do
   let(:uri) { URI('http://test.com') }
-  let(:repository_manager) { Puppet::Util::RepositoryManager.new(uri, 'test') }
+  let(:repository_manager) { Puppet::Util::GraphDBRepositoryManager.new(uri, 'test') }
 
   describe '#check_repository' do
     context 'with running repository' do
       it 'should return true' do
         uri.path = '/repositories/test/size'
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request) { true }
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request)
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request) { true }
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request)
           .with(uri, { method: :get }, { codes: [404] }, 0)
-          .and_raise(Puppet::Exceptions::RequestFailError)
+          .and_raise(Puppet::Exceptions::GraphDBRequestFailError)
 
         expect { repository_manager.check_repository(60) }.not_to raise_error
 
-        expect(Puppet::Util::RequestManager).to have_received(:perform_http_request).with(
+        expect(Puppet::Util::GraphDBRequestManager).to have_received(:perform_http_request).with(
           uri, { method: :get }, { codes: [404] }, 0
         ).once
-        expect(Puppet::Util::RequestManager).to have_received(:perform_http_request).with(
+        expect(Puppet::Util::GraphDBRequestManager).to have_received(:perform_http_request).with(
           uri,
           { method: :get },
           { messages: ['No workers configured', '\d+'],
@@ -34,11 +34,11 @@ describe 'RepositoryManager' do
     context 'with not existing repository' do
       it 'should return false' do
         uri.path = '/repositories/test/size'
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request)
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request)
           .with(uri, { method: :get }, { codes: [404] }, 0) { true }
 
-        expect { repository_manager.check_repository(60) }.to raise_error(Puppet::Exceptions::RequestFailError)
-        expect(Puppet::Util::RequestManager).to have_received(:perform_http_request).with(
+        expect { repository_manager.check_repository(60) }.to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
+        expect(Puppet::Util::GraphDBRequestManager).to have_received(:perform_http_request).with(
           uri, { method: :get }, { codes: [404] }, 0
         ).once
       end
@@ -47,14 +47,14 @@ describe 'RepositoryManager' do
     context 'with not running repository' do
       it 'should return false' do
         uri.path = '/repositories/test/size'
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request)
-          .and_raise(Puppet::Exceptions::RequestFailError)
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request)
+          .and_raise(Puppet::Exceptions::GraphDBRequestFailError)
 
-        expect { repository_manager.check_repository(60) }.to raise_error(Puppet::Exceptions::RequestFailError)
-        expect(Puppet::Util::RequestManager).to have_received(:perform_http_request).with(
+        expect { repository_manager.check_repository(60) }.to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
+        expect(Puppet::Util::GraphDBRequestManager).to have_received(:perform_http_request).with(
           uri, { method: :get }, { codes: [404] }, 0
         ).once
-        expect(Puppet::Util::RequestManager).to have_received(:perform_http_request).with(
+        expect(Puppet::Util::GraphDBRequestManager).to have_received(:perform_http_request).with(
           uri,
           { method: :get },
           { messages: ['No workers configured', '\d+'],
@@ -67,11 +67,11 @@ describe 'RepositoryManager' do
   describe '#create_repository' do
     context 'with successfully created repository' do
       it 'should return true' do
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request) { true }
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request) { true }
 
         expect { repository_manager.create_repository('test', 'http://test.com', 60) }.not_to raise_error
         uri.path = '/repositories/SYSTEM/rdf-graphs/service'
-        expect(Puppet::Util::RequestManager).to have_received(:perform_http_request).with(
+        expect(Puppet::Util::GraphDBRequestManager).to have_received(:perform_http_request).with(
           uri, { method: :post,
                  params: { 'graph' => 'http://test.com' },
                  body_data: 'test',
@@ -83,11 +83,11 @@ describe 'RepositoryManager' do
 
     context 'with unsuccessfully created repository' do
       it 'should return false' do
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request)
-          .and_raise(Puppet::Exceptions::RequestFailError)
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request)
+          .and_raise(Puppet::Exceptions::GraphDBRequestFailError)
 
         expect { repository_manager.create_repository('test', 'http://test.com', 60) }
-          .to raise_error(Puppet::Exceptions::RequestFailError)
+          .to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
       end
     end
   end
@@ -95,11 +95,11 @@ describe 'RepositoryManager' do
   describe '#delete_repository' do
     context 'with successfully deleted repository' do
       it 'should return true' do
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request) { true }
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request) { true }
 
         expect { repository_manager.delete_repository(60) }.not_to raise_error
         uri.path = '/repositories/test'
-        expect(Puppet::Util::RequestManager).to have_received(:perform_http_request).with(
+        expect(Puppet::Util::GraphDBRequestManager).to have_received(:perform_http_request).with(
           uri,
           { method: :delete, content_type: 'application/x-turtle' },
           { codes: [204] },
@@ -110,10 +110,10 @@ describe 'RepositoryManager' do
 
     context 'with unsuccessfully deleted repository' do
       it 'should return false' do
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request)
-          .and_raise(Puppet::Exceptions::RequestFailError)
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request)
+          .and_raise(Puppet::Exceptions::GraphDBRequestFailError)
 
-        expect { repository_manager.delete_repository(60) }.to raise_error(Puppet::Exceptions::RequestFailError)
+        expect { repository_manager.delete_repository(60) }.to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
       end
     end
   end
@@ -121,13 +121,13 @@ describe 'RepositoryManager' do
   describe '#ask' do
     context 'with successful ask query' do
       it 'should return true' do
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request) { true }
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request) { true }
 
         result = repository_manager.ask('test_query', 'test_expected_response', 60)
 
         expect(result).to be true
         uri.path = '/repositories/test'
-        expect(Puppet::Util::RequestManager).to have_received(:perform_http_request).with(
+        expect(Puppet::Util::GraphDBRequestManager).to have_received(:perform_http_request).with(
           uri, { method: :get,
                  params: { 'query' => 'test_query' },
                  content_type: 'application/x-www-form-urlencoded',
@@ -140,7 +140,7 @@ describe 'RepositoryManager' do
 
     context 'with unsuccessful ask query' do
       it 'should return false' do
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request) { false }
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request) { false }
 
         result = repository_manager.ask('test_query', 'test_expected_response', 60)
         expect(result).to be false
@@ -151,13 +151,13 @@ describe 'RepositoryManager' do
   describe '#update_query' do
     context 'with successful update query' do
       it 'should return true' do
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request) { true }
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request) { true }
 
         result = repository_manager.update_query('test_query', 60)
 
         expect(result).to be true
         uri.path = '/repositories/test/statements'
-        expect(Puppet::Util::RequestManager).to have_received(:perform_http_request).with(
+        expect(Puppet::Util::GraphDBRequestManager).to have_received(:perform_http_request).with(
           uri,
           { method: :post,
             body_params: { 'update' => 'test_query' },
@@ -170,7 +170,7 @@ describe 'RepositoryManager' do
 
     context 'with unsuccessful update query' do
       it 'should return false' do
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request) { false }
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request) { false }
 
         result = repository_manager.update_query('test_query', 60)
         expect(result).to be false
@@ -181,13 +181,13 @@ describe 'RepositoryManager' do
   describe '#load_data' do
     context 'with successfully loaded data' do
       it 'should return true' do
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request) { true }
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request) { true }
         uri.path = '/repositories/test/statements'
 
         result = repository_manager.load_data('test_data', 'rdfxml', 'test_data_context', true, 60)
 
         expect(result).to be true
-        expect(Puppet::Util::RequestManager).to have_received(:perform_http_request).with(
+        expect(Puppet::Util::GraphDBRequestManager).to have_received(:perform_http_request).with(
           uri,
           { method: :put,
             params: { 'context' => 'test_data_context' },
@@ -199,7 +199,7 @@ describe 'RepositoryManager' do
 
         result = repository_manager.load_data('test_data', 'rdfxml', 'test_data_context', false, 60)
         expect(result).to be true
-        expect(Puppet::Util::RequestManager).to have_received(:perform_http_request).with(
+        expect(Puppet::Util::GraphDBRequestManager).to have_received(:perform_http_request).with(
           uri,
           { method: :post,
             params: { 'context' => 'test_data_context' },
@@ -220,7 +220,7 @@ describe 'RepositoryManager' do
 
     context 'with unsuccessfully loaded data' do
       it 'should return false' do
-        allow(Puppet::Util::RequestManager).to receive(:perform_http_request) { false }
+        allow(Puppet::Util::GraphDBRequestManager).to receive(:perform_http_request) { false }
 
         result = repository_manager.load_data('test_data', 'rdfxml', 'test_data_context', true, 60)
         expect(result).to be false

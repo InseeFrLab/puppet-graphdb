@@ -3,7 +3,7 @@
 module Puppet
   module Util
     # Constant map contaning file extension with their matching format
-    class DataTypeExtensions
+    class GraphDBDataTypeExtensions
       DATA_TYPE_EXT = { '.rdf' => 'rdfxml', '.rdfs' => 'rdfxml', '.owl' => 'rdfxml', '.xml' => 'rdfxml',
                         '.nt' => 'ntriples',
                         '.ttl' => 'turtle',

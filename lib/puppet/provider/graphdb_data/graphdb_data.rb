@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', '..'))
-require 'puppet/util/repository_manager'
-require 'puppet/util/data_type_extensions'
-require 'puppet/exceptions/request_fail'
+require 'puppet/util/graphdb_repository_manager'
+require 'puppet/util/graphdb_data_type_extensions'
+require 'puppet/exceptions/graphdb_request_fail'
 
 Puppet::Type.type(:graphdb_data).provide(:graphdb_data) do
   desc "A provider for the resource type `graphdb_data`,
@@ -13,7 +13,7 @@ Puppet::Type.type(:graphdb_data).provide(:graphdb_data) do
     Puppet.debug 'Check whether data is already loaded'
     repository_manager.ask(resource[:exists_query], resource[:exists_expected_response], 0)
     true
-  rescue Puppet::Exceptions::RequestFailError
+  rescue Puppet::Exceptions::GraphDBRequestFailError
     false
   end
 
@@ -74,14 +74,14 @@ Puppet::Type.type(:graphdb_data).provide(:graphdb_data) do
 
   def resolve_file_format(file_path)
     file_extension = File.extname(file_path)
-    unless Puppet::Util::DataTypeExtensions.key?(file_extension)
+    unless Puppet::Util::GraphDBDataTypeExtensions.key?(file_extension)
       raise(ArgumentError, "automatic format detection fail for [#{file_path}],
 	   															you should provide per source format or data_format")
     end
-    Puppet::Util::DataTypeExtensions[file_extension]
+    Puppet::Util::GraphDBDataTypeExtensions[file_extension]
   end
 
   def repository_manager
-    @repository_manager ||= Puppet::Util::RepositoryManager.new(resource[:endpoint], resource[:repository_id])
+    @repository_manager ||= Puppet::Util::GraphDBRepositoryManager.new(resource[:endpoint], resource[:repository_id])
   end
 end

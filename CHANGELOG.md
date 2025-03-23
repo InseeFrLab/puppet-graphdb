@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v1.1.0](https://github.com/InseeFrLab/puppet-graphdb/releases/tag/v1.1.0)
+
+Modification ruby
+- util classes start with graphdb_
+- exceptions classes start with graphdb_
+
 ## [v1.0.0](https://github.com/InseeFrLab/puppet-graphdb/releases/tag/v1.0.0)
 
 - Add comments (lib)

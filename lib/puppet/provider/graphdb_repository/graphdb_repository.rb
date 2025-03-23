@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', '..'))
-require 'puppet/util/repository_manager'
-require 'puppet/exceptions/request_fail'
+require 'puppet/util/graphdb_repository_manager'
+require 'puppet/exceptions/graphdb_request_fail'
 
 Puppet::Type.type(:graphdb_repository).provide(:graphdb_repository) do
   desc "A provider for the resource type `graphdb_repository`,
@@ -11,7 +11,7 @@ Puppet::Type.type(:graphdb_repository).provide(:graphdb_repository) do
   def exists?
     repository_manager.check_repository(resource[:timeout])
     true
-  rescue Puppet::Exceptions::RequestFailError
+  rescue Puppet::Exceptions::GraphDBRequestFailError
     false
   end
 
@@ -38,7 +38,7 @@ Puppet::Type.type(:graphdb_repository).provide(:graphdb_repository) do
   private
 
   def repository_manager
-    @repository_manager ||= Puppet::Util::RepositoryManager.new(resource[:endpoint], resource[:repository_id])
+    @repository_manager ||= Puppet::Util::GraphDBRepositoryManager.new(resource[:endpoint], resource[:repository_id])
   end
 
   def check_resource_is_matching_master?(resource, port)

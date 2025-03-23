@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'puppet/util/repository_manager'
+require 'puppet/util/graphdb_repository_manager'
 
 provider_class = Puppet::Type.type(:graphdb_repository).provider(:graphdb_repository)
 
@@ -42,16 +42,16 @@ describe provider_class do
       end
 
       it do
-        allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:repository_up?)
+        allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:repository_up?)
                   .with(timeout).and_return(true)
-        allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:create_repository)
+        allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:create_repository)
                   .with(repository_template, repository_context, timeout) { true }
-        allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:define_repository_replication_port).with(replication_port) { true }
+        allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:define_repository_replication_port).with(replication_port) { true }
 
 
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:repository_up?).once
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:create_repository).once
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:define_repository_replication_port).once
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:repository_up?).once
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:create_repository).once
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:define_repository_replication_port).once
 
         expect(provider.create).to be true
       end
@@ -82,8 +82,8 @@ describe provider_class do
       end
 
       it 'should detect that graphdb repository is existing' do
-        allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:check_repository).with(timeout) { true }
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:check_repository).once
+        allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:check_repository).with(timeout) { true }
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:check_repository).once
 
         expect(provider.exists?).to be true
       end
@@ -98,9 +98,9 @@ describe provider_class do
       end
 
       it 'should detect that graphdb repository is not existing' do
-        allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:check_repository).with(timeout)
-          .and_raise(Puppet::Exceptions::RequestFailError)
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:check_repository).once
+        allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:check_repository).with(timeout)
+          .and_raise(Puppet::Exceptions::GraphDBRequestFailError)
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:check_repository).once
 
         expect(provider.exists?).to be false
       end
@@ -115,25 +115,25 @@ describe provider_class do
       end
 
       it 'should try to create new graphdb repository and try to verify the newly created repository' do
-        allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:repository_up?)
+        allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:repository_up?)
           .with(timeout).and_return(true)
-        allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:create_repository)
+        allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:create_repository)
           .with(repository_template, repository_context, timeout) { true }
 
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:repository_up?).once
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:create_repository).once
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to_not receive(:define_repository_replication_port)
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:repository_up?).once
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:create_repository).once
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to_not receive(:define_repository_replication_port)
 
         expect(provider.create).to be true
       end
 
       context 'with repository creation fail' do
         it 'should try to create new graphdb repository and return false' do
-          allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:create_repository)
-            .with(repository_template, repository_context, timeout).and_raise(Puppet::Exceptions::RequestFailError)
+          allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:create_repository)
+            .with(repository_template, repository_context, timeout).and_raise(Puppet::Exceptions::GraphDBRequestFailError)
 
-          expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:create_repository).once
-          expect { provider.create }.to raise_error(Puppet::Exceptions::RequestFailError)
+          expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:create_repository).once
+          expect { provider.create }.to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
         end
       end
     end
@@ -147,8 +147,8 @@ describe provider_class do
       end
 
       it 'should request delete for repository and return true' do
-        allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:delete_repository).with(timeout) { true }
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:delete_repository).once
+        allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:delete_repository).with(timeout) { true }
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:delete_repository).once
 
         expect(provider.destroy).to be true
       end
@@ -163,8 +163,8 @@ describe provider_class do
       end
 
       it 'should request delete for repository and return false' do
-        allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:delete_repository).with(timeout) { false }
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:delete_repository).once
+        allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:delete_repository).with(timeout) { false }
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:delete_repository).once
 
         expect(provider.destroy).to be false
       end

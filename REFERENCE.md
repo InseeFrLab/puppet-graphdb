@@ -1270,7 +1270,7 @@ Default value: `null`
 
 ##### <a name="-graphdb_data--data_format"></a>`data_format`
 
-Valid values: `Puppet::Util::DataTypeExtensions.values`
+Valid values: `Puppet::Util::GraphDBDataTypeExtensions.values`
 
 The format of the data. e.g.: turtle
 

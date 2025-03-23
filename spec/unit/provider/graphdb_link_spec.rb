@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'puppet/util/master_worker_link_manager'
-require 'puppet/util/master_master_link_manager'
+require 'puppet/util/graphdb_master_worker_link_manager'
+require 'puppet/util/graphdb_master_master_link_manager'
 
 provider_class = Puppet::Type.type(:graphdb_link).provider(:graphdb_link)
 
@@ -103,8 +103,8 @@ describe provider_class do
 
       context 'validating existing link' do
         it 'should detect that link is existing' do
-          allow_any_instance_of(Puppet::Util::MasterWorkerLinkManager).to receive(:check_link) { true }
-          expect_any_instance_of(Puppet::Util::MasterWorkerLinkManager).to receive(:check_link).once
+          allow_any_instance_of(Puppet::Util::GraphDBMasterWorkerLinkManager).to receive(:check_link) { true }
+          expect_any_instance_of(Puppet::Util::GraphDBMasterWorkerLinkManager).to receive(:check_link).once
 
           expect(provider.exists?).to be true
         end
@@ -112,8 +112,8 @@ describe provider_class do
 
       context 'creating link with creation success' do
         it 'should request create for link and return true' do
-          allow_any_instance_of(Puppet::Util::MasterWorkerLinkManager).to receive(:create_link) { true }
-          expect_any_instance_of(Puppet::Util::MasterWorkerLinkManager).to receive(:create_link).once
+          allow_any_instance_of(Puppet::Util::GraphDBMasterWorkerLinkManager).to receive(:create_link) { true }
+          expect_any_instance_of(Puppet::Util::GraphDBMasterWorkerLinkManager).to receive(:create_link).once
 
           expect(provider.create).to be true
         end
@@ -121,8 +121,8 @@ describe provider_class do
 
       context 'creating link with creation fail' do
         it 'should request create for link and return false' do
-          allow_any_instance_of(Puppet::Util::MasterWorkerLinkManager).to receive(:create_link) { false }
-          expect_any_instance_of(Puppet::Util::MasterWorkerLinkManager).to receive(:create_link).once
+          allow_any_instance_of(Puppet::Util::GraphDBMasterWorkerLinkManager).to receive(:create_link) { false }
+          expect_any_instance_of(Puppet::Util::GraphDBMasterWorkerLinkManager).to receive(:create_link).once
 
           expect(provider.create).to be false
         end
@@ -130,8 +130,8 @@ describe provider_class do
 
       context 'deleting link' do
         it 'should request delete for link and return true' do
-          allow_any_instance_of(Puppet::Util::MasterWorkerLinkManager).to receive(:delete_link) { true }
-          expect_any_instance_of(Puppet::Util::MasterWorkerLinkManager).to receive(:delete_link).once
+          allow_any_instance_of(Puppet::Util::GraphDBMasterWorkerLinkManager).to receive(:delete_link) { true }
+          expect_any_instance_of(Puppet::Util::GraphDBMasterWorkerLinkManager).to receive(:delete_link).once
 
           expect(provider.destroy).to be true
         end
@@ -139,8 +139,8 @@ describe provider_class do
 
       context 'deleting link with deletion fail' do
         it 'should request delete for link and return false' do
-          allow_any_instance_of(Puppet::Util::MasterWorkerLinkManager).to receive(:delete_link) { false }
-          expect_any_instance_of(Puppet::Util::MasterWorkerLinkManager).to receive(:delete_link).once
+          allow_any_instance_of(Puppet::Util::GraphDBMasterWorkerLinkManager).to receive(:delete_link) { false }
+          expect_any_instance_of(Puppet::Util::GraphDBMasterWorkerLinkManager).to receive(:delete_link).once
 
           expect(provider.destroy).to be false
         end
@@ -172,8 +172,8 @@ describe provider_class do
 
       context 'validating existing link' do
         it 'should detect that link is existing' do
-          allow_any_instance_of(Puppet::Util::MasterMasterLinkManager).to receive(:check_link) { true }
-          expect_any_instance_of(Puppet::Util::MasterMasterLinkManager).to receive(:check_link).once
+          allow_any_instance_of(Puppet::Util::GraphDBMasterMasterLinkManager).to receive(:check_link) { true }
+          expect_any_instance_of(Puppet::Util::GraphDBMasterMasterLinkManager).to receive(:check_link).once
 
           expect(provider.exists?).to be true
         end
@@ -181,8 +181,8 @@ describe provider_class do
 
       context 'creating link with creation success' do
         it 'should request create for link and return true' do
-          allow_any_instance_of(Puppet::Util::MasterMasterLinkManager).to receive(:create_link) { true }
-          expect_any_instance_of(Puppet::Util::MasterMasterLinkManager).to receive(:create_link).once
+          allow_any_instance_of(Puppet::Util::GraphDBMasterMasterLinkManager).to receive(:create_link) { true }
+          expect_any_instance_of(Puppet::Util::GraphDBMasterMasterLinkManager).to receive(:create_link).once
 
           expect(provider.create).to be true
         end
@@ -190,8 +190,8 @@ describe provider_class do
 
       context 'creating link with creation fail' do
         it 'should request create for link and return false' do
-          allow_any_instance_of(Puppet::Util::MasterMasterLinkManager).to receive(:create_link) { false }
-          expect_any_instance_of(Puppet::Util::MasterMasterLinkManager).to receive(:create_link).once
+          allow_any_instance_of(Puppet::Util::GraphDBMasterMasterLinkManager).to receive(:create_link) { false }
+          expect_any_instance_of(Puppet::Util::GraphDBMasterMasterLinkManager).to receive(:create_link).once
 
           expect(provider.create).to be false
         end
@@ -199,8 +199,8 @@ describe provider_class do
 
       context 'deleting link' do
         it 'should request delete for link and return true' do
-          allow_any_instance_of(Puppet::Util::MasterMasterLinkManager).to receive(:delete_link) { true }
-          expect_any_instance_of(Puppet::Util::MasterMasterLinkManager).to receive(:delete_link).once
+          allow_any_instance_of(Puppet::Util::GraphDBMasterMasterLinkManager).to receive(:delete_link) { true }
+          expect_any_instance_of(Puppet::Util::GraphDBMasterMasterLinkManager).to receive(:delete_link).once
 
           expect(provider.destroy).to be true
         end
@@ -208,8 +208,8 @@ describe provider_class do
 
       context 'deleting link with deletion fail' do
         it 'should request delete for link and return false' do
-          allow_any_instance_of(Puppet::Util::MasterMasterLinkManager).to receive(:delete_link) { false }
-          expect_any_instance_of(Puppet::Util::MasterMasterLinkManager).to receive(:delete_link).once
+          allow_any_instance_of(Puppet::Util::GraphDBMasterMasterLinkManager).to receive(:delete_link) { false }
+          expect_any_instance_of(Puppet::Util::GraphDBMasterMasterLinkManager).to receive(:delete_link).once
 
           expect(provider.destroy).to be false
         end

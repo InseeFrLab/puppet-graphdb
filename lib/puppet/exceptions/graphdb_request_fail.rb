@@ -2,8 +2,8 @@
 
 module Puppet
   module Exceptions
-    # Exceptions trown when given Expectations aren't met
-    class ExpectationsFailError < StandardError
+    # Exceptions trown when given request fails
+    class GraphDBRequestFailError < StandardError
       attr_reader :message
 
       def initialize(message = '')

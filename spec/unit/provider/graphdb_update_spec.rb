@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'puppet/util/repository_manager'
+require 'puppet/util/graphdb_repository_manager'
 
 provider_class = Puppet::Type.type(:graphdb_update).provider(:graphdb_update)
 
@@ -31,9 +31,9 @@ describe provider_class do
 
   context 'validating applied update' do
     it 'should detect that update is applied' do
-      allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:ask)
+      allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:ask)
         .with(exists_query, exists_expected_response, 0) { true }
-      expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:ask)
+      expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:ask)
         .with(exists_query, exists_expected_response, 0).once
 
       expect(provider.exists?).to be true
@@ -42,9 +42,9 @@ describe provider_class do
 
   context 'validating not applied update' do
     it 'should detect that update is not applied' do
-      allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:ask)
-        .with(exists_query, exists_expected_response, 0).and_raise(Puppet::Exceptions::RequestFailError)
-      expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:ask)
+      allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:ask)
+        .with(exists_query, exists_expected_response, 0).and_raise(Puppet::Exceptions::GraphDBRequestFailError)
+      expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:ask)
         .with(exists_query, exists_expected_response, 0).once
 
       expect(provider.exists?).to be false
@@ -53,9 +53,9 @@ describe provider_class do
 
   context 'apply update with success' do
     it 'should request update_query and return true' do
-      allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:update_query)
+      allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:update_query)
         .with(update_query, timeout) { true }
-      expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:update_query)
+      expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:update_query)
         .with(update_query, timeout).once
 
       expect(provider.create).to be true
@@ -64,9 +64,9 @@ describe provider_class do
 
   context 'apply update with fail' do
     it 'should request update_query and return false' do
-      allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:update_query)
+      allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:update_query)
         .with(update_query, timeout) { false }
-      expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:update_query)
+      expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:update_query)
         .with(update_query, timeout).once
 
       expect(provider.create).to be false

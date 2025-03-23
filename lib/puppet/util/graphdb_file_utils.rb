@@ -3,7 +3,7 @@
 module Puppet
   module Util
     # File operation related utils
-    class FileUtils
+    class GraphDBFileUtils
       @slash = '[\\\\/]'
       @name = '[^\\\\/]+'
       @regexes = {

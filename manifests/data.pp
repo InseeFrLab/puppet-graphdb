@@ -120,7 +120,7 @@ define graphdb::data (
     data_format              => $data_format,
     data_context             => $context,
     data_overwrite           => $overwrite,
-    exists_expected_response => $exists_expected_response ,
+    exists_expected_response => $exists_expected_response,
     timeout                  => $timeout,
   }
 }
