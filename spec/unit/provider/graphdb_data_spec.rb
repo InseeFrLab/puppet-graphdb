@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'puppet/util/repository_manager'
-require 'puppet/util/data_type_extensions'
+require 'puppet/util/graphdb_repository_manager'
+require 'puppet/util/graphdb_data_type_extensions'
 
 provider_class = Puppet::Type.type(:graphdb_data).provider(:graphdb_data)
 
@@ -40,9 +40,9 @@ describe provider_class do
 
     context 'validating loaded data' do
       it 'should detect that data is loaded' do
-        allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:ask)
+        allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:ask)
           .with(exists_query, exists_expected_response, 0) { true }
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:ask)
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:ask)
           .with(exists_query, exists_expected_response, 0).once
 
         expect(provider.exists?).to be true
@@ -51,9 +51,9 @@ describe provider_class do
 
     context 'validating not loaded data' do
       it 'should detect that data is not loaded' do
-        allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:ask)
-          .with(exists_query, exists_expected_response, 0).and_raise(Puppet::Exceptions::RequestFailError)
-        expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:ask)
+        allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:ask)
+          .with(exists_query, exists_expected_response, 0).and_raise(Puppet::Exceptions::GraphDBRequestFailError)
+        expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:ask)
           .with(exists_query, exists_expected_response, 0).once
 
         expect(provider.exists?).to be false
@@ -82,9 +82,9 @@ describe provider_class do
         end
 
         it 'should call load_data and return true' do
-          allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+          allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
             .with(data, data_format, data_context, data_overwrite, timeout) { true }
-          expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+          expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
             .with(data, data_format, data_context, data_overwrite, timeout).once
 
           expect { provider.create }.not_to raise_error
@@ -115,10 +115,10 @@ describe provider_class do
             it 'should call load_data and return true' do
               allow(File).to receive(:directory?) { false }
               allow(File).to receive(:read) { 'data_content' }
-              allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content', 'turtle', data_context, data_overwrite, timeout) { true }
 
-              expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content', 'turtle', data_context, data_overwrite, timeout).once
               expect { provider.create }.not_to raise_error
             end
@@ -138,7 +138,7 @@ describe provider_class do
               it 'should raise error' do
                 allow(File).to receive(:directory?) { false }
 
-                allow(Puppet::Util::DataTypeExtensions).to receive(:key?) { false }
+                allow(Puppet::Util::GraphDBDataTypeExtensions).to receive(:key?) { false }
 
                 expect { provider.create }.to raise_error(ArgumentError, /automatic format detection fail/)
               end
@@ -148,14 +148,14 @@ describe provider_class do
               it 'should raise error' do
                 allow(File).to receive(:directory?) { false }
                 allow(File).to receive(:read) { 'data_content' }
-                allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+                allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                   .with('data_content', 'turtle', data_context, data_overwrite, timeout)
-                  .and_raise(Puppet::Exceptions::RequestFailError)
+                  .and_raise(Puppet::Exceptions::GraphDBRequestFailError)
 
-                expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+                expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                   .with('data_content', 'turtle', data_context, data_overwrite, timeout).once
 
-                expect { provider.create }.to raise_error(Puppet::Exceptions::RequestFailError)
+                expect { provider.create }.to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
               end
             end
           end
@@ -182,13 +182,13 @@ describe provider_class do
             it 'should call load_data multiple times and return true' do
               allow(File).to receive(:directory?) { false }
               allow(File).to receive(:read).and_return('data_content#1', 'data_content#2', 'data_content#3')
-              allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data) { true }
+              allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data) { true }
 
-              expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content#1', 'turtle', data_context, data_overwrite, timeout).once
-              expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content#2', 'turtle', data_context, data_overwrite, timeout).once
-              expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content#3', 'turtle', data_context, data_overwrite, timeout).once
               expect { provider.create }.not_to raise_error
             end
@@ -197,18 +197,18 @@ describe provider_class do
             it 'should call load_data one time and raise error' do
               allow(File).to receive(:directory?) { false }
               allow(File).to receive(:read).and_return('data_content#1', 'data_content#2', 'data_content#3')
-              allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content#1', 'turtle', data_context, data_overwrite, timeout) { true }
-              allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content#2', 'turtle', data_context, data_overwrite, timeout)
-                .and_raise(Puppet::Exceptions::RequestFailError)
+                .and_raise(Puppet::Exceptions::GraphDBRequestFailError)
 
-              expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content#1', 'turtle', data_context, data_overwrite, timeout).once
-              expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content#2', 'turtle', data_context, data_overwrite, timeout).once
 
-              expect { provider.create }.to raise_error(Puppet::Exceptions::RequestFailError)
+              expect { provider.create }.to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
             end
           end
         end
@@ -238,13 +238,13 @@ describe provider_class do
                 allow(File).to receive(:directory?) { true }
                 allow(Dir).to receive(:glob) { ['/test#1.ttl', '/test#2.ttl', '/test#3.ttl'] }
                 allow(File).to receive(:read).and_return('data_content#1', 'data_content#2', 'data_content#3')
-                allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data) { true }
+                allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data) { true }
 
-                expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+                expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                   .with('data_content#1', 'turtle', data_context, data_overwrite, timeout).once
-                expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+                expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                   .with('data_content#2', 'turtle', data_context, data_overwrite, timeout).once
-                expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+                expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                   .with('data_content#3', 'turtle', data_context, data_overwrite, timeout).once
                 expect { provider.create }.not_to raise_error
               end
@@ -255,18 +255,18 @@ describe provider_class do
                 allow(File).to receive(:directory?) { true }
                 allow(Dir).to receive(:glob) { ['/test#1.ttl', '/test#2.ttl', '/test#3.ttl'] }
                 allow(File).to receive(:read).and_return('data_content#1', 'data_content#2', 'data_content#3')
-                allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+                allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                   .with('data_content#1', 'turtle', data_context, data_overwrite, timeout) { true }
-                allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+                allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                   .with('data_content#2', 'turtle', data_context, data_overwrite, timeout)
-                  .and_raise(Puppet::Exceptions::RequestFailError)
+                  .and_raise(Puppet::Exceptions::GraphDBRequestFailError)
 
-                expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+                expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                   .with('data_content#1', 'turtle', data_context, data_overwrite, timeout).once
-                expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+                expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                   .with('data_content#2', 'turtle', data_context, data_overwrite, timeout).once
 
-                expect { provider.create }.to raise_error(Puppet::Exceptions::RequestFailError)
+                expect { provider.create }.to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
               end
             end
           end
@@ -293,13 +293,13 @@ describe provider_class do
               allow(File).to receive(:directory?) { true }
               allow(Dir).to receive(:glob) { ['/test#1.ttl', '/test#2.ttl', '/test#3.ttl'] }
               allow(File).to receive(:read).and_return('data_content#1', 'data_content#2', 'data_content#3')
-              allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data) { true }
+              allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data) { true }
 
-              expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content#1', 'turtle', data_context, data_overwrite, timeout).once
-              expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content#2', 'turtle', data_context, data_overwrite, timeout).once
-              expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+              expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
                 .with('data_content#3', 'turtle', data_context, data_overwrite, timeout).once
               expect { provider.create }.not_to raise_error
             end
@@ -328,44 +328,44 @@ describe provider_class do
         end
 
         it 'should call load_data multiple times and return true on load success for every load_data call' do
-          allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data) { true }
-          expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+          allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data) { true }
+          expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
             .with('test_data#1', data_format, data_context, data_overwrite, timeout).once
-          expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+          expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
             .with('test_data#2', data_format, data_context, data_overwrite, timeout).once
-          expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+          expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
             .with('test_data#3', data_format, data_context, data_overwrite, timeout).once
 
           expect { provider.create }.not_to raise_error
         end
 
         it 'should call load_data multiple times and raise error on single load_data call fail' do
-          allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+          allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
             .with('test_data#1', data_format, data_context, data_overwrite, timeout) { true }
-          allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+          allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
             .with('test_data#2', data_format, data_context, data_overwrite, timeout)
-            .and_raise(Puppet::Exceptions::RequestFailError)
+            .and_raise(Puppet::Exceptions::GraphDBRequestFailError)
 
-          expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+          expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
             .with('test_data#1', data_format, data_context, data_overwrite, timeout).once
-          expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+          expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
             .with('test_data#2', data_format, data_context, data_overwrite, timeout).once
 
           error_hash = { content: 'test_data#2', format: data_format, context: data_context }
-          expect { provider.create }.to raise_error(Puppet::Exceptions::RequestFailError)
+          expect { provider.create }.to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
         end
       end
 
       context 'loading data with fail' do
         it 'should call load_data and raise error' do
-          allow_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+          allow_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
             .with(data, data_format, data_context, data_overwrite, timeout)
-            .and_raise(Puppet::Exceptions::RequestFailError)
-          expect_any_instance_of(Puppet::Util::RepositoryManager).to receive(:load_data)
+            .and_raise(Puppet::Exceptions::GraphDBRequestFailError)
+          expect_any_instance_of(Puppet::Util::GraphDBRepositoryManager).to receive(:load_data)
             .with(data, data_format, data_context, data_overwrite, timeout).once
 
           error_hash = { content: data, format: data_format, context: data_context }
-          expect { provider.create }.to raise_error(Puppet::Exceptions::RequestFailError)
+          expect { provider.create }.to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
         end
       end
     end

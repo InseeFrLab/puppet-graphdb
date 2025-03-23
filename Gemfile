@@ -21,6 +21,7 @@ group :development, :unit_tests do
   gem 'metadata-json-lint'
   gem 'puppet_facts'
   gem 'puppet-blacksmith', '>= 3.4.0'
+  gem 'puppet-strings'
   gem 'puppetlabs_spec_helper', '>= 1.2.1'
   gem 'rspec-puppet', '>= 2.3.2'
   gem 'rspec-puppet-facts'
@@ -48,7 +49,7 @@ group :system_tests do
   gem 'rspec_junit_formatter'
 end
 
-puppetversion = ENV['PUPPET_VERSION'] || '>= 6.0'
+puppetversion = ENV['PUPPET_VERSION'] || '>= 7.0'
 gem 'puppet', puppetversion, require: false, groups: [:test]
 
 # vim: syntax=ruby

@@ -4,6 +4,7 @@ require:
 AllCops:
   NewCops: disable
   DisplayCopNames: true
+  SuggestExtensions: false
   TargetRubyVersion: '2.5'
   Include:
   - "**/*.rb"
@@ -109,7 +110,7 @@ Layout/EmptyLinesAroundArguments:
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
 Layout/EndOfLine:
-  Enabled: true
+  EnforcedStyle: lf
 Layout/FirstArgumentIndentation:
   Enabled: true
 Layout/HashAlignment:
@@ -219,7 +220,7 @@ Metrics/BlockLength:
 Metrics/BlockNesting:
   Enabled: true
 Metrics/ClassLength:
-  Max: 140
+  Max: 150
 Metrics/CyclomaticComplexity:
   Max: 20
 Metrics/MethodLength:
@@ -236,6 +237,8 @@ Migration/DepartmentName:
 Naming/AccessorMethodName:
   Enabled: true
 Naming/BlockParameterName:
+  Enabled: true
+Naming/ClassAndModuleCamelCase:
   Enabled: true
 Naming/HeredocDelimiterCase:
   Enabled: true

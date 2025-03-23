@@ -3,8 +3,8 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', '..'))
 
 require 'uri'
-require 'puppet/util/data_type_extensions'
-require 'puppet/util/file_utils'
+require 'puppet/util/graphdb_data_type_extensions'
+require 'puppet/util/graphdb_file_utils'
 
 Puppet::Type.newtype(:graphdb_data) do
   @doc = 'Loads data into GraphDB'
@@ -40,7 +40,7 @@ Puppet::Type.newtype(:graphdb_data) do
 
   newparam(:data_format) do
     desc 'The format of the data. e.g.: turtle'
-    newvalues(*Puppet::Util::DataTypeExtensions.values)
+    newvalues(*Puppet::Util::GraphDBDataTypeExtensions.values)
     munge(&:to_s)
   end
 
@@ -155,7 +155,7 @@ Puppet::Type.newtype(:graphdb_data) do
     end
 
     def check_absolute_source_path(path)
-      raise(ArgumentError, "#{path} is not absolute path") unless Puppet::Util::FileUtils.absolute_path?(path)
+      raise(ArgumentError, "#{path} is not absolute path") unless Puppet::Util::GraphDBFileUtils.absolute_path?(path)
     end
 
     munge do |data_source|

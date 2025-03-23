@@ -81,7 +81,7 @@ class graphdb::install {
 
     if $graphdb::manage_graphdb_user {
       user { $graphdb::graphdb_user:
-        ensure  => 'absent',
+        ensure => 'absent',
       }
     }
 

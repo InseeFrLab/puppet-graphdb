@@ -4,7 +4,7 @@ require 'spec_helper'
 require 'webmock'
 require 'webmock/rspec'
 require 'uri'
-require 'puppet/util/http_client'
+require 'puppet/util/graphdb_http_client'
 require 'logger'
 
 describe 'HttpClient' do
@@ -25,12 +25,12 @@ describe 'HttpClient' do
       parameters[:accept_type] = accept_type if defined?(accept_type)
       parameters[:auth] = auth if defined?(auth)
 
-      Puppet::Util::HttpClient.attempt_http_request(URI(uri), parameters)
+      Puppet::Util::GraphDBHttpClient.attempt_http_request(URI(uri), parameters)
     end
 
     context 'fail to create request without method' do
       it do
-        expect { Puppet::Util::HttpClient.attempt_http_request(URI(uri), {}) }
+        expect { Puppet::Util::GraphDBHttpClient.attempt_http_request(URI(uri), {}) }
           .to raise_error(ArgumentError, 'You must pass method in parameters')
       end
     end

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', '..'))
-require 'puppet/util/master_master_link_manager'
-require 'puppet/util/master_worker_link_manager'
-require 'puppet/exceptions/request_fail'
+require 'puppet/util/graphdb_master_master_link_manager'
+require 'puppet/util/graphdb_master_worker_link_manager'
+require 'puppet/exceptions/graphdb_request_fail'
 
 Puppet::Type.type(:graphdb_link).provide(:graphdb_link) do
   desc "A provider for the resource type `graphdb_link`,
@@ -12,7 +12,7 @@ Puppet::Type.type(:graphdb_link).provide(:graphdb_link) do
   def exists?
     link_manager.check_link
     true
-  rescue Puppet::Exceptions::RequestFailError
+  rescue Puppet::Exceptions::GraphDBRequestFailError
     false
   end
 
@@ -32,22 +32,22 @@ Puppet::Type.type(:graphdb_link).provide(:graphdb_link) do
     end
 
     if !resource[:worker_endpoint].nil? && !resource[:worker_repository_id].nil?
-      @link_manager ||= Puppet::Util::MasterWorkerLinkManager.new(resource[:master_endpoint],
-                                                                  resource[:master_repository_id],
-                                                                  resource[:worker_endpoint],
-                                                                  resource[:worker_repository_id],
-                                                                  resource[:replication_port])
+      @link_manager ||= Puppet::Util::GraphDBMasterWorkerLinkManager.new(resource[:master_endpoint],
+                                                                         resource[:master_repository_id],
+                                                                         resource[:worker_endpoint],
+                                                                         resource[:worker_repository_id],
+                                                                         resource[:replication_port])
     elsif !resource[:peer_master_endpoint].nil? && !resource[:peer_master_repository_id].nil?
       node_id = if resource[:peer_master_node_id].nil?
                   resolve_node_id
                 else
                   resource[:peer_master_node_id]
                 end
-      @link_manager ||= Puppet::Util::MasterMasterLinkManager.new(resource[:master_endpoint],
-                                                                  resource[:master_repository_id],
-                                                                  resource[:peer_master_endpoint],
-                                                                  resource[:peer_master_repository_id],
-                                                                  node_id)
+      @link_manager ||= Puppet::Util::GraphDBMasterMasterLinkManager.new(resource[:master_endpoint],
+                                                                         resource[:master_repository_id],
+                                                                         resource[:peer_master_endpoint],
+                                                                         resource[:peer_master_repository_id],
+                                                                         node_id)
     else
       raise Puppet::Error, 'please ensure that you provide required worker link
       details(worker_endpoint and worker_repository_id) or required master link

@@ -3,27 +3,27 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', '..'))
 
 require 'timeout'
-require 'puppet/exceptions/expectations_fail'
-require 'puppet/exceptions/request_fail'
-require 'puppet/util/http_client'
+require 'puppet/exceptions/graphdb_expectations_fail'
+require 'puppet/exceptions/graphdb_request_fail'
+require 'puppet/util/graphdb_http_client'
 
 module Puppet
   module Util
     # Http request manager with expectations checking
-    class RequestManager
+    class GraphDBRequestManager
       def self.perform_http_request(uri, parameters, expectations, timeout)
         start_time = Time.now
         begin
           attempt_http_request_with_expectations(uri, parameters, expectations)
           Puppet.debug("Request marked as passed in #{Time.now - start_time} seconds")
-        rescue Timeout::Error, Puppet::Exceptions::ExpectationsFailError => e
+        rescue Timeout::Error, Puppet::Exceptions::GraphDBExpectationsFailError => e
           Puppet.debug("Request marked as failed: #{e}")
           if (Time.now - start_time) < timeout
             Puppet.debug('Sleeping 2 seconds before retry...')
             sleep 2
             retry
           else
-            raise(Puppet::Exceptions::RequestFailError,
+            raise(Puppet::Exceptions::GraphDBRequestFailError,
                   "Request marked as failed within timeout window of #{timeout}: #{e} #{e.message}")
           end
         end
@@ -31,7 +31,7 @@ module Puppet
 
       def self.attempt_http_request_with_expectations(uri, parameters, expectations)
         Timeout.timeout(Puppet[:configtimeout]) do
-          response = Puppet::Util::HttpClient.attempt_http_request(uri, parameters)
+          response = Puppet::Util::GraphDBHttpClient.attempt_http_request(uri, parameters)
           err_message = "Request doesn\'t match expectations\n"
           unless response.nil?
             err_message += "Expected status codes: #{expectations[:codes].join(',')}\n"
@@ -42,7 +42,7 @@ module Puppet
             end
           end
           unless matches_expectations?(response, expectations)
-            raise Puppet::Exceptions::ExpectationsFailError,
+            raise Puppet::Exceptions::GraphDBExpectationsFailError,
                   err_message
           end
         end

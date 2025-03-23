@@ -15,7 +15,7 @@ if ENV['COVERAGE']
     add_filter '.vendor'
 
     add_group 'module library', 'lib/puppet'
-    add_group 'module utils', 'lib/puppet/util'
+    add_group 'module utils', 'lib/puppet_x/graphdb'
     add_group 'module type', 'lib/puppet/type'
     add_group 'module provider', 'lib/puppet/provider'
   end

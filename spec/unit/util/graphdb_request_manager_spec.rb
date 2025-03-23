@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'puppet/util/request_manager'
+require 'puppet/util/graphdb_request_manager'
 
 describe '#perform_http_request' do
   let(:uri) { 'http://test.com' }
@@ -12,7 +12,7 @@ describe '#perform_http_request' do
     expectations = { codes: codes }
     expectations[:messages] = messages if defined?(messages)
 
-    Puppet::Util::RequestManager.perform_http_request(URI(uri), parameters, expectations, timeout)
+    Puppet::Util::GraphDBRequestManager.perform_http_request(URI(uri), parameters, expectations, timeout)
   end
 
   after do
@@ -38,7 +38,7 @@ describe '#perform_http_request' do
     it do
       stub_request(method, /.*test.com.*/).to_return(status: [200], body: 'test')
 
-      expect { call_perform_http_request }.to raise_error(Puppet::Exceptions::RequestFailError)
+      expect { call_perform_http_request }.to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
       expect(WebMock).to have_requested(method, uri).times(1)
     end
   end
@@ -75,7 +75,7 @@ describe '#perform_http_request' do
     it do
       stub_request(method, /.*test.com.*/).to_return(status: [404]).times(20)
 
-      expect { call_perform_http_request }.to raise_error(Puppet::Exceptions::RequestFailError)
+      expect { call_perform_http_request }.to raise_error(Puppet::Exceptions::GraphDBRequestFailError)
       expect(a_request(method, uri)).to have_been_made.at_least_times(6)
     end
   end
