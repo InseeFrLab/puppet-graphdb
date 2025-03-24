@@ -57,7 +57,7 @@ Declare the top-level `graphdb` class and set up an instance:
 
 ```puppet
 # Since 10.0.0, "edition" paramater is useless.
-class{ 'graphdb':
+class { 'graphdb':
   version => '10.0.0',
 }
 
@@ -71,7 +71,7 @@ graphdb::instance { 'graphdb-instance':
 Declare the top-level `graphdb` class and set up an instance:
 
 ```puppet
-class{ 'graphdb':
+class { 'graphdb':
   version => '9.10.2',
   edition => 'se',
 }
