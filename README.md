@@ -62,7 +62,7 @@ class{ 'graphdb':
 }
 
 graphdb::instance { 'graphdb-instance':
-   license           => '/home/graphdb/graphdb.license',
+   license => '/home/graphdb/graphdb.license',
 }
 ```
 
