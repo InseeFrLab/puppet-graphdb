@@ -114,16 +114,6 @@ define graphdb::instance (
       group => $graphdb::graphdb_group,
     }
 
-    $license_file_name = basename($license)
-    $licence_file_destination = "${instance_home_dir}/${license_file_name}"
-
-    file { $licence_file_destination:
-      ensure => $ensure,
-      source => $license,
-      mode   => '0555',
-      notify => Service[$service_name],
-    }
-
     file { [$instance_home_dir, $instance_data_dir, $instance_plugins_dir,
       $instance_temp_dir, $instance_conf_dir, $instance_log_dir]:
         ensure => 'directory',
@@ -154,13 +144,33 @@ define graphdb::instance (
       }
     }
 
-    $default_properties = {
-      'graphdb.home.data'      => "${graphdb::data_dir}/${title}",
-      'graphdb.home.logs'      => $instance_log_dir,
-      'graphdb.license.file'   => $licence_file_destination,
-      'graphdb.connector.port' => $http_port,
-      'graphdb.extra.plugins'  => $instance_plugins_dir,
-      'graphdb.workbench.importDirectory' => $graphdb::import_dir,
+    if $license {
+      $license_file_name = basename($license)
+      $license_file_destination = "${instance_home_dir}/${license_file_name}"
+
+      file { $license_file_destination:
+        ensure => $ensure,
+        source => $license,
+        mode   => '0555',
+        notify => Service[$service_name],
+      }
+
+      $default_properties = {
+        'graphdb.home.data'      => "${graphdb::data_dir}/${title}",
+        'graphdb.home.logs'      => $instance_log_dir,
+        'graphdb.license.file'   => $license_file_destination,
+        'graphdb.connector.port' => $http_port,
+        'graphdb.extra.plugins'  => $instance_plugins_dir,
+        'graphdb.workbench.importDirectory' => $graphdb::import_dir,
+      }
+    } else {
+      $default_properties = {
+        'graphdb.home.data'      => "${graphdb::data_dir}/${title}",
+        'graphdb.home.logs'      => $instance_log_dir,
+        'graphdb.connector.port' => $http_port,
+        'graphdb.extra.plugins'  => $instance_plugins_dir,
+        'graphdb.workbench.importDirectory' => $graphdb::import_dir,
+      }
     }
 
     file { "${instance_home_dir}/conf/graphdb.properties":
